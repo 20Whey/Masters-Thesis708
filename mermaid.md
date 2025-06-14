@@ -1,6 +1,4 @@
 ```mermaid
-
-
 %%{init:{'theme':'forest'}}%%
 gantt
     title GAM 708 GANTT CHART
@@ -18,33 +16,26 @@ gantt
     small pool user testing: al 2025-07-18, 20d
     Documentation/Report: after ab, 60d
 ``` 
+```
+<section data-markdown>
+  <textarea data-template>
+    ## Slide 1
+
+#Im Gaming
+
+
+
+    ---
+    ## Slide 2
+    ---
+    ## Slide 3
+  </textarea>
+</section>
+
+
+```
 
 GOAP progress
-
-
-//add milestone
-
-a
-
-
-
-
-
-
-a
-a
-
-
-
-
-a
-
-
-
-
-
-a
-
 
 ```csharp
 
@@ -87,6 +78,12 @@ public namespace Goap
         }
     }
 
+    public class GOAP_Character(){
+        public Vector2 position = Vector2.zero;
+        public GOAP_Character? self;
+        public GameObject thisOb;
+    }
+
     public abstract class GOAP_Component()
     {
         public virtual int id = -1;
@@ -124,17 +121,20 @@ public namespace Goap
         }
 
 
-new fuzzy_value = (current_value - smallest_value)  /(biggest_value - smallest_value)
-
-
-
-
-        public void add_location_belief(string key, func<Vector2> location, float dist)
+        public void add_location_belief(string key, func<Vector2> our_location, func<Vector2> target_location, float dist)
         {
-            beliefs.Add(key, new Belief.Builder(key).add_location(() => ).add_condition(whether_true))
-
-
+            beliefs.Add(key, new Belief.Builder(key))
+            .add_location(() => ((Vector2.Distance(our_location, target_location) > 5.0f) ? true : false)
+            .Build());
         }
+
+
+    new fuzzy_value = (current_value - smallest_value)  /(biggest_value - smallest_value)
+
+
+
+
+
 
     }
     
@@ -181,8 +181,25 @@ new fuzzy_value = (current_value - smallest_value)  /(biggest_value - smallest_v
     }
 
 
+
+
+public class utility_library(){
+
+public void_grab_location(){
+
+
+
+}
+
+
+
+
+}
+
+
     public class shrimple()
     {
+
         public static List<Action> Planner()
         {
             return new List<Action>();
@@ -192,5 +209,5 @@ new fuzzy_value = (current_value - smallest_value)  /(biggest_value - smallest_v
     }
 
 
-
+ 
 ```
