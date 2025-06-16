@@ -1,0 +1,541 @@
+<rdf:RDF
+ xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+ xmlns:z="http://www.zotero.org/namespaces/export#"
+ xmlns:bib="http://purl.org/net/biblio#"
+ xmlns:dcterms="http://purl.org/dc/terms/"
+ xmlns:dc="http://purl.org/dc/elements/1.1/"
+ xmlns:vcard="http://nwalsh.com/rdf/vCard#"
+ xmlns:foaf="http://xmlns.com/foaf/0.1/"
+ xmlns:link="http://purl.org/rss/1.0/modules/link/"
+ xmlns:prism="http://prismstandard.org/namespaces/1.2/basic/">
+   <bib:Thesis rdf:about="#item_1"><z:itemType>thesis</z:itemType></bib:Thesis>
+    <rdf:Description rdf:about="urn:isbn:978-1-4503-4920-8">
+        <z:itemType>conferencePaper</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dcterms:isPartOf>
+                   <bib:Series><dc:title>GECCO '17</dc:title></bib:Series>
+                </dcterms:isPartOf>
+                <dc:identifier>ISBN 978-1-4503-4920-8</dc:identifier>
+                <dc:title>Proceedings of the Genetic and Evolutionary Computation Conference</dc:title>
+                <dc:identifier>DOI 10.1145/3071178.3071194</dc:identifier>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <dc:publisher>
+            <foaf:Organization>
+                <vcard:adr>
+                    <vcard:Address>
+                       <vcard:locality>New York, NY, USA</vcard:locality>
+                    </vcard:Address>
+                </vcard:adr>
+                <foaf:name>Association for Computing Machinery</foaf:name>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Tavafi</foaf:surname>
+                        <foaf:givenName>Amir</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Banzhaf</foaf:surname>
+                        <foaf:givenName>Wolfgang</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>A hybrid genetic programming decision making system for RoboCup soccer simulation</dc:title>
+        <dcterms:abstract>In this contribution we propose a hybrid genetic programming approach for evolving a decision making system in the domain of RoboCup Soccer (Simulation League). Genetic programming has been rarely used in this domain in the past, due to the difficulties and restrictions of the soccer simulation. The real-time requirements of robot soccer and the lengthy evaluation time even for simulated games provide a formidable obstacle to the application of evolutionary approaches. Our new method uses two evolutionary phases, each of which compensating for restrictions and limitations of the other. The first phase produces some evolved GP individuals applying an off-game evaluation system which can be trained on snapshots of game situations as they actually happened in earlier games, and corresponding decisions tagged as correct or wrong. The second phase uses the best individuals of the first phase as input to run another GP system to evolve players in a real game environment where the quality of decisions is evaluated through winning or losing during real-time runs of the simulator. We benchmark the new system against a baseline system used by most simulation league teams, as well as against winning systems of the 2016 tournament.</dcterms:abstract>
+        <dc:date>July 1, 2017</dc:date>
+        <z:libraryCatalog>ACM Digital Library</z:libraryCatalog>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>https://doi.org/10.1145/3071178.3071194</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2025-06-06</dcterms:dateSubmitted>
+        <bib:pages>1025–1032</bib:pages>
+    </rdf:Description>
+    <rdf:Description rdf:about="urn:isbn:978-1-55860-363-9">
+        <z:itemType>conferencePaper</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dcterms:isPartOf>
+                   <bib:Series><dc:title>IJCAI'95</dc:title></bib:Series>
+                </dcterms:isPartOf>
+                <dc:identifier>ISBN 978-1-55860-363-9</dc:identifier>
+                <dc:title>Proceedings of the 14th international joint conference on Artificial intelligence - Volume 1</dc:title>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <dc:publisher>
+            <foaf:Organization>
+                <vcard:adr>
+                    <vcard:Address>
+                       <vcard:locality>San Francisco, CA, USA</vcard:locality>
+                    </vcard:Address>
+                </vcard:adr>
+                <foaf:name>Morgan Kaufmann Publishers Inc.</foaf:name>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Andre</foaf:surname>
+                        <foaf:givenName>David</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:title>The automatic programming of agents that learn mental models and create simple plans of action</dc:title>
+        <dcterms:abstract>An essential component of an intelligent agent is the ability to notice, encode, store, and utilize information about its environment. Traditional approaches to program induction have focused on evolving functional or reactive programs. This paper presents MAPMAKER, a method for the automatic generation of agents that discover information about their environment, encode this information for later use, and create simple plans utilizing the stored mental models. In this method, agents are multi-part computer programs that communicate through a shared memory. Both the programs and the representation scheme are evolved using genetic programming. An illustrative problem of 'gold' collection is used to demonstrate the method in which one part of a program makes a map of the world and stores it in memory, and the other part uses this map to find the gold The results indicate that the method can evolve programs that store simple representations of their environments and use these representations to produce simple plans.</dcterms:abstract>
+        <dc:date>August 20, 1995</dc:date>
+        <z:libraryCatalog>ACM Digital Library</z:libraryCatalog>
+        <dcterms:dateSubmitted>2025-06-06</dcterms:dateSubmitted>
+        <bib:pages>741–747</bib:pages>
+    </rdf:Description>
+    <bib:Book rdf:about="urn:isbn:978-953-51-5699-4">
+        <z:itemType>book</z:itemType>
+        <dc:publisher>
+            <foaf:Organization>
+                <vcard:adr>
+                    <vcard:Address>
+                       <vcard:locality>Rijeka, Croatia</vcard:locality>
+                    </vcard:Address>
+                </vcard:adr>
+                <foaf:name>IntechOpen</foaf:name>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Ventura</foaf:surname>
+                        <foaf:givenName>Sebastian</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <bib:contributors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Ventura</foaf:surname>
+                        <foaf:givenName>Sebastian</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:contributors>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Genetic programming (Computer science)</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Genetic programming: new approaches and successful applications</dc:title>
+        <dcterms:abstract>Genetic programming (GP) is a branch of Evolutionary Computing that aims the automatic discovery of programs to solve a given problem. Since its appearance, in the earliest nineties, GP has become one of the most promising paradigms for solving problems in the artificial intelligence field, producing a number of human-competitive results and even patentable new inventions. And, as other areas in Computer Science, GP continues evolving quickly, with new ideas, techniques and applications being constantly proposed. The purpose of this book is to show recent advances in the field of GP, both the development of new theoretical approaches and the emergence of applications that have successfully solved different real world problems. The volume is primarily aimed at postgraduates, researchers and academics, although it is hoped that it may be useful to undergraduates who wish to learn about the leading techniques in GP.</dcterms:abstract>
+        <dc:date>2012</dc:date>
+        <z:language>eng</z:language>
+        <z:shortTitle>Genetic programming</z:shortTitle>
+        <z:libraryCatalog>falmouth.primo.exlibrisgroup.com</z:libraryCatalog>
+        <dc:identifier>ISBN 978-953-51-5699-4</dc:identifier>
+    </bib:Book>
+    <bib:Book rdf:about="urn:isbn:978-3-030-04734-4">
+        <z:itemType>book</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Series>
+               <dc:title>Genetic and evolutionary computation</dc:title>
+            </bib:Series>
+        </dcterms:isPartOf>
+        <dc:publisher>
+            <foaf:Organization>
+                <vcard:adr>
+                    <vcard:Address>
+                       <vcard:locality>Cham, Switzerland</vcard:locality>
+                    </vcard:Address>
+                </vcard:adr>
+                <foaf:name>Springer</foaf:name>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Banzhaf</foaf:surname>
+                        <foaf:givenName>Wolfgang</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Spector</foaf:surname>
+                        <foaf:givenName>Lee</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Sheneman</foaf:surname>
+                        <foaf:givenName>Leigh</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:subject>
+            <z:AutomaticTag>
+                <rdf:value>Artificial intelligence$$QArtificial intelligence</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Congresses</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+                <rdf:value>Genetic programming (Computer science)$$QGenetic programming (Computer science)</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Genetic programming theory and practice XVI</dc:title>
+        <dc:date>2019</dc:date>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>falmouth.primo.exlibrisgroup.com</z:libraryCatalog>
+        <dc:subject>
+           <dcterms:LCC><rdf:value>006.31 GEN</rdf:value></dcterms:LCC>
+        </dc:subject>
+        <dc:identifier>ISBN 978-3-030-04734-4</dc:identifier>
+    </bib:Book>
+    <z:Attachment rdf:about="#item_6">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="files/6/Martin_Ferran_Memoria.pdf"/>
+        <dc:title>Martin_Ferran_Memoria.pdf</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://upcommons.upc.edu/bitstream/handle/2117/174252/Martin_Ferran_Memoria.pdf?sequence=1&amp;isAllowed=y</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2025-06-09 16:29:02</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:Book rdf:about="urn:isbn:978-0-321-70069-8">
+        <z:itemType>book</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Series>
+               <dc:title>Addison-Wesley professional computing series</dc:title>
+            </bib:Series>
+        </dcterms:isPartOf>
+        <dc:publisher>
+            <foaf:Organization>
+                <vcard:adr>
+                    <vcard:Address>
+                       <vcard:locality>Reading, Mass</vcard:locality>
+                    </vcard:Address>
+                </vcard:adr>
+                <foaf:name>Addison-Wesley</foaf:name>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Gamma</foaf:surname>
+                        <foaf:givenName>Erich</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Computer software</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+                <rdf:value>Object-oriented programming (Computer science)</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Reusability</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Software patterns</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Design patterns elements of reusable object-oriented software</dc:title>
+        <dcterms:abstract>Presents a catalog of simple solutions to commonly occurring design problems. These 23 patterns allow designers to create more reusable designs without having to rediscover the design solutions themselves. The authors begin by describing what patterns are, and how they can help you design object-oriented software. Capturing a wealth of experience about the design of object-oriented software, four top-notch designers present a catalog of simple and succinct solutions to commonly occurring design problems. Previously undocumented, these 23 patterns allow designers to create more flexible, elegant, and ultimately reusable designs without having to rediscover the design solutions themselves. The authors begin by describing what patterns are and how they can help you design object-oriented software. They then go on to systematically name, explain, evaluate, and catalog recurring designs in object-oriented systems. With Design Patterns as your guide, you will learn how these important patterns fit into the software development process, and how you can leverage them to solve your own design problems most efficiently.</dcterms:abstract>
+        <dc:date>1995</dc:date>
+        <z:language>eng</z:language>
+        <z:libraryCatalog>falmouth.primo.exlibrisgroup.com</z:libraryCatalog>
+        <dc:identifier>ISBN 978-0-321-70069-8</dc:identifier>
+        <z:numPages>xv+395</z:numPages>
+    </bib:Book>
+    <bib:Recording rdf:about="https://www.youtube.com/watch?v=T_sBYgP7_2k">
+        <z:itemType>videoRecording</z:itemType>
+        <z:directors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>git-amend</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </z:directors>
+        <dc:title>Better AI in Unity - GOAP (Goal Oriented Action Planning)</dc:title>
+        <dc:date>2024-04-07</dc:date>
+        <z:libraryCatalog>YouTube</z:libraryCatalog>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>https://www.youtube.com/watch?v=T_sBYgP7_2k</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2025-06-11 15:30:03</dcterms:dateSubmitted>
+        <z:runningTime>45:15</z:runningTime>
+    </bib:Recording>
+    <bib:Recording rdf:about="https://www.youtube.com/watch?v=kHyNqSnzP8Y">
+        <z:itemType>videoRecording</z:itemType>
+        <z:directors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>MIT OpenCourseWare</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </z:directors>
+        <dc:title>13. Learning: Genetic Algorithms</dc:title>
+        <dc:date>2014-01-10</dc:date>
+        <z:shortTitle>13. Learning</z:shortTitle>
+        <z:libraryCatalog>YouTube</z:libraryCatalog>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>https://www.youtube.com/watch?v=kHyNqSnzP8Y</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2025-06-11 15:30:19</dcterms:dateSubmitted>
+        <z:runningTime>47:15</z:runningTime>
+    </bib:Recording>
+    <bib:Recording rdf:about="https://www.youtube.com/watch?v=gm7K68663rA">
+        <z:itemType>videoRecording</z:itemType>
+        <z:directors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Game Developers Conference</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </z:directors>
+        <dc:title>Goal-Oriented Action Planning: Ten Years of AI Programming</dc:title>
+        <dc:date>2017-10-09</dc:date>
+        <z:shortTitle>Goal-Oriented Action Planning</z:shortTitle>
+        <z:libraryCatalog>YouTube</z:libraryCatalog>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>https://www.youtube.com/watch?v=gm7K68663rA</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2025-06-11 15:32:18</dcterms:dateSubmitted>
+        <z:runningTime>1:01:05</z:runningTime>
+    </bib:Recording>
+    <bib:BookSection rdf:about="#item_11">
+        <z:itemType>bookSection</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Book>
+                <dcterms:isPartOf>
+                    <bib:Series>
+                       <dc:title>enetic Programming theory and practice</dc:title>
+                    </bib:Series>
+                </dcterms:isPartOf>
+                <dc:title>Genetic Programming theory and practice XVI</dc:title>
+            </bib:Book>
+        </dcterms:isPartOf>
+        <dc:publisher>
+            <foaf:Organization>
+                <vcard:adr>
+                    <vcard:Address>
+                       <vcard:locality>Cham, Switzerland</vcard:locality>
+                    </vcard:Address>
+                </vcard:adr>
+            </foaf:Organization>
+        </dc:publisher>
+        <dc:title>MAP Elites</dc:title>
+    </bib:BookSection>
+    <rdf:Description rdf:about="https://www.proquest.com/compscijour/docview/1440877744/abstract/FDBD9A4D8FAF442FPQ/6">
+        <z:itemType>conferencePaper</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <prism:volume>2</prism:volume>
+                <dc:title>The International Scientific Conference eLearning and Software for Education</dc:title>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <dc:publisher>
+            <foaf:Organization>
+                <vcard:adr>
+                    <vcard:Address>
+                       <vcard:locality>Bucharest, Romania</vcard:locality>
+                    </vcard:Address>
+                </vcard:adr>
+                <foaf:name>&quot;Carol I&quot; National Defence University</foaf:name>
+            </foaf:Organization>
+        </dc:publisher>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Kosmadoudi</foaf:surname>
+                        <foaf:givenName>Z.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Lim</foaf:surname>
+                        <foaf:givenName>T.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Ritchie</foaf:surname>
+                        <foaf:givenName>J. M.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Sung</foaf:surname>
+                        <foaf:givenName>R. C. W.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Liu</foaf:surname>
+                        <foaf:givenName>Y.</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_13"/>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Cognition &amp; reasoning</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Design engineering</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+            <z:AutomaticTag>
+               <rdf:value>Engineering design process</rdf:value>
+            </z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Game</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:subject>
+           <z:AutomaticTag><rdf:value>Studies</rdf:value></z:AutomaticTag>
+        </dc:subject>
+        <dc:title>Game Ai Architecture for Teaching the Engineering Design Process</dc:title>
+        <dcterms:abstract>This research paper discusses a research project that employs game H Artificial Intelligence (AI) to improve the ability of engineers to more effectively construct an action plan to reach a solution to a design problem. The engineering design process is modelled through the use of öagentsD employing Goal Oriented Action Planning (GOAP), a type of AI that has had success in commercial computer games such as F.E.A.R. The GOAP logic can be described as a cognitive information process, where knowledge is assumed to be predictable and explained with mechanistic information processing. [PUBLICATION ABSTRACT]</dcterms:abstract>
+        <dc:date>2013</dc:date>
+        <z:language>English</z:language>
+        <z:libraryCatalog>ProQuest</z:libraryCatalog>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://www.proquest.com/compscijour/docview/1440877744/abstract/FDBD9A4D8FAF442FPQ/6</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2025-06-11 16:09:42</dcterms:dateSubmitted>
+        <dc:rights>Copyright &quot;Carol I&quot; National Defence University 2013</dc:rights>
+        <dc:description>Num Pages: 7</dc:description>
+        <bib:pages>48-54</bib:pages>
+    </rdf:Description>
+    <z:Attachment rdf:about="#item_13">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="files/13/Kosmadoudi et al. - 2013 - Game Ai Architecture for Teaching the Engineering Design Process.pdf"/>
+        <dc:title>Full Text PDF</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://media.proquest.com/media/hms/OBJ/dCMtU?cit%3Aauth=Kosmadoudi%2C+Z%3BLim%2C+T%3BRitchie%2C+J+M%3BSung%2C+R+C+W%3BLiu%2C+Y&amp;cit%3Atitle=GAME+AI+ARCHITECTURE+FOR+TEACHING+THE+ENGINEERING+DESIGN+PROCESS&amp;cit%3Apub=The+International+Scientific+Conference+eLearning+and+Software+for+Education&amp;cit%3Avol=2&amp;cit%3Aiss=&amp;cit%3Apg=48&amp;cit%3Adate=2013&amp;ic=true&amp;cit%3Aprod=Computer+Science+Database&amp;_a=ChgyMDI1MDYxMTE2MDgwNzE0NDo4MjM2NDISBTkzMTgwGgpPTkVfU0VBUkNIIg4xOTQuODIuMTAwLjE2MyoHMTg3NjMzODIKMTQ0MDg3Nzc0NDoNRG9jdW1lbnRJbWFnZUIBMFIGT25saW5lWgJGVGIDUEZUagoyMDEzLzA1LzAxcgoyMDEzLzA4LzMxegCCASpQLTEwMDgwNDMtMTU4OTQtUEVSUEVUVUFMLTEwMDAwMjU1LTU3NzE2ODGSAQZPbmxpbmXKAU5Nb3ppbGxhLzUuMCAoWDExOyBVYnVudHU7IExpbnV4IHg4Nl82NDsgcnY6MTM2LjApIEdlY2tvLzIwMTAwMTAxIEZpcmVmb3gvMTM2LjDSAR9Db25mZXJlbmNlIFBhcGVycyAmIFByb2NlZWRpbmdzmgIHUHJlUGFpZKoCK09TOkVNUy1NZWRpYUxpbmtzU2VydmljZS1nZXRNZWRpYVVybEZvckl0ZW3KAhVDb25mZXJlbmNlIFByb2NlZWRpbmfSAgFZ8gIA%2BgIBToIDA1dlYooDHENJRDoyMDI1MDYxMTE2MDgwNzE0NDo4ODk4MDM%3D&amp;_s=14PUjiJUyjsWrCIEtgg%2BVkU9dG4%3D</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2025-06-11 16:09:44</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:Article rdf:about="#item_14">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:2326-909X"/>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Schwab</foaf:surname>
+                        <foaf:givenName>Patrick</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Hlavacs</foaf:surname>
+                        <foaf:givenName>Helmut</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_15"/>
+        <dc:title>Capturing the Essence: Towards the Automated Generation of Transparent Behavior Models</dc:title>
+        <dcterms:abstract>Hand-coded finite-state machines and behavior trees are the go-to techniques for artificial intelligence (AI) developers that want full control over their character's bearing. However, manually crafting behaviors for computer-controlled agents is a tedious and parameter-dependent task. From a high-level view, the process of designing agent AI by hand usually starts with the determination of a suitable set of action sequences. Once the AI developer has identified these sequences he merges them into a complete behavior by specifying appropriate transitions between them. Automated techniques, such as learning, tree search and planning, are on the other end of the AI toolset's spectrum. They do not require the manual definition of action sequences and adapt to parameter changes automatically. Yet AI developers are reluctant to incorporate them in games because of their performance footprint and lack of immediate designer control. We propose a method that, given the symbolic definition of a problem domain, can automatically extract a transparent behavior model from Goal-Oriented Action Planning (GOAP). The method first observes the behavior exhibited by GOAP in a Monte-Carlo simulation and then evolves a suitable behavior tree using a genetic algorithm. The generated behavior trees are comprehensible, refinable and as performant as hand-crafted ones.</dcterms:abstract>
+        <dc:date>2021</dc:date>
+        <z:language>eng</z:language>
+        <z:shortTitle>Capturing the Essence</z:shortTitle>
+        <z:libraryCatalog>falmouth.primo.exlibrisgroup.com</z:libraryCatalog>
+        <bib:pages>184–190</bib:pages>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:2326-909X">
+        <prism:volume>11</prism:volume>
+        <dc:title>Proceedings of the AAAI Conference on Artificial Intelligence and Interactive Digital Entertainment</dc:title>
+        <dc:identifier>DOI 10.1609/aiide.v11i1.12795</dc:identifier>
+        <prism:number>1</prism:number>
+        <dc:identifier>ISSN 2326-909X</dc:identifier>
+    </bib:Journal>
+    <z:Attachment rdf:about="#item_15">
+        <z:itemType>attachment</z:itemType>
+        <rdf:resource rdf:resource="files/15/Schwab and Hlavacs - 2021 - Capturing the Essence Towards the Automated Generation of Transparent Behavior Models.pdf"/>
+        <dc:title>Full Text</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://ojs.aaai.org/index.php/AIIDE/article/download/12795/12643</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2025-06-11 16:19:07</dcterms:dateSubmitted>
+        <z:linkMode>1</z:linkMode>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:Book rdf:about="urn:isbn:978-953-51-0809-2">
+        <z:itemType>book</z:itemType>
+        <dc:publisher>
+           <foaf:Organization><foaf:name>InTech</foaf:name></foaf:Organization>
+        </dc:publisher>
+        <bib:editors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Ventura Soto</foaf:surname>
+                        <foaf:givenName>Sebastian</foaf:givenName>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:editors>
+        <dc:title>Genetic Programming - New Approaches and Successful Applications</dc:title>
+        <dc:date>2012-10-18</dc:date>
+        <z:language>en</z:language>
+        <z:libraryCatalog>DOI.org (Crossref)</z:libraryCatalog>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>http://www.intechopen.com/books/genetic-programming-new-approaches-and-successful-applications</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2025-06-12 10:26:00</dcterms:dateSubmitted>
+        <dc:description>DOI: 10.5772/3102</dc:description>
+        <dc:identifier>ISBN 978-953-51-0809-2</dc:identifier>
+    </bib:Book>
+</rdf:RDF>
