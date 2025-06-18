@@ -1,3 +1,14 @@
+---
+marp:
+theme: gaia
+_class: lead
+paginate: truef
+backgroundColor: #fff
+---
+
+![bg left:40% 80%](https://marp.app/assets/marp.svg)
+
+# **Project Overview and Context**
 ```mermaid
 %%{init:{'theme':'forest'}}%%
 gantt
@@ -16,24 +27,23 @@ gantt
     small pool user testing: al 2025-07-18, 20d
     Documentation/Report: after ab, 60d
 ``` 
-```
-<section data-markdown>
-  <textarea data-template>
-    ## Slide 1
+# Markdown Presentation Ecosystem
+---
 
-#Im Gaming
+# How to write slides
 
+Split pages by horizontal ruler (`---`). It's very simple! :satisfied:
 
+```markdown
+# Slide 1
 
-    ---
-    ## Slide 2
-    ---
-    ## Slide 3
-  </textarea>
-</section>
+foobar
 
+---
 
-```
+# Slide 2
+
+foobar
 
 GOAP progress
 
