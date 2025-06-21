@@ -1,12 +1,3 @@
----
-marp:
-theme: gaia
-_class: lead
-paginate: truef
-backgroundColor: #fff
----
-
-![bg left:40% 80%](https://marp.app/assets/marp.svg)
 
 # **Project Overview and Context**
 ```mermaid
@@ -19,7 +10,7 @@ gantt
     Proposal&Planning&Research Phase:ab, 2025-05-28, 45d
     section Algorithm 
     Enviroment Setup :al 2025-06-8  , 25d
-    Gaop Implimentation:ab, 2025-06-05, 2025-06-23
+    Gaop Implimentation:ab, 2025-06-05, 2025-06-29
     proposal submission :milestone, crit, 2025-06-23
     GA/GOAP integration and testing:after ab, 25d
     Algorithm Polish: al 2025-07-16, 30d
@@ -27,25 +18,6 @@ gantt
     small pool user testing: al 2025-07-18, 20d
     Documentation/Report: after ab, 60d
 ``` 
-# Markdown Presentation Ecosystem
----
-
-# How to write slides
-
-Split pages by horizontal ruler (`---`). It's very simple! :satisfied:
-
-```markdown
-# Slide 1
-
-foobar
-
----
-
-# Slide 2
-
-foobar
-
-GOAP progress
 
 ```csharp
 
@@ -217,7 +189,4 @@ public void_grab_location(){
     }
 
     }
-
-
- 
 ```
