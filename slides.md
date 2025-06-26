@@ -1,14 +1,19 @@
 ---
 marp: true
+theme: gaia
 ---
 # Gam706: GOAP/GA Hybrid. 
 Chlo Gaddum
 ---
 ---
+
+
+---
 # Project Overview and Context.
-![alt text](image.png)
+
 * "How can a union between GOAP and GP assist a designer when developing NPC's"
 * Project context.
+  
 * Why?
 ---
 # Audience.
@@ -19,15 +24,23 @@ Chlo Gaddum
 #
 * Audience Feedback and eithical concerns?
 ---
-# Project Specifics
+# Proposed Artefact
 
-  ![alt text](The_Plan.drawio.png)
-    
+![width:1000px](The_Plan.drawio(1)(3).png)
 
 
 ---
 # Supporting Key Evidence. 
-Schwab and Hlavacs, ‘Capturing the Essence’;
-ORKIN, ‘Applying Goal-Oriented Action Planning to Games’; 
 
+* Supporting Evidence
+#
+
+
+#
+* Methodology
+#
+
+
+#
+* Further Research
 ---

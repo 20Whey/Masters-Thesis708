@@ -1,7 +1,6 @@
 
 # **Project Overview and Context**
 ```mermaid
-%%{init:{'theme':'forest'}}%%
 gantt
     title GAM 708 GANTT CHART
     dateFormat  YYYY-MM-DD
@@ -9,8 +8,8 @@ gantt
     Artefact Submission Period :al 2025-06-06  , 84d
     Proposal&Planning&Research Phase:ab, 2025-05-28, 45d
     section Algorithm 
-    Enviroment Setup :al 2025-06-8  , 25d
-    Gaop Implimentation:ab, 2025-06-05, 2025-06-29
+    Enviroment Setup :al 2025-06-8, 30d
+    Gaop Implimentation:ab, 2025-06-15, 2025-07-05
     proposal submission :milestone, crit, 2025-06-23
     GA/GOAP integration and testing:after ab, 25d
     Algorithm Polish: al 2025-07-16, 30d
