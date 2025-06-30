@@ -16,10 +16,10 @@ namespace Production
 
             public ActionFactory(string name, Func<bool?> func, params world_state[] states)
             {
-                actions.Add(name, new Action.Builder(name)
+                actions.Add(name, new Action.builder(name)
                 .add_function(func)
                 .add_impacts(states)
-                .Build());
+                .build());
             }
         }
         public class BeliefFactory
@@ -27,9 +27,9 @@ namespace Production
             public int id;
             public GOAP_Character agent;
 
-            public Dictionary<string, Belief> beliefs;
+            public Dictionary<string, belief> beliefs;
 
-            public BeliefFactory(GOAP_Character agent, int id, Dictionary<string, Belief> beliefs)
+            public BeliefFactory(GOAP_Character agent, int id, Dictionary<string, belief> beliefs)
             {
                 this.agent = agent;
                 this.id = id;
@@ -37,19 +37,19 @@ namespace Production
             }
             public void add_belief(string key, Func<bool> condition)
             {
-                beliefs.Add(key, new Belief.Builder(key)
+                beliefs.Add(key, new belief.builder(key)
                 .add_condition(condition)
-                .Build());
+                .build());
             }
 
             public void add_location_belief(string key, Vector2 target_location, float dist)
             {
-                beliefs.Add(key, new Belief.Builder(key)
-                .add_condition(() => inRangeOf(target_location, dist))
+                beliefs.Add(key, new belief.builder(key)
+                .add_condition(() => inrangeof(target_location, dist))
                 .add_location(() => target_location)
-                .Build());
+                .build());
             }
-            bool inRangeOf(Vector2 position, float range)
+            bool inrangeof(Vector2 position, float range)
             {
                 return (Vector2.Distance(agent.thisOb.transform.position, position) > range) ? true : false;
             }
@@ -57,36 +57,36 @@ namespace Production
         }
 
 
-        public class Belief : GOAP_Component
+        public class belief : GOAP_Component
         {
             public string Name { get; }
             Func<bool> condition = () => false;
             Func<UnityEngine.Vector2> observed_location = () => UnityEngine.Vector2.zero;
             public UnityEngine.Vector2 location;
 
-            Belief(string name)
+            belief(string name)
             {
                 Name = name;
             }
-            public class Builder
+            public class builder
             {
-                public Belief belief;
+                public belief belief;
 
-                public Builder(string name)
+                public builder(string name)
                 {
-                    belief = new Belief(name);
+                    belief = new belief(name);
                 }
-                public Builder add_condition(Func<bool> condition)
+                public builder add_condition(Func<bool> condition)
                 {
                     belief.condition = condition;
                     return this;
                 }
-                public Builder add_location(Func<Vector2> observed_location)
+                public builder add_location(Func<Vector2> observed_location)
                 {
                     belief.observed_location = observed_location;
                     return this;
                 }
-                public Belief Build()
+                public belief build()
                 {
                     return this.belief;
                 }
@@ -105,25 +105,25 @@ namespace Production
         {
             this.name = Name;
         }
-        public class Builder
+        public class builder
         {
             public Action action;
-            public Builder(string name)
+            public builder(string name)
             {
                 action = new Action(name);
             }
-            public Builder add_function(Func<bool?> Func)
+            public builder add_function(Func<bool?> Func)
             {
                 action.func = Func;
                 return this;
 
             }
-            public Builder modify_cost(float Cost)
+            public builder modify_cost(float Cost)
             {
                 action.cost += Cost;
                 return this;
             }
-            public Builder add_impacts(world_state[] states)
+            public builder add_impacts(world_state[] states)
             {
                 for (var i = 0; i < states.Length; i++)
                 {
@@ -131,7 +131,7 @@ namespace Production
                 }
                 return this;
             }
-            public Action Build()
+            public Action build()
             {
                 return this.action;
             }
