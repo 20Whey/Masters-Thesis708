@@ -13,10 +13,10 @@ public class basics : MonoBehaviour
     public GameObject[] entry_points;
     public Vector2 target;
     public int target_count;
-    public bool moving = false;
-
+    public bool moving;
     void Awake()
     {
+        moving = false;
 
         paths = new List<Transform[]>();
         foreach (GameObject entry_point in entry_points)
@@ -35,14 +35,9 @@ public class basics : MonoBehaviour
         target_count = 0;
         target = paths.ElementAt(0)[0].position;
     }
-
     // Update is called once per frame
     void Update()
     {
-
-
-
-
         Vector2 pos = (Vector2)gameObject.transform.position;
         if (target_count > 9) target_count = 0;
         if (moving)
@@ -57,7 +52,6 @@ public class basics : MonoBehaviour
                     path = paths[1];
                     break;
 
-
                 case 2:
                     path = paths[2];
                     break;
@@ -66,16 +60,14 @@ public class basics : MonoBehaviour
                     break;
             }
             gameObject.transform.position = Vector2.MoveTowards(pos, target, 0.2f);
-
-
-
-
-
-
-
-
-
         }
         target = (Vector2.Distance(pos, target) > 0.3f) ? target : path[target_count++].position;
     }
+
+
+
+
+
+
+
 }
