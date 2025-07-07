@@ -17,24 +17,23 @@ public class basics : MonoBehaviour
 
     void Awake()
     {
+
+        paths = new List<Transform[]>();
         foreach (GameObject entry_point in entry_points)
         {
-            var ourP = new Transform[9];
+            Transform[] ourP = new Transform[9];
             for (var i = 0; i < 9; i++)
             {
                 ourP[i] = entry_point.transform.GetChild(i);
             }
             paths.Add(ourP);
         }
-
-
-
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         target_count = 0;
-        target = paths[0][0].position;
+        target = paths.ElementAt(0)[0].position;
     }
 
     // Update is called once per frame
