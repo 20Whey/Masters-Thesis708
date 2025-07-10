@@ -2,32 +2,32 @@ using UnityEngine;
 
 public class fuel : MonoBehaviour
 {
-
+    public bool needs_refuel;
     public float fuzzy_gas;
     public float gas;
-
+    public bool nitro;
+    private float multi;
     private bool moving;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        multi = 0.5f;
         gas = 5.0f;
+        nitro = false;
+        needs_refuel = false;
     }
-
-    // Update is called once per frame 
     void Update()
     {
-        moving = gameObject.GetComponent<basics>().moving;
+        float mult;
 
-        if (moving && gas > 0f)
-        {
-            gas -= Time.deltaTime * 0.5f;
-        }
-        else
-        {
-            gameObject.GetComponent<basics>().moving = false;
-        }
+        moving = gameObject.GetComponent<basics>().moving;
+        if (nitro) { mult = multi + 0.1f; }
+        else { mult = multi; }
+
+        if (moving && gas > 0.1f) { gas -= Time.deltaTime * mult; } else { gameObject.GetComponent<basics>().speed = 0.01f; }
 
         fuzzy_gas = return_fuel_check_priority(gas);
+
+        //if (fuzzy_gas > 2f) seek refuel
     }
     public int return_fuel_check_priority(float input)
     {
