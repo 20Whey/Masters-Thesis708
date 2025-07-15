@@ -11,28 +11,28 @@ namespace Goap
         {
             get; set;
         }
-        public int value
+        public bool? value
         {
             get; set;
         }
     }
 
-    public class World_States
+    public class world_states
     {
-        public Dictionary<string, int> states;
+        public static Dictionary<string, bool?> states;
         public void init()
         {
-            states = new Dictionary<string, int>();
+            states = new Dictionary<string, bool?>();
         }
         public bool has_state(string key)
         {
             return states.ContainsKey(key);
         }
-        void add_state(string key, int value)
+        void add_state(string key, bool? value)
         {
             states.Add(key, value);
         }
-        public bool check_is_valid(string input, int value)
+        public static bool? check_is_valid(string input, bool? value)
         {
             if (states[input] == value) return true;
             return false;
@@ -41,9 +41,15 @@ namespace Goap
 
     public class GOAP_Character
     {
-        public UnityEngine.Vector2 position = UnityEngine.Vector2.zero;
         public GOAP_Character? self;
         public GameObject thisOb;
+        public UnityEngine.Vector2 position = thisOb.transform.position;
+        public GOAP_Character(GameObject ourObject)
+        {
+            self = this;
+            position = UnityEngine.Vector2.zero;
+            thisOb = ourObject;
+        }
     }
 
     public abstract class GOAP_Component

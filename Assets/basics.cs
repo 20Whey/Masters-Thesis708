@@ -51,7 +51,6 @@ public class basics : MonoBehaviour
 
     void Update()
     {
-       
             if (fuel_script.nitro)
             {
                 speed = start_speed + 0.15f;
@@ -69,10 +68,7 @@ public class basics : MonoBehaviour
                 gameObject.transform.position = Vector2.MoveTowards(pos, target, speed);
             }
             target = (Vector2.Distance(pos, target) > 0.3f) ? target : path[target_count++].position;  
-           
         }
-    
-
     private void switch_paths(int val)
     {
         switch (val)

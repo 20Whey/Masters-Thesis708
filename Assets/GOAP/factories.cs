@@ -35,32 +35,45 @@ namespace Production
                 this.id = id;
                 this.beliefs = beliefs;
             }
-            public void add_belief(string key, Func<bool> condition)
+            public void add_belief(string identifier, Func<bool?> condition)
             {
-                beliefs.Add(key, new belief.builder(key)
-                .add_condition(condition)
+                beliefs.Add(identifier, new belief.builder(identifier)
+                .add_sensor(condition)
                 .build());
             }
 
-            public void add_location_belief(string key, Vector2 target_location, float dist)
+            public void add_location_belief(string identifier, Vector2 target_location, float dist)
             {
-                beliefs.Add(key, new belief.builder(key)
-                .add_condition(() => inrangeof(target_location, dist))
+                beliefs.Add(identifier, new belief.builder(identifier)
+                .add_sensor(() => in_range_of(target_location, dist))
                 .add_location(() => target_location)
                 .build());
             }
-            bool inrangeof(Vector2 position, float range)
+
+            public void add_desired_worldstate_belief(string key, string identifier, bool? value)
+            {
+                beliefs.Add(identifier, new belief.builder(identifier)
+                .add_sensor(() => add_global_sensor(key, value)).build());
+            }
+
+            public bool? add_global_sensor(string key, bool? value)
+            {
+                return world_states.check_is_valid(key, value);
+            }
+            bool? in_range_of(Vector2 position, float range)
             {
                 return (Vector2.Distance(agent.thisOb.transform.position, position) > range) ? true : false;
             }
             //     new fuzzy_value = (current_value - smallest_value)  /(biggest_value - smallest_value)
+            
+            
         }
 
 
         public class belief : GOAP_Component
         {
             public string Name { get; }
-            Func<bool> condition = () => false;
+            Func<bool?> condition = () => false;
             Func<UnityEngine.Vector2> observed_location = () => UnityEngine.Vector2.zero;
             public UnityEngine.Vector2 location;
 
@@ -76,16 +89,19 @@ namespace Production
                 {
                     belief = new belief(name);
                 }
-                public builder add_condition(Func<bool> condition)
+                public builder add_sensor(Func<bool?> condition)
                 {
                     belief.condition = condition;
                     return this;
                 }
+
+             
                 public builder add_location(Func<Vector2> observed_location)
                 {
                     belief.observed_location = observed_location;
                     return this;
                 }
+
                 public belief build()
                 {
                     return this.belief;
@@ -95,6 +111,7 @@ namespace Production
         }
     }
 
+    
     public class Action : GOAP_Component
     {
         private float cost = 0.5f;
