@@ -2,9 +2,11 @@ using System.Linq;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using Belief = Production.Belief;
+using Action = Production.Action;
+
 namespace Goap
 {
-
     public class world_state
     {
         public string key
@@ -42,13 +44,33 @@ namespace Goap
     public class GOAP_Character
     {
         public GOAP_Character? self;
-        public GameObject thisOb;
-        public UnityEngine.Vector2 position = thisOb.transform.position;
-        public GOAP_Character(GameObject ourObject)
+        public GameObject this_ob;
+        public List<Belief> beliefs;
+        public List<Action> allowed_actions;
+        public Transform transform;
+        public GOAP_Character(GameObject our_object)
         {
             self = this;
-            position = UnityEngine.Vector2.zero;
-            thisOb = ourObject;
+            this_ob = our_object;
+            transform = our_object.transform;
+            
+            allowed_actions = new List<Action>();
+            beliefs = new List<Belief>();
+            
+        }
+        public void add_allowed_belief(params Belief[] added_beliefs)
+        {
+            for(var i = 0; i < added_beliefs.Length; i++)
+            {
+                if (!beliefs.Contains(added_beliefs[i])) beliefs.Add(added_beliefs[i]);
+            }
+        }
+        public void add_allowed_action(params Action[] added_actions)
+        {   
+            foreach(Action action in added_actions)
+            {
+                if (!allowed_actions.Contains(action)) allowed_actions.Add(action);
+            }
         }
     }
 
