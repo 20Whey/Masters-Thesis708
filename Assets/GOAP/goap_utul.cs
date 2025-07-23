@@ -2,11 +2,29 @@ using System.Linq;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
-using Belief = Production.Belief;
+using JetBrains.Annotations;
+using Production;
 using Action = Production.Action;
 
 namespace Goap
 {
+	public abstract class GOAP_Component
+    {
+        [CanBeNull] public int Id { get; set; }
+        [CanBeNull] public string Name { get; set; }
+        public GOAP_Component Parent{get;private set;} 
+        public GOAP_Component Child{get;private set;}
+
+
+        public void add_child(GOAP_Component child)
+        {
+            this.Child = child;
+            child.Parent = this;
+        }
+        
+    }
+
+
     public class world_state
     {
         public string key
@@ -74,11 +92,7 @@ namespace Goap
         }
     }
 
-    public abstract class GOAP_Component
-    {
-        public int id = -1;
-        public string name = "Not Named";
-    }
+    
 
 
 

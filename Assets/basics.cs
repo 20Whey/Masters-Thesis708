@@ -24,9 +24,7 @@ public class basics : MonoBehaviour
 
     void Awake()
     {
-
         fuel_script = gameObject.GetComponent<fuel>();
-
         start_speed = UnityEngine.Random.Range(0.15f, 0.2f);
         moving = false;
         path_num = UnityEngine.Random.Range(0, 3);
@@ -38,7 +36,6 @@ public class basics : MonoBehaviour
             {
                 ourP[i] = entry_point.transform.GetChild(i);
             }
-
             paths.Add(ourP);
         }
     }
