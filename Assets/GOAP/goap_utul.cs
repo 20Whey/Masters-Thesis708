@@ -92,16 +92,6 @@ namespace Goap
         }
     }
 
-    
-
-
-
-
-
-
-
-
-
 
 
 }

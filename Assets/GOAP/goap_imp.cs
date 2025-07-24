@@ -4,6 +4,7 @@ using Goap;
 using Production;
 using UnityEngine;
 using Action = Production.Action;
+using Goal = Production.Goal;
 public class goap_imp : Factories
 { 
     public GameObject first_ai;
@@ -16,26 +17,30 @@ public class goap_imp : Factories
         actions = new List<Action>();
         GOAP_Character basic = new GOAP_Character(first_ai);
         //will refactor into an interface :C
-        BeliefFactory b_factory = new BeliefFactory(basic, 0, goals);
-    //    ActionFactory a_factory = new ActionFactory();
+        BeliefFactory b_factory = new BeliefFactory(basic, 0, );
+        GoalFactory g_factory = new GoalFactory();
+        ActionFactory a_factory = new ActionFactory();
+        
+        //    ActionFactory a_factory = new ActionFactory();
+        b_factory.add_belief("the sky is green", fuel is 10);
 
-
-
+        
     }
 
 
   
-    private void find_suitable_actions(Belief beliefs, List<GOAP_Component> allowed_actions /*Informing_Beliefs*/)
+    private Action[] find_suitable_actions(Goal end_goal, List<Action> allowed_actions /*Informing_Beliefs*/)
     {
-        List<Action> actions = new List<Action>();
-        foreach (Action action in allowed_actions)
+
+        Action return_if_not_valid()
         {
             
-            
         }
-            
-            
-            
+        foreach (Belief belief in end_goal.Beliefs)
+        {
+           
+        }        
+        List<Action> actions = new List<Action>();
     }
 
 private void map_out(){
@@ -49,7 +54,9 @@ private void map_out(){
         {
             
         }
-
+        
+        
+        
 
         /*
        def Planner(beliefs:list[goal], actn:list[Action]):
