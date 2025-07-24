@@ -3,6 +3,7 @@ using Goap;
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using NUnit.Framework;
 using NUnit.Framework.Internal;
 using Unity.VisualScripting;
 
@@ -14,7 +15,7 @@ namespace Production
         public class GoalFactory
         {
             readonly List<Goal> _goals = new List<Goal>();
-            public void add_goal(string name, world_state goal_validation,float priority, params Belief[] beliefs)
+            public void add_goal(string name, world_state goal_validation,float priority, List<Belief> beliefs)
             {
                 _goals.Add(new Goal.Builder(name)
                 .set_goal_validation(goal_validation)
@@ -35,7 +36,7 @@ namespace Production
             private List<Action> _output = new  List<Action>();
             public void add_action_to_list(string name, Func<bool?> func, world_state[] impacts, world_state[] requirements)
             {
-                this._output.Add(new Action.Builder(name)
+                 this._output.Add(new Action.Builder(name)
                 .add_function(func)
                 .add_impacts(impacts).add_requirement(requirements)
                 .Build());
@@ -49,26 +50,25 @@ namespace Production
         }
         public class BeliefFactory
         {
-            public int ID;
+            public int name;
             [CanBeNull] public GOAP_Character Agent;
 
-            public Dictionary<string, Belief> Beliefs;
+            public HashSet<Belief> Beliefs = new HashSet<Belief>();
 
-            public BeliefFactory(GOAP_Character agent, int id, Dictionary<string, Belief> beliefs)
+            public BeliefFactory(GOAP_Character agent, int id)
             {
                 this.Agent = agent;
-                this.ID = id;
-                this.Beliefs = beliefs;
+                this.name = id;
             }
             public void add_belief(string identifier, Func<bool?> condition)
             {
-                Beliefs.Add(identifier, new Belief.Builder(identifier)
+                Beliefs.Add(new Belief.Builder(identifier)
                 .add_sensor(condition)
                 .Build());
             }
             public void add_location_belief(string identifier, Vector2 targetLocation, float dist)
             {
-                Beliefs.Add(identifier, new Belief.Builder(identifier)
+                Beliefs.Add(new Belief.Builder(identifier)
                 .add_sensor(() => in_range_of(targetLocation, dist))
                 .add_location(() => targetLocation)
                 .Build());
@@ -76,7 +76,7 @@ namespace Production
 
             public void add_desired_worldstate_belief(string key, string identifier, bool? value)
             {
-                Beliefs.Add(identifier, new Belief.Builder(identifier)
+                Beliefs.Add(new Belief.Builder(identifier)
                 .add_sensor(() => add_global_sensor(key, value)).Build());
             }
 
@@ -89,6 +89,10 @@ namespace Production
             {
                 return (Vector2.Distance(Agent.this_ob.transform.position, position) > range) ? true : false;
             }
+           public HashSet<Belief> return_hash()
+           {
+               return this.Beliefs;
+           }
             //     new fuzzy_value = (current_value - smallest_value)  /(biggest_value - smallest_value)
         }
     }
@@ -150,7 +154,7 @@ namespace Production
                 Goal.Beliefs = new HashSet<Belief>();
             }
 
-            public Builder add_beliefs(params Belief[] beliefs)
+            public Builder add_beliefs(List<Belief> beliefs)
             {
                 Goal.Beliefs.AddRange(beliefs);
                 return this;

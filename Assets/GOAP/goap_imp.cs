@@ -9,30 +9,41 @@ public class goap_imp : Factories
 { 
     public GameObject first_ai;
 
-    public Dictionary<string, Belief> goals;
+    public Dictionary<string, Belief> beliefs;
     public List<Action> actions;
     void Awake()
     {
-        goals = new Dictionary<string, Belief>();
+        beliefs = new Dictionary<string, Belief>();
         actions = new List<Action>();
         GOAP_Character basic = new GOAP_Character(first_ai);
         //will refactor into an interface :C
-        BeliefFactory b_factory = new BeliefFactory(basic, 0, );
+        BeliefFactory b_factory = new BeliefFactory(basic,0);
         GoalFactory g_factory = new GoalFactory();
         ActionFactory a_factory = new ActionFactory();
+
+
+       var a = new world_state();
+       a.key = "gmaing";
+       a.value = true;
+        
+        
+        
+        g_factory.add_goal("kill_closest_car", a, 0.5f, b_factory.return_hash().ToList());
+       
+        
         
         //    ActionFactory a_factory = new ActionFactory();
-        b_factory.add_belief("the sky is green", fuel is 10);
+       // b_factory.add_belief("the sky is green", fuel is 10);
 
         
     }
 
 
   
-    private Action[] find_suitable_actions(Goal end_goal, List<Action> allowed_actions /*Informing_Beliefs*/)
+  /*    private Action[] find_suitable_actions(Goal end_goal, List<Action> allowed_actions /*Informing_Belief)
     {
 
-        Action return_if_not_valid()
+      Action return_if_not_valid()
         {
             
         }
@@ -42,7 +53,7 @@ public class goap_imp : Factories
         }        
         List<Action> actions = new List<Action>();
     }
-
+*/
 private void map_out(){
 }
     

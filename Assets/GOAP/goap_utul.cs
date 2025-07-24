@@ -76,13 +76,6 @@ namespace Goap
             beliefs = new List<Belief>();
             
         }
-        public void add_allowed_belief(params Belief[] added_beliefs)
-        {
-            for(var i = 0; i < added_beliefs.Length; i++)
-            {
-                if (!beliefs.Contains(added_beliefs[i])) beliefs.Add(added_beliefs[i]);
-            }
-        }
         public void add_allowed_action(params Action[] added_actions)
         {   
             foreach(Action action in added_actions)
