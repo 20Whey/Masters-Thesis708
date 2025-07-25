@@ -23,6 +23,13 @@ namespace Production
                 .add_beliefs(beliefs)
                 .Build());
             }
+            public void add_simple_goal(string name,float priority, List<Belief> beliefs)
+            {
+                _goals.Add(new Goal.Builder(name)
+                .set_priority(priority)
+                .add_beliefs(beliefs)
+                .Build());
+            }
             public List<Goal> return_goals()
             {
                 return _goals;
@@ -60,7 +67,7 @@ namespace Production
                 this.Agent = agent;
                 this.name = id;
             }
-            public void add_belief(string identifier, Func<bool?> condition)
+            public void add_belief(string identifier, Func<bool> condition)
             {
                 Beliefs.Add(new Belief.Builder(identifier)
                 .add_sensor(condition)
@@ -73,17 +80,22 @@ namespace Production
                 .add_location(() => targetLocation)
                 .Build());
             }
-
+            public void add_target_belief(string identifier, Func<Transform> target)
+            {
+                Beliefs.Add(new Belief.Builder(identifier).add_target(target).Build()
+                );
+            }
             public void add_desired_worldstate_belief(string key, string identifier, bool? value)
             {
                 Beliefs.Add(new Belief.Builder(identifier)
                 .add_sensor(() => add_global_sensor(key, value)).Build());
             }
 
-            bool? add_global_sensor(string key, bool? value)
+            bool add_global_sensor(string key, bool? value)
             {
                 return world_states.check_is_valid(key, value);
             }
+            
             
             bool in_range_of(Vector2 position, float range)
             {
@@ -101,9 +113,10 @@ namespace Production
     {
             public float Priority;
             public string Name { get; }
-            Func<bool?> _condition = () => false;
-            Func<UnityEngine.Vector2> _observedLocation = () => UnityEngine.Vector2.zero;
+            Func<bool> _condition = () => false;
+            Func<UnityEngine.Vector2> _observedLocation = () => Vector2.zero;
             public UnityEngine.Vector2 Location;
+            Func<UnityEngine.Transform> _observedTarget = () => GameObject.Instantiate(new GameObject()).transform;
             Belief(string name)
             {
                 Name = name;
@@ -116,7 +129,7 @@ namespace Production
                 {
                     Belief = new Belief(name);
                 }
-                public Builder add_sensor(Func<bool?> condition)
+                public Builder add_sensor(Func<bool> condition)
                 {
                     Belief._condition = condition;
                     return this;
@@ -124,6 +137,11 @@ namespace Production
                 public Builder add_location(Func<Vector2> observedLocation)
                 {
                     Belief._observedLocation = observedLocation;
+                    return this;
+                }
+                public Builder add_target(Func<UnityEngine.Transform> observed_character)
+                {
+                    Belief._observedTarget = observed_character;
                     return this;
                 }
                 public Belief Build()

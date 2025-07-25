@@ -52,7 +52,7 @@ namespace Goap
         {
             states.Add(key, value);
         }
-        public static bool? check_is_valid(string input, bool? value)
+        public static bool check_is_valid(string input, bool? value)
         {
             if (states[input] == value) return true;
             return false;

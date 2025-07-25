@@ -1,11 +1,15 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using game_logic;
 
 public class agent_avoidance : MonoBehaviour
 {
 
 
+
+
+ 
     public void try_crash(GameObject us, GameObject target)
     {
         //try to prompt opp reaction

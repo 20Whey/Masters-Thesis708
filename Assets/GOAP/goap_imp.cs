@@ -3,8 +3,10 @@ using System.Linq;
 using Goap;
 using Production;
 using UnityEngine;
+using Sensors;
 using Action = Production.Action;
 using Goal = Production.Goal;
+using game_logic;
 public class goap_imp : Factories
 { 
     public GameObject first_ai;
@@ -13,6 +15,7 @@ public class goap_imp : Factories
     public List<Action> actions;
     void Awake()
     {
+        
         beliefs = new Dictionary<string, Belief>();
         actions = new List<Action>();
         GOAP_Character basic = new GOAP_Character(first_ai);
@@ -20,10 +23,12 @@ public class goap_imp : Factories
         BeliefFactory b_factory = new BeliefFactory(basic,0);
         GoalFactory g_factory = new GoalFactory();
         ActionFactory a_factory = new ActionFactory();
-
-
-       var a = new world_state();
-       a.key = "gmaing";
+        
+        
+        b_factory.add_belief("is_another_car_close_enough",() => car_game.is_car_close_enough(basic.this_ob));
+        b_factory.add_belief("is_target_in_same_lane", () => car_game.is_car_in_right_lane(basic.this_ob,car_game.get_closest_car(basic.this_ob).gameObject));
+        var a = new world_state();
+       a.key = "multiple_racers";
        a.value = true;
         
         
@@ -54,7 +59,7 @@ public class goap_imp : Factories
         List<Action> actions = new List<Action>();
     }
 */
-private void map_out(){
+private Action[][] map_out(){
 }
     
     public void Planner(List<Belief> goals, List<Action> allowed_actions)
