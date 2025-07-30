@@ -2,6 +2,7 @@ using UnityEngine;
 using Goap;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using NUnit.Framework;
 using NUnit.Framework.Internal;
@@ -15,7 +16,7 @@ namespace Production
         public class GoalFactory
         {
             readonly List<Goal> _goals = new List<Goal>();
-            public void add_goal(string name, world_state goal_validation,float priority, List<Belief> beliefs)
+            public void add_goal(string name, world_state goal_validation,float priority, params Belief[] beliefs)
             {
                 _goals.Add(new Goal.Builder(name)
                 .set_goal_validation(goal_validation)
@@ -23,7 +24,7 @@ namespace Production
                 .add_beliefs(beliefs)
                 .Build());
             }
-            public void add_simple_goal(string name,float priority, List<Belief> beliefs)
+            public void add_simple_goal(string name,float priority, params Belief[] beliefs)
             {
                 _goals.Add(new Goal.Builder(name)
                 .set_priority(priority)
@@ -35,17 +36,17 @@ namespace Production
                 return _goals;
             }
             
-            
         }
         public class ActionFactory 
         {
             //may change costs
             private List<Action> _output = new  List<Action>();
-            public void add_action_to_list(string name, Func<bool?> func, world_state[] impacts, world_state[] requirements)
+            public void add_action_to_list(string name, Func<bool?> func, Dictionary<Belief, bool> impacts, Dictionary<Belief, bool> requirements)
             {
                  this._output.Add(new Action.Builder(name)
                 .add_function(func)
-                .add_impacts(impacts).add_requirement(requirements)
+                .add_impacts(impacts)
+                .add_requirement(requirements)
                 .Build());
             }
 
@@ -85,15 +86,15 @@ namespace Production
                 Beliefs.Add(new Belief.Builder(identifier).add_target(target).Build()
                 );
             }
-            public void add_desired_worldstate_belief(string key, string identifier, bool? value)
+            public void add_desired_worldstate_belief(world_states c_world, string key, string identifier, bool value)
             {
                 Beliefs.Add(new Belief.Builder(identifier)
-                .add_sensor(() => add_global_sensor(key, value)).Build());
+                .add_sensor(() => add_global_sensor(c_world, key, value)).Build());
             }
 
-            bool add_global_sensor(string key, bool? value)
+          public bool add_global_sensor(world_states c_world, string key, bool value)
             {
-                return world_states.check_is_valid(key, value);
+                return c_world.check_is_valid(key, value);
             }
             
             
@@ -154,7 +155,7 @@ namespace Production
     public class Goal : GOAP_Component
     {
         //what can the AI see
-        public HashSet<Belief> Beliefs;
+        public Dictionary<string, Belief> Beliefs;
         public List<world_state> Target;
         public float Priority;
         public string Name;
@@ -169,12 +170,14 @@ namespace Production
             public Builder(string name)
             {
                 Goal = new Goal(name);
-                Goal.Beliefs = new HashSet<Belief>();
+                Goal.Beliefs = new Dictionary<string, Belief>();
             }
-
-            public Builder add_beliefs(List<Belief> beliefs)
+            public Builder add_beliefs( params Belief[] beliefs)
             {
-                Goal.Beliefs.AddRange(beliefs);
+                foreach (var item in beliefs)
+                {
+                    Goal.Beliefs.Add(item.Name, item);
+                }
                 return this;
             }
             public Builder set_priority(float value)
@@ -196,15 +199,14 @@ namespace Production
 
     public class Action : GOAP_Component
     {
-
     //bodge tree structure        
         public Action Child { get; set; }
         public Action Parent { get; set; }
         
         private float _cost = 0.5f;
         public Func<bool?> Func;
-        public readonly HashSet<world_state> _requirements;
-        public readonly HashSet<world_state> _impact; 
+        public readonly Dictionary<Belief, bool> _requirements;
+        public readonly Dictionary<Belief, bool> _impact; 
         public Action(string name)
         {
             this.Name = name;
@@ -218,9 +220,9 @@ namespace Production
                action = new Action(name);
             }
 
-            public Builder add_requirement(params world_state[] condition)
+            public Builder add_requirement(Dictionary<Belief, bool> condition)
             {
-                action._requirements.AddRange(condition);;
+                action._requirements.Concat(condition).ToDictionary(item => item.Key, item => item.Value);
                 return this;
             }
             public Builder add_function(Func<bool?> func)
@@ -233,12 +235,9 @@ namespace Production
                 action._cost += cost;
                 return this;
             }
-            public Builder add_impacts(params world_state[] states)
+            public Builder add_impacts(Dictionary<Belief, bool> states)
             {
-                for (var i = 0; i < states.Length; i++)
-                {
-                    action._impact.Add(states[i]);
-                }
+                action._impact.Concat(states).ToDictionary(item => item.Key, item => item.Value);
                 return this;
             }
             public Action Build()

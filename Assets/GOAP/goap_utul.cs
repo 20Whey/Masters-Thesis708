@@ -13,14 +13,15 @@ namespace Goap
         [CanBeNull] public int Id { get; set; }
         [CanBeNull] public string Name { get; set; }
         public GOAP_Component Parent{get;private set;} 
-        public GOAP_Component Child{get;private set;}
-
+        public List<GOAP_Component> Children{get;set;}
 
         public void add_child(GOAP_Component child)
         {
-            this.Child = child;
+            this.Children.Add(child);
             child.Parent = this;
         }
+
+	
         
     }
 
@@ -36,6 +37,8 @@ namespace Goap
             get; set;
         }
     }
+    
+    
 
     public class world_states
     {
@@ -48,11 +51,11 @@ namespace Goap
         {
             return states.ContainsKey(key);
         }
-        void add_state(string key, bool? value)
+        public void add_state(string key, bool? value)
         {
             states.Add(key, value);
         }
-        public static bool check_is_valid(string input, bool? value)
+        public bool check_is_valid(string input, bool value)
         {
             if (states[input] == value) return true;
             return false;
