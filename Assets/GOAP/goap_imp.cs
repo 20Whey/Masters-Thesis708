@@ -83,17 +83,19 @@ public class goap_imp : Factories
   }
   
   //Shrimple BFS
-  public HashSet<GOAP_Component> discover_tree(world_states sim_state, GOAP_Component start, List<Action> allowed)
+  public HashSet<Node> discover_tree(world_states sim_state, Goal start, List<Action> allowed)
   {
-      HashSet<GOAP_Component> visited = new HashSet<GOAP_Component>();
-      Queue<GOAP_Component> queue = new Queue<GOAP_Component>();
-      queue.Enqueue(start);
-      visited.Add(start);
+      int nm = 0;
+      HashSet<Node> visited = new HashSet<Node>();
+      Queue<Node> queue = new Queue<Node>();
+      Node first = new Node(start, nm);
+      queue.Enqueue(first);
+      visited.Add(first);
       do
       {
-          GOAP_Component current = queue.Dequeue();
-          List<GOAP_Component> potentialOptions = 
-          find_all_suitable_actions(sim_state, current, allowed);
+          Node current = queue.Dequeue();
+          List<IHasRequirements> potentialOptions = 
+          find_all_suitable_actions(sim_state, current.held_obj as Action, allowed);
           
           for (var i = 0; i < potentialOptions.Count; i++)
           {
@@ -122,9 +124,10 @@ public class goap_imp : Factories
   }
       
 
-  private List<GOAP_Component> find_all_suitable_actions(world_states c_worldstate, GOAP_Component c_action, List<Action> allowed_actions)
+  private List<IHasRequirements> find_all_suitable_actions(world_states c_worldstate, IActionBase c_action, List<Action> allowed_actions)
   {
-      List<GOAP_Component> naction_list = new List<GOAP_Component>();
+     Action self =  c_action.return_self();
+      List<IHasRequirements> naction_list = new List<IHasRequirements>();
       foreach (var act in allowed_actions)
       {
           if (clean_filter(c_worldstate, act))
@@ -158,15 +161,15 @@ public class goap_imp : Factories
         
         foreach (Goal orderedGoal in ordered_goals)
         {
-            HashSet<GOAP_Component> tree_to_traverse = discover_tree(simulated_worldstate, orderedGoal, allowed_actions);
+            HashSet<IGoapComponent> tree_to_traverse = discover_tree(simulated_worldstate, orderedGoal, allowed_actions);
             //simple valid check can we even proceed. limit plans to a selection of 3 to start.
             
              //if(goal_validation(orderedGoal, allowed_actions))
-            List<GOAP_Component>[] possible_plan = new List<GOAP_Component>[3];
+            List<IGoapComponent>[] possible_plan = new List<IGoapComponent>[3];
             
             do
             { 
-                List<GOAP_Component> current_plan = new List<GOAP_Component>();
+                List<IGoapComponent> current_plan = new List<IGoapComponent>();
                 current_plan.Add(orderedGoal);
                 
                 //obselete just need tree traversal now.

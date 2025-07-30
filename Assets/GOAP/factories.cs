@@ -110,10 +110,11 @@ namespace Production
         }
     }
     
-    public class Belief : GOAP_Component
+    public class Belief : IGoapComponent
     {
             public float Priority;
-            public string Name { get; }
+            public string Name { get; set; }
+            public int Id { get; set; }
             Func<bool> _condition = () => false;
             Func<UnityEngine.Vector2> _observedLocation = () => Vector2.zero;
             public UnityEngine.Vector2 Location;
@@ -152,13 +153,13 @@ namespace Production
             }
         }
 
-    public class Goal : GOAP_Component
+    public class Goal : IGoapComponent, IHasRequirements
     {
         //what can the AI see
         public Dictionary<string, Belief> Beliefs;
         public List<world_state> Target;
         public float Priority;
-        public string Name;
+        public string Name { get; set; }
         Goal(string name)
         {
             Name = name;
@@ -195,17 +196,25 @@ namespace Production
                 return this.Goal;
             }
         }
+        public int Id
+        {
+            get;
+            set;
+        }
+
+        public Dictionary<Belief, bool> _requirements
+        {
+            get;
+            set;
+        }
     }
 
-    public class Action : GOAP_Component
+    public class Action : IActionBase
     {
-    //bodge tree structure        
-        public Action Child { get; set; }
-        public Action Parent { get; set; }
-        
+
         private float _cost = 0.5f;
         public Func<bool?> Func;
-        public readonly Dictionary<Belief, bool> _requirements;
+      
         public readonly Dictionary<Belief, bool> _impact; 
         public Action(string name)
         {
@@ -244,6 +253,27 @@ namespace Production
             {
                 return this.action;
             }
+        }
+        public int Id
+        {
+            get;
+            set;
+        }
+        public string Name
+        {
+            get;
+            set;
+        }
+
+        public Dictionary<Belief, bool> _requirements
+        {
+            get;
+            set;
+        }
+        public Action self
+        {
+            get;
+            set;
         }
     }
 }

@@ -8,24 +8,59 @@ using Action = Production.Action;
 
 namespace Goap
 {
-	public abstract class GOAP_Component
+	public interface IGoapComponent
     {
-        [CanBeNull] public int Id { get; set; }
         [CanBeNull] public string Name { get; set; }
-        public GOAP_Component Parent{get;private set;} 
-        public List<GOAP_Component> Children{get;set;}
+        [CanBeNull] public int Id { get; set; }
 
-        public void add_child(GOAP_Component child)
+    }
+    public interface IActionBase : IGoapComponent, IHasRequirements
+    {
+        public Action self {get; set;}
+        
+        public Action return_self()
+        {
+            return this.self;
+        }
+        
+    }
+    
+    
+    public interface IHasRequirements
+    {
+        public Dictionary<Belief, bool> _requirements { get; set; }
+        
+    }
+
+
+    public class Node
+    {
+        public Node(IHasRequirements heldObj, int id)
+        {
+            held_obj = heldObj;
+            Id = id;
+        }
+        public Node Parent
+        {get; set;} 
+        public List<Node> Children
+        {get;set;}
+        public object held_obj { get; set; }
+        public void add_child(Node child)
         {
             this.Children.Add(child);
             child.Parent = this;
         }
 
-	
-        
+        public int Id
+        {
+            get;
+            set;
+        }
+ 
     }
-
-
+    
+    
+    
     public class world_state
     {
         public string key
