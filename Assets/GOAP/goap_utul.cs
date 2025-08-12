@@ -14,15 +14,15 @@ namespace Goap
         [CanBeNull] public int Id { get; set; }
 
     }
-    public interface IActionBase : IGoapComponent, IHasRequirements
+    public interface IActionAdjacent : IGoapComponent, IHasRequirements
     {
-        public Action self {get; set;}
+        public object self {get; set;}
         
-        public Action return_self()
+        public object return_self()
         {
             return this.self;
         }
-        
+       
     }
     
     
@@ -35,7 +35,7 @@ namespace Goap
 
     public class Node
     {
-        public Node(IHasRequirements heldObj, int id)
+        public Node(IActionAdjacent heldObj, int id)
         {
             held_obj = heldObj;
             Id = id;
@@ -44,7 +44,7 @@ namespace Goap
         {get; set;} 
         public List<Node> Children
         {get;set;}
-        public object held_obj { get; set; }
+        public IActionAdjacent held_obj { get; set; }
         public void add_child(Node child)
         {
             this.Children.Add(child);
@@ -56,7 +56,13 @@ namespace Goap
             get;
             set;
         }
- 
+        //keep track of stuff
+        public world_states c_state { get; set; }
+        public world_states grab_state()
+        {
+            return this.c_state;
+        }
+
     }
     
     
@@ -77,16 +83,16 @@ namespace Goap
 
     public class world_states
     {
-        public static Dictionary<string, bool?> states;
+        public Dictionary<string, bool> states;
         public void init()
         {
-            states = new Dictionary<string, bool?>();
+            states = new Dictionary<string, bool>();
         }
         public bool has_state(string key)
         {
             return states.ContainsKey(key);
         }
-        public void add_state(string key, bool? value)
+        public void add_state(string key, bool value)
         {
             states.Add(key, value);
         }

@@ -41,7 +41,7 @@ namespace Production
         {
             //may change costs
             private List<Action> _output = new  List<Action>();
-            public void add_action_to_list(string name, Func<bool?> func, Dictionary<Belief, bool> impacts, Dictionary<Belief, bool> requirements)
+            public void add_action_to_list(string name, Func<bool?> func, Dictionary<string, bool> impacts, Dictionary<Belief, bool> requirements)
             {
                  this._output.Add(new Action.Builder(name)
                 .add_function(func)
@@ -61,7 +61,7 @@ namespace Production
             public int name;
             [CanBeNull] public GOAP_Character Agent;
 
-            public HashSet<Belief> Beliefs = new HashSet<Belief>();
+            public Dictionary<string, Belief> Beliefs = new Dictionary<string, Belief>();
 
             public BeliefFactory(GOAP_Character agent, int id)
             {
@@ -70,26 +70,29 @@ namespace Production
             }
             public void add_belief(string identifier, Func<bool> condition)
             {
-                Beliefs.Add(new Belief.Builder(identifier)
+                Beliefs.Add(identifier, new Belief.Builder(identifier)
                 .add_sensor(condition)
                 .Build());
             }
             public void add_location_belief(string identifier, Vector2 targetLocation, float dist)
             {
-                Beliefs.Add(new Belief.Builder(identifier)
+                Beliefs.Add(identifier,new Belief.Builder(identifier)
                 .add_sensor(() => in_range_of(targetLocation, dist))
                 .add_location(() => targetLocation)
                 .Build());
             }
             public void add_target_belief(string identifier, Func<Transform> target)
             {
-                Beliefs.Add(new Belief.Builder(identifier).add_target(target).Build()
+                Beliefs.Add(identifier,new Belief.Builder(identifier).
+                add_target(target)
+                .Build()
                 );
             }
-            public void add_desired_worldstate_belief(world_states c_world, string key, string identifier, bool value)
+            public void add_desired_worldstate_belief(string identifier, world_states c_world, string key, bool value)
             {
-                Beliefs.Add(new Belief.Builder(identifier)
-                .add_sensor(() => add_global_sensor(c_world, key, value)).Build());
+                Beliefs.Add(identifier,new Belief.Builder(identifier)
+                .add_sensor(() => add_global_sensor(c_world, key, value))
+                .Build());
             }
 
           public bool add_global_sensor(world_states c_world, string key, bool value)
@@ -97,14 +100,13 @@ namespace Production
                 return c_world.check_is_valid(key, value);
             }
             
-            
             bool in_range_of(Vector2 position, float range)
             {
                 return (Vector2.Distance(Agent.this_ob.transform.position, position) > range) ? true : false;
             }
-           public HashSet<Belief> return_hash()
+           public Belief grab_belief(string identifier)
            {
-               return this.Beliefs;
+               return this.Beliefs[identifier];
            }
             //     new fuzzy_value = (current_value - smallest_value)  /(biggest_value - smallest_value)
         }
@@ -153,7 +155,7 @@ namespace Production
             }
         }
 
-    public class Goal : IGoapComponent, IHasRequirements
+    public class Goal : IActionAdjacent
     {
         //what can the AI see
         public Dictionary<string, Belief> Beliefs;
@@ -193,6 +195,7 @@ namespace Production
             }
             public Goal Build()
             {
+                this.Goal.self = this.Goal;
                 return this.Goal;
             }
         }
@@ -207,15 +210,20 @@ namespace Production
             get;
             set;
         }
+        public object self
+        {
+            get;
+            set;
+        }
     }
 
-    public class Action : IActionBase
+    public class Action : IActionAdjacent
     {
 
         private float _cost = 0.5f;
         public Func<bool?> Func;
       
-        public readonly Dictionary<Belief, bool> _impact; 
+        public readonly Dictionary<string, bool> _impact; 
         public Action(string name)
         {
             this.Name = name;
@@ -244,13 +252,14 @@ namespace Production
                 action._cost += cost;
                 return this;
             }
-            public Builder add_impacts(Dictionary<Belief, bool> states)
+            public Builder add_impacts(Dictionary<string, bool> states)
             {
                 action._impact.Concat(states).ToDictionary(item => item.Key, item => item.Value);
                 return this;
             }
             public Action Build()
             {
+                this.action.self = this.action;
                 return this.action;
             }
         }
@@ -270,7 +279,7 @@ namespace Production
             get;
             set;
         }
-        public Action self
+        public object self
         {
             get;
             set;
