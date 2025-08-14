@@ -72,14 +72,16 @@ namespace Production
             {
                 Beliefs.Add(identifier, new Belief.Builder(identifier)
                 .add_sensor(condition)
-                .Build());
+                .Build()
+                );
             }
             public void add_location_belief(string identifier, Vector2 targetLocation, float dist)
             {
                 Beliefs.Add(identifier,new Belief.Builder(identifier)
                 .add_sensor(() => in_range_of(targetLocation, dist))
                 .add_location(() => targetLocation)
-                .Build());
+                .Build()
+                );
             }
             public void add_target_belief(string identifier, Func<Transform> target)
             {

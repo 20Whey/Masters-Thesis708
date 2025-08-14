@@ -101,6 +101,14 @@ namespace Goap
             if (states[input] == value) return true;
             return false;
         }
+        public bool check_mult(world_states input)
+        {
+            foreach (var item in input.states)
+            {
+               if (!this.check_is_valid(item.Key, item.Value)) return false;
+            }
+            return true;
+        }
     }
 
     public class GOAP_Character
