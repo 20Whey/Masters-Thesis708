@@ -24,29 +24,11 @@ public class goap_imp : Factories
         var c_worldstate = new world_states();
         beliefs = new Dictionary<string, Belief>();
         actions = new List<Action>();
-        GOAP_Character basic = new GOAP_Character(first_ai);
+        character basic = new character(first_ai);
         //will refactor into an interface :C
-        BeliefFactory b_factory = new BeliefFactory(basic, 0);
-        GoalFactory g_factory = new GoalFactory();
-        ActionFactory a_factory = new ActionFactory();
-
-
-
-        b_factory.add_belief("is_target_in_same_lane", () => car_game.is_car_in_right_lane(basic.this_ob, car_game.get_closest_car(basic.this_ob).gameObject));
-        b_factory.add_location_belief("are_we_close_to_other_car", car_game.get_closest_car(basic.this_ob).transform.position, 0.5f);
-        //b_factory.add_desired_worldstate_belief("stop_the_race", c_worldstate, "race_is_running", false);
-        g_factory.add_goal("crash_into_enemies", new world_state["multiple_cars":false], 0.1f, b_factory.grab_belief("is_target_in_same_lane"), b_factory.grab_belief("are_we_close_to_other_car") );
-
-        List<Goal> goals = g_factory.return_goals();
-
-    }
-    private world_states setup_worldstate(world_states state)
-    {
-        state.add_state("multiple_cars", true);
-        state.add_state("race_is_running", true);
-        state.add_state("car_is_moving", false);
-        state.add_state("is_refueling", false);
-        return state;
+      
+        
+      
 
     }
 
@@ -57,7 +39,7 @@ public class goap_imp : Factories
     {
         foreach (var item in next_action._requirements)
         {
-            if (!simulated_worldstate.check_is_valid(item.Key.Name, item.Value))
+            if (!simulated_worldstate.check_is_valid(item.Key, item.Value))
                 return false;
         }
         return true;
@@ -73,7 +55,7 @@ public class goap_imp : Factories
         }
         return null;
     }
-    
+
 
 //I have a filtered tree, all roads lead to the end. 
 //technically this version takes the most complex plan possible. by virtue of being the last element
@@ -83,11 +65,11 @@ public class goap_imp : Factories
         List<Node> plan = new List<Node>();
         //where our worldstate reaches our target; 
         Node start = grab_from_state(tree, state);
-        if (start == null) return null;  // basically we cant do the goal.real k    
+        if (start == null) return null; // basically we cant do the goal.real k    
         //get root
         plan.Add(start);
         Node cNode = start;
-        while (cNode.Parent!= null)
+        while (cNode.Parent != null)
         {
             plan.Add(cNode);
             cNode = cNode.Parent;
@@ -101,7 +83,7 @@ public class goap_imp : Factories
     {
         foreach (var req in other._requirements)
         {
-            if (!current.check_is_valid(req.Key.Name, req.Value)) return false;
+            if (!current.check_is_valid(req.Key, req.Value)) return false;
         }
         return true;
     }
@@ -125,17 +107,17 @@ public class goap_imp : Factories
         }
         return naction_list;
     }
-    
+
     bool worldstate_validation(world_states sim_state, IHasRequirements goal)
     {
         foreach (var item in goal._requirements)
         {
-           if(!sim_state.check_is_valid(item.Key.Name, item.Value))return false;
+            if (!sim_state.check_is_valid(item.Key, item.Value)) return false;
         }
         return true;
     }
-       //Shrimple BFS  this literally maps out every single possible plan.
-       //our farthest back point is genininely our goal
+    //Shrimple BFS  this literally maps out every single possible plan.
+    //our farthest back point is genininely our goal
     [CanBeNull]
     public List<Node> discover_tree(world_states sim_state, Goal start, List<Action> allowed)
     {
@@ -180,7 +162,7 @@ public class goap_imp : Factories
         }
         return state;
     }
-    
+
     //tree traversal and finish planner;
 
     public void Planner(List<Goal> goals, List<Action> allowed_actions)
@@ -191,75 +173,16 @@ public class goap_imp : Factories
         foreach (var goal in ordered_goals)
         {
             List<Node> tree = discover_tree(simulated_worldstate, goal, allowed_actions);
-           if(create_basic_plan(tree, simulated_worldstate) != null);
-            
-            
-            
+            if (create_basic_plan(tree, simulated_worldstate) != null) ;
+
+
+
         }
     }
-
-
-            /*
-           def Planner(beliefs:list[goal], actn:list[Action]):
-               #code for sorting a list of beliefs by priority, axed it
-               beliefs = sorted(beliefs, key=rank_by_size)
-               possible_plan = []
-
-               for goal in beliefs:
-                   goal = map_out(goal, actn)
-                  
-                   possible_plan.append(map_out(find_suitable_action(goal, actn), actn))
-                   #while not at current worldstate, work backwards
-                   while(final_action_validation(possible_plan[0]) != True):
-                       next_action = map_out(find_suitable_action(possible_plan[0], actn),actn)
-                           #break if the next action wouldn't be valid
-
-                      #insert action at the beginning (saves having to reverse list later)
-                       next_action.parent = possible_plan[0]
-                       possible_plan.insert(0,next_action)
-
-                       if next_action == None:
-                           break
-                      #DEBUG FOUR
-               for element in possible_plan:
-                  print(element.name)
-                  element.func()
-
-*/
-   
+    
+    
+    
 }
-//if(goal_validation(orderedGoal, allowed_actions))
-         //   List<IActionAdjacent>[] possible_plan = new List<IActionAdjacent>[3];
-            
-         /*
-         
-         
-            do
-            { 
-                List<IActionAdjacent> current_plan = new List<IActionAdjacent>();
-                current_plan.Add(orderedGoal);
-                
-                //obselete just need tree traversal now.
-                List<Action> pnext_actions = find_all_suitable_actions(,possible_plan.First(), allowed_actions);
-                foreach (Action action in pnext_actions)
-                {
-                    (Node)current_plan.First().add_child(action);
-                }
-            } while (final_action_validation(possible_plan[0].First() != orderedGoal as Goal));
 
 
-*/
-
-/*
-
-           Planner(player, actL)*/
-        // beliefs.OrderBy(item => item.priority);
-        //
-        // do
-        // {
-        //     
-        // }
-        // while( )
-        //
-        //
     

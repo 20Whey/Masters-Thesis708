@@ -16,7 +16,7 @@ namespace Production
         public class GoalFactory
         {
             readonly List<Goal> _goals = new List<Goal>();
-            public void add_goal(string name, world_state goal_validation,float priority, params Belief[] beliefs)
+            public void add_goal(string name, KeyValuePair<Belief, bool> goal_validation,float priority, params Belief[] beliefs)
             {
                 _goals.Add(new Goal.Builder(name)
                 .set_goal_validation(goal_validation)
@@ -41,7 +41,7 @@ namespace Production
         {
             //may change costs
             private List<Action> _output = new  List<Action>();
-            public void add_action_to_list(string name, Func<bool?> func, Dictionary<string, bool> impacts, Dictionary<Belief, bool> requirements)
+            public void add_action_to_list(string name, Func<bool?> func, Dictionary<Belief, bool> impacts, Dictionary<Belief, bool> requirements)
             {
                  this._output.Add(new Action.Builder(name)
                 .add_function(func)
@@ -59,11 +59,11 @@ namespace Production
         public class BeliefFactory
         {
             public int name;
-            [CanBeNull] public GOAP_Character Agent;
+            [CanBeNull] public character Agent;
 
             public Dictionary<string, Belief> Beliefs = new Dictionary<string, Belief>();
 
-            public BeliefFactory(GOAP_Character agent, int id)
+            public BeliefFactory(character agent, int id)
             {
                 this.Agent = agent;
                 this.name = id;
@@ -90,14 +90,15 @@ namespace Production
                 .Build()
                 );
             }
-            public void add_desired_worldstate_belief(string identifier, world_states c_world, string key, bool value)
+            //this one is legacy
+            public void add_desired_worldstate_belief(string identifier, world_states c_world, Belief key, bool value)
             {
                 Beliefs.Add(identifier,new Belief.Builder(identifier)
                 .add_sensor(() => add_global_sensor(c_world, key, value))
                 .Build());
             }
 
-          public bool add_global_sensor(world_states c_world, string key, bool value)
+          public bool add_global_sensor(world_states c_world, Belief key, bool value)
             {
                 return c_world.check_is_valid(key, value);
             }
@@ -190,9 +191,12 @@ namespace Production
                 Goal.Priority = value;
                 return this;
             }
-            public Builder set_goal_validation(world_state state)
+            public Builder set_goal_validation(KeyValuePair<Belief, bool> state)
             {
-                Goal.Target.Add(state);
+                //refactor for subm
+                world_state c = new world_state();
+                c.init(state);
+                Goal.Target.Add(c);
                 return this;
             }
             public Goal Build()
@@ -225,7 +229,7 @@ namespace Production
         private float _cost = 0.5f;
         public Func<bool?> Func;
       
-        public readonly Dictionary<string, bool> _impact; 
+        public readonly Dictionary<Belief, bool> _impact; 
         public Action(string name)
         {
             this.Name = name;
@@ -254,7 +258,7 @@ namespace Production
                 action._cost += cost;
                 return this;
             }
-            public Builder add_impacts(Dictionary<string, bool> states)
+            public Builder add_impacts(Dictionary<Belief, bool> states)
             {
                 action._impact.Concat(states).ToDictionary(item => item.Key, item => item.Value);
                 return this;

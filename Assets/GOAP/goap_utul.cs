@@ -31,8 +31,7 @@ namespace Goap
         public Dictionary<Belief, bool> _requirements { get; set; }
         
     }
-
-
+    
     public class Node
     {
         public Node(IActionAdjacent heldObj, int id)
@@ -64,39 +63,48 @@ namespace Goap
         }
 
     }
-    
-    
-    
+
+
+
     public class world_state
     {
-        public string key
+        public void init(KeyValuePair<Belief, bool> pair)
+        {
+            this.key = pair.Key;
+            this.value = pair.Value;
+        }
+    public Belief key
         {
             get; set;
         }
-        public bool? value
+        public bool value
         {
             get; set;
         }
     }
     
-    
+    //VISIBLE WORLDSTATES
 
     public class world_states
     {
-        public Dictionary<string, bool> states;
+        public Dictionary<Belief, bool> states;
         public void init()
         {
-            states = new Dictionary<string, bool>();
+            states = new Dictionary<Belief, bool>();
         }
         public bool has_state(string key)
         {
-            return states.ContainsKey(key);
+            foreach (Belief itm in states.Keys)
+            {
+                if (itm.Name == key) return true;
+            }
+            return false;
         }
-        public void add_state(string key, bool value)
+        public void add_state(Belief key, bool value)
         {
             states.Add(key, value);
         }
-        public bool check_is_valid(string input, bool value)
+        public bool check_is_valid(Belief input, bool value)
         {
             if (states[input] == value) return true;
             return false;
@@ -110,33 +118,5 @@ namespace Goap
             return true;
         }
     }
-
-    public class GOAP_Character
-    {
-        public GOAP_Character? self;
-        public GameObject this_ob;
-        public List<Belief> beliefs;
-        public List<Action> allowed_actions;
-        public Transform transform;
-        public GOAP_Character(GameObject our_object)
-        {
-            self = this;
-            this_ob = our_object;
-            transform = our_object.transform;
-            
-            allowed_actions = new List<Action>();
-            beliefs = new List<Belief>();
-            
-        }
-        public void add_allowed_action(params Action[] added_actions)
-        {   
-            foreach(Action action in added_actions)
-            {
-                if (!allowed_actions.Contains(action)) allowed_actions.Add(action);
-            }
-        }
-    }
-
-
 
 }

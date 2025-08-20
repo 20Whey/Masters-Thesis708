@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 using game_logic;
+using Goap;
 namespace Sensors
 {
 public class car_game : MonoBehaviour
@@ -23,8 +25,7 @@ public class car_game : MonoBehaviour
         collection.RemoveAt(0);
         return collection[0];
     }
-
-
+    
     public static bool is_car_close_enough(GameObject current_car)
     {
       return Vector2.Distance(current_car.transform.position, get_closest_car(current_car).position) < 2 ? true : false;
@@ -32,6 +33,27 @@ public class car_game : MonoBehaviour
     public static bool is_car_in_right_lane(GameObject current_car, GameObject target)
     {
        return current_car.GetComponent<basics>().path_num == target.GetComponent<basics>().path_num ? true : false;
+    }
+    
+    public static bool has_passed_race(int val)
+    {
+        if (val > 2) return true;
+        return false;
+    }
+    
+
+    
+    
+    
+    public static void spin_out(GameObject character)
+    {
+        character.GetComponent<basics>().moving = false;
+    }
+
+    public static bool set_moving(bool input, basics self)
+    {
+        self.moving = input;
+        return true;
     }
 
 }

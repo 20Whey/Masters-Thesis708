@@ -948,6 +948,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e49a98dff5fd3b40ab22da721609d1c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  needs_refuel: 0
+  fuzzy_gas: 0
+  gas: 0
+  nitro: 0
 --- !u!114 &542751882
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -960,6 +964,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a96fca916162a8b408ce60667852918d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path_num: 0
+  path: []
+  entry_points: []
+  target: {x: 0, y: 0}
+  target_count: 0
+  moving: 0
+  speed: 0
 --- !u!212 &542751883
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1028,6 +1039,7 @@ GameObject:
   - component: {fileID: 568521553}
   - component: {fileID: 568521556}
   - component: {fileID: 568521557}
+  - component: {fileID: 568521558}
   m_Layer: 0
   m_Name: basic_agent_crashable
   m_TagString: Untagged
@@ -1153,6 +1165,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5ea687d9a4f81fd4d9203cbc44598de8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &568521558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 568521552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01e150547c7c5da4691be7db85066a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &572658488
