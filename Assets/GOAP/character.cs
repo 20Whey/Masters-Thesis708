@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
-using game_logic;
+using base_move_classes;
 using Production;
 using Sensors;
 using UnityEngine;
 using Action = Production.Action; 
 
-public class character : MonoBehaviour
+public class character
 {
         public character self;
         public GameObject this_ob;
@@ -14,7 +14,7 @@ public class character : MonoBehaviour
         public Transform transform;
 
 
-        void Awake()
+      /*  void Awake()
         { 
             Factories.GoalFactory goalFactory = new Factories.GoalFactory();
             
@@ -52,19 +52,19 @@ public class character : MonoBehaviour
             {beliefFactory.grab_belief("is_target_in_same_lane"), true}
             });
             
-            */
+            
             
             allowed_actions = factory.return_actions();
             
             
             
-            List<Goal> goals = goalFactory.return_goals();
+            List<Goal> goals = goalFactory.return_goals();  }
+                                                                  
+*/
 
 
 
-
-        }
-        
+      
         public character(GameObject our_object)
         {
             self = this;

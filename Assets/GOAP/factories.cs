@@ -58,15 +58,13 @@ namespace Production
         }
         public class BeliefFactory
         {
-            public int name;
             [CanBeNull] public character Agent;
 
             public Dictionary<string, Belief> Beliefs = new Dictionary<string, Belief>();
 
-            public BeliefFactory(character agent, int id)
+            public BeliefFactory(character agent)
             {
                 this.Agent = agent;
-                this.name = id;
             }
             public void add_belief(string identifier, Func<bool> condition)
             {

@@ -8,74 +8,109 @@ using System.IO;
 using Unity.Mathematics;
 
 
-namespace game_logic
+namespace base_move_classes
 {
+    
+    public enum move_types{
+    basic = 0,
+    stun = 1,
+    push = 2,
+    block = 3
+    }
+    public class basic_move
+    {
+        public move_types move_type;
+        public string name;
+        public int damage;
+        public float cooldown;
+        public basic_move self;
+        public bool is_hot;
+       
+       public virtual basic_move setup(string nm, int dam, float cd)
+       {
+           move_type =  move_types.basic;
+           name = nm;
+           damage = dam;
+           cooldown = cd;
+           self = this;
+           return self;
+       }
+       public virtual void do_move(basic_character target)
+       {
+           if (!is_hot)
+           {
+               target.health -= damage;
+               self.is_hot = true;
+           }
+       }
+    }
 
+    public class stun_move : basic_move
+    {
+        public float stuns_dur;
+        public override basic_move setup(string nm,int dam, float cd)
+        {
+            move_type =  move_types.stun;
+            stuns_dur = cd / 2;
+            return base.setup(nm, dam, cd);
+        }
+
+        public override void do_move(basic_character target)
+        {
+            if (!is_hot)
+            {
+                target.stunned = true;
+                target.timer = stuns_dur; 
+                target.health -= damage;
+                self.is_hot = true;
+            }
+            
+        }
+    }
+    public class push_move : stun_move
+    {
+        public float push_dist;
+        public override basic_move setup(string nm,int dam, float cd)
+        {
+            move_type =  move_types.push;
+            push_dist = cd * 1.5f;
+            stuns_dur = cd * 0.1f;
+            cooldown = cd;
+            damage = dam;
+            self = this;
+            return self;
+        }
+        public override void do_move(basic_character target)
+        {
+            target.GetComponent<Rigidbody2D>().AddRelativeForce(Vector2.up * push_dist, ForceMode2D.Impulse);
+            base.do_move(target);
+        }
+    }
+    public class block_move : basic_move
+    {
+        public float block_dur;
+        public override basic_move setup(string nm, int dam, float cd)
+        {
+            this.block_dur = cd * 0.9f;
+            return base.setup(nm, dam, cd);
+        }
+        public override void do_move(basic_character target)
+        {
+            move_type =  move_types.block;
+            target.blocking = true;
+            target.timer = block_dur;
+        }
+    }
+    
+    
+    
+    
+    
     
 
-    public class basics : MonoBehaviour
-    {
-        private fuel fuel_script;
-        public List<Transform[]> paths;
-        public int path_num;
-        public Transform[] path;
-        public GameObject[] entry_points;
-        public Vector2 target;
-        public int target_count;
-        public bool moving;
-
-        private float start_speed;
-        public float speed;
-
-        void Awake()
-        {
-            fuel_script = gameObject.GetComponent<fuel>();
-            start_speed = UnityEngine.Random.Range(0.15f, 0.2f);
-            moving = false;
-            path_num = UnityEngine.Random.Range(0, 3);
-            paths = new List<Transform[]>();
-            
-            foreach (GameObject entry_point in entry_points)
-            {
-                Transform[] ourP = new Transform[9];
-                for (var i = 0; i < 9; i++)
-                {
-                    ourP[i] = entry_point.transform.GetChild(i);
-                }
-                paths.Add(ourP);
-            }
-        }
-
-        void Start()
-        {
-            target_count = 0;
-            target = paths.ElementAt(0)[0].position;
-        }
-
-        void Update()
-        {
-            if (fuel_script.nitro)
-            {
-                speed = start_speed + 0.15f;
-            }
-            else
-            {
-                speed = start_speed;
-            }
-
-            Vector2 pos = (Vector2)gameObject.transform.position;
-            if (target_count > 9) target_count = 0;
-           
-            if (moving)
-            {
-                game_func_library.switch_paths(path_num);
-                gameObject.transform.position = Vector2.MoveTowards(pos, target, speed);
-            }
-            target = (Vector2.Distance(pos, target) > 0.3f) ? target : path[target_count++].position;
-        }
-        
+   
 
 
-    }
+    
 
 }

@@ -4,15 +4,15 @@ using System.Linq;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
-using game_logic;
+using base_move_classes;
 using Goap;
 namespace Sensors
 {
-public class car_game : MonoBehaviour
+public class simple_game : MonoBehaviour
 {
     
     //can see closest car
-    public static Transform get_closest_car(GameObject current_car)
+    public static Transform get_closest_target(GameObject current_car)
     {
         GameObject containrer = GameObject.Find("Agents");
         int count = containrer.transform.childCount;
@@ -26,34 +26,28 @@ public class car_game : MonoBehaviour
         return collection[0];
     }
     
-    public static bool is_car_close_enough(GameObject current_car)
+    public static bool is_target_close_enough(GameObject us)
     {
-      return Vector2.Distance(current_car.transform.position, get_closest_car(current_car).position) < 2 ? true : false;
-    }
-    public static bool is_car_in_right_lane(GameObject current_car, GameObject target)
-    {
-       return current_car.GetComponent<basics>().path_num == target.GetComponent<basics>().path_num ? true : false;
+      return Vector2.Distance(us.transform.position, get_closest_target(us).position) < 2 ? true : false;
     }
     
-    public static bool has_passed_race(int val)
-    {
-        if (val > 2) return true;
-        return false;
-    }
-    
-
-    
-    
-    
-    public static void spin_out(GameObject character)
-    {
-        character.GetComponent<basics>().moving = false;
-    }
-
-    public static bool set_moving(bool input, basics self)
+    public static bool set_moving(bool input, basic_character self)
     {
         self.moving = input;
         return true;
+    }
+    public static bool am_i_guarding(basic_character self)
+    {
+        return self.blocking;
+    }
+    public static bool is_opponent_stunned(basic_character self)
+    {
+        return self.stunned;
+    }
+    public static bool did_opponent_hit_my_guard(basic_character self)
+    {
+        if (self.blocking && self.struck) return true;
+        return false;
     }
 
 }

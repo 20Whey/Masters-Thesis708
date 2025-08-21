@@ -61,7 +61,6 @@ namespace Goap
         {
             return this.c_state;
         }
-
     }
 
 
