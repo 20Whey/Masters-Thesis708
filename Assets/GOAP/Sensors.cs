@@ -27,7 +27,11 @@ namespace Sensors
             collection.RemoveAt(0);
             return collection[0];
         }
-
+        public static bool evaluate(Transform targ)
+        {
+            if (targ != null) return true;
+            return false;
+        }
         public static bool is_target_close_enough(GameObject us)
         {
             return Vector2.Distance(us.transform.position, get_closest_target(us).position) < 2 ? true : false;

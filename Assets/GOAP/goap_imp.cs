@@ -170,7 +170,7 @@ public class goap_imp : Factories
         //order by ascending
         IOrderedEnumerable<Goal> ordered_goals = goals.OrderBy(goal => goal.Priority);
         world_states simulated_worldstate = current_worldstate;
-        foreach (var goal in ordered_goals)
+         foreach (var goal in ordered_goals)
         {
             List<Node> tree = discover_tree(simulated_worldstate, goal, allowed_actions);
             if (create_basic_plan(tree, simulated_worldstate) != null) ;
@@ -180,6 +180,32 @@ public class goap_imp : Factories
         }
     }
     
+    [CanBeNull]
+    public List<Action> bPlanner(List<Goal> goals, List<Action> allowed_actions)
+    {
+        //order by ascending
+        IOrderedEnumerable<Goal> ordered_goals = goals.OrderBy(goal => goal.Priority);
+        world_states simulated_worldstate = current_worldstate;
+  
+        
+            List<Node> tree = discover_tree(simulated_worldstate, goals[0], allowed_actions);
+            List<Action> plan = new List<Action>();
+            var pln = create_basic_plan(tree, simulated_worldstate);
+            if (pln != null)
+            {
+                foreach (var itm in pln)
+                {
+                    plan.Add(itm.held_obj as Action);
+                }
+                return plan;
+            }
+            
+            return null;
+
+
+
+    }
+
     
     
 }
