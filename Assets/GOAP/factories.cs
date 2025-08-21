@@ -41,7 +41,7 @@ namespace Production
         {
             //may change costs
             private List<Action> _output = new  List<Action>();
-            public void add_action_to_list(string name, Func<bool?> func, Dictionary<Belief, bool> impacts, Dictionary<Belief, bool> requirements)
+            public void add_action_to_list(string name, Func<bool?> func, Dictionary<Belief, bool> requirements, Dictionary<Belief, bool> impacts)
             {
                  this._output.Add(new Action.Builder(name)
                 .add_function(func)
@@ -81,6 +81,8 @@ namespace Production
                 .Build()
                 );
             }
+            
+            
             public void add_target_belief(string identifier, Func<Transform> target)
             {
                 Beliefs.Add(identifier,new Belief.Builder(identifier).
@@ -105,6 +107,8 @@ namespace Production
             {
                 return (Vector2.Distance(Agent.this_ob.transform.position, position) > range) ? true : false;
             }
+
+         
            public Belief grab_belief(string identifier)
            {
                return this.Beliefs[identifier];

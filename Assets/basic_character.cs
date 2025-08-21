@@ -27,12 +27,4 @@ public class basic_character : MonoBehaviour
             gameObject.transform.position = Vector2.MoveTowards(gameObject.transform.position, (Vector2)target.position, 0.5f);
         }
     }
-
-
-
-
-
-
-
-
 }

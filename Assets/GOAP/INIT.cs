@@ -14,8 +14,8 @@ public class INIT : MonoBehaviour
     
     void Start()
     {
-        bfact.add_location_belief("enemy_should_be_close",simple_game.get_closest_target(gameObject).transform.position, 0.5f);
-        
+        bfact.add_location_belief("is_enemy_close",simple_game.get_closest_target(gameObject).transform.position, 0.5f);
+        afact.add_action_to_list();
         
         
         
