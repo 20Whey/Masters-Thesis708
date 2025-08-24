@@ -23,7 +23,7 @@ public class goap_imp : Factories
     {
         foreach (var item in next_action._requirements)
         {
-            if (!simulated_worldstate.check_is_valid(item.Key, item.Value))
+            if (!simulated_worldstate.cheap_modification(item.Key, item.Value))
                 return false;
         }
         return true;
@@ -68,7 +68,7 @@ public class goap_imp : Factories
             foreach (var req in other._requirements)
             {
                // Debug.Log(current.check_is_valid(req.Key, req.Value));
-                if (!current.check_is_valid(req.Key, req.Value)) return false;
+                if (!current.cheap_modification(req.Key, req.Value)) return false;
             }
         }
         return true;
@@ -94,7 +94,7 @@ public class goap_imp : Factories
     {
         foreach (var item in real_worldstate.states)
         {
-            if (!sim_state.check_is_valid(item.Key, item.Value)) return false;
+            if (!sim_state.cheap_modification(item.Key, item.Value)) return false;
         }
         return true;
     }
@@ -145,6 +145,7 @@ public class goap_imp : Factories
                     if (worldstate_validation(c_child.c_state, sim_state)) return visited;
                 }
             }
+            
             // consider breaking when queue gets too long and if there are no options left
         } while (queue.Count > 0 && nm < 25);
         return null;

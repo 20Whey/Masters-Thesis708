@@ -104,12 +104,36 @@ namespace Goap
                 states = new Dictionary<Belief, bool>();
             }
         }
-        
         public bool has_state(string key)
         {
             foreach (Belief itm in states.Keys)
             {
                 if (itm.Name == key) return true;
+            }
+            return false;
+        }
+        
+        
+        /*defunct function
+         * public bool check_is_valid(Belief input, bool value)
+        {
+        if (has_state(input.Name))
+            
+            if (states[input] == value) return true;
+            return false;
+        }
+         */
+        public bool cheap_modification(Belief key, bool value)
+        {
+            foreach (Belief itm in states.Keys)
+            {
+                if (itm.Name == key.Name)
+                {
+                    if (states[itm] == value)
+                    {
+                        return true;
+                    }
+                }
             }
             return false;
         }
@@ -121,21 +145,12 @@ namespace Goap
         {
             states.Add(key, val);
         }
-        public bool check_is_valid(Belief input, bool value)
-        {
-         //   Debug.Log(input.Name +" " + value);
-            var a = input;
-            var b = value;
-            a.GetHashCode();
-            
-            if (states[input] == value) return true;
-            return false;
-        }
+       
         public bool check_mult(world_states input)
         {
             foreach (var item in input.states)
             {
-               if (!this.check_is_valid(item.Key, item.Value)) return false;
+               if (!this.cheap_modification(item.Key, item.Value)) return false;
             }
             return true;
         }
