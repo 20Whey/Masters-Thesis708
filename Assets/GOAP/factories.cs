@@ -164,11 +164,12 @@ namespace Production
     {
         //what can the AI see
         public Dictionary<string, Belief> Beliefs;
-        public List<world_state> Target;
+        public world_state Target;
         public float Priority;
         public string Name { get; set; }
         Goal(string name)
         {
+            
             Name = name;
         }
         public class Builder
@@ -196,9 +197,9 @@ namespace Production
             public Builder set_goal_validation(KeyValuePair<Belief, bool> state)
             {
                 //refactor for subm
-                world_state c = new world_state();
+                var c = new world_state();
                 c.init(state);
-                Goal.Target.Add(c);
+                Goal.Target = c;
                 return this;
             }
             public Goal Build()
@@ -231,10 +232,12 @@ namespace Production
         private float _cost = 0.5f;
         public Func<bool?> Func;
       
-        public readonly Dictionary<Belief, bool> _impact; 
+        public Dictionary<Belief, bool> _impact;
+        public bool has_requirements;
         public Action(string name)
         {
             this.Name = name;
+            this.has_requirements = true;
         }
         
         public class Builder
@@ -247,7 +250,11 @@ namespace Production
 
             public Builder add_requirement(Dictionary<Belief, bool> condition)
             {
-                action._requirements.Concat(condition).ToDictionary(item => item.Key, item => item.Value);
+                action._requirements = new Dictionary<Belief, bool>();
+                foreach (var itm in condition)
+                {
+                    action._requirements.Add(itm.Key, itm.Value);
+                }
                 return this;
             }
             public Builder add_function(Func<bool?> func)
@@ -262,8 +269,13 @@ namespace Production
             }
             public Builder add_impacts(Dictionary<Belief, bool> states)
             {
-                action._impact.Concat(states).ToDictionary(item => item.Key, item => item.Value);
+                action._impact = new Dictionary<Belief, bool>();
+                foreach (var itm in states)
+                {
+                    action._impact.Add(itm.Key, itm.Value);
+                }
                 return this;
+
             }
             public Action Build()
             {
@@ -282,6 +294,7 @@ namespace Production
             set;
         }
 
+        [CanBeNull]
         public Dictionary<Belief, bool> _requirements
         {
             get;

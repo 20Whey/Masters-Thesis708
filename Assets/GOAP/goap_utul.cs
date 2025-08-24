@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using Production;
+using UnityEngine.Rendering.UI;
 using Action = Production.Action;
 
 namespace Goap
@@ -16,7 +17,7 @@ namespace Goap
     }
     public interface IActionAdjacent : IGoapComponent, IHasRequirements
     {
-        public object self {get; set;}
+            public object self {get; set;}
         
         public object return_self()
         {
@@ -38,6 +39,10 @@ namespace Goap
         {
             held_obj = heldObj;
             Id = id;
+            Children = new List<Node>();
+            c_state = new world_states();
+            c_state.init(c_state);
+            
         }
         public Node Parent
         {get; set;} 
@@ -46,7 +51,8 @@ namespace Goap
         public IActionAdjacent held_obj { get; set; }
         public void add_child(Node child)
         {
-            this.Children.Add(child);
+            Debug.Log(this.held_obj.Name + " " + child.held_obj.Name);
+            Children.Add(child);
             child.Parent = this;
         }
 
@@ -87,10 +93,18 @@ namespace Goap
     public class world_states
     {
         public Dictionary<Belief, bool> states;
-        public void init()
+        public void init([CanBeNull] world_states base_state)
         {
-            states = new Dictionary<Belief, bool>();
+            if (base_state != null)
+            {
+                states = base_state.states;
+            }
+            else
+            {
+                states = new Dictionary<Belief, bool>();
+            }
         }
+        
         public bool has_state(string key)
         {
             foreach (Belief itm in states.Keys)
@@ -99,12 +113,21 @@ namespace Goap
             }
             return false;
         }
-        public void add_state(Belief key, bool value)
+        public void change_state(KeyValuePair <Belief, bool> pair)
         {
-            states.Add(key, value);
+            states[pair.Key] =  pair.Value;
+        }
+        public void add_state(Belief key, bool val)
+        {
+            states.Add(key, val);
         }
         public bool check_is_valid(Belief input, bool value)
         {
+         //   Debug.Log(input.Name +" " + value);
+            var a = input;
+            var b = value;
+            a.GetHashCode();
+            
             if (states[input] == value) return true;
             return false;
         }
