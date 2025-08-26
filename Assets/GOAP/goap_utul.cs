@@ -51,7 +51,6 @@ namespace Goap
         public IActionAdjacent held_obj { get; set; }
         public void add_child(Node child)
         {
-            Debug.Log(this.held_obj.Name + " " + child.held_obj.Name);
             Children.Add(child);
             child.Parent = this;
         }
@@ -112,18 +111,33 @@ namespace Goap
             }
             return false;
         }
-        
-        
-        /*defunct function
-         * public bool check_is_valid(Belief input, bool value)
+        public bool real_check(string key, bool val)
+        {
+            foreach (Belief itm in states.Keys)
+            {
+                if (itm.Name.Equals(key) && states[itm] == val) return true;
+            }
+            return false;
+        }
+
+        public void poor_copy(world_states input)
+        {
+            states = new Dictionary<Belief, bool>();
+            foreach (var inputState in input.states)
+            {
+                states.Add(inputState.Key, inputState.Value);
+            }
+        }
+    
+          public bool check_is_valid(Belief input, bool value)
         {
         if (has_state(input.Name))
             
             if (states[input] == value) return true;
             return false;
         }
-         */
-        public bool cheap_modification(Belief key, bool value)
+         
+        public bool comparison(Belief key, bool value)
         {
             foreach (Belief itm in states.Keys)
             {
@@ -137,9 +151,11 @@ namespace Goap
             }
             return false;
         }
+
+   
         public void change_state(KeyValuePair <Belief, bool> pair)
         {
-            states[pair.Key] =  pair.Value;
+            states[pair.Key] = pair.Value;
         }
         public void add_state(Belief key, bool val)
         {
@@ -148,9 +164,9 @@ namespace Goap
        
         public bool check_mult(world_states input)
         {
-            foreach (var item in input.states)
+            foreach (var item in states)
             {
-               if (!this.cheap_modification(item.Key, item.Value)) return false;
+                if (!real_check(item.Key.Name, item.Value)) return false;
             }
             return true;
         }

@@ -100,7 +100,7 @@ namespace Production
 
           public bool add_global_sensor(world_states c_world, Belief key, bool value)
             {
-                return c_world.cheap_modification(key, value);
+                return c_world.comparison(key, value);  
             }
             
             bool in_range_of(Vector2 position, float range)

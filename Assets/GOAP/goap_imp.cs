@@ -23,7 +23,7 @@ public class goap_imp : Factories
     {
         foreach (var item in next_action._requirements)
         {
-            if (!simulated_worldstate.cheap_modification(item.Key, item.Value))
+            if (!simulated_worldstate.comparison(item.Key, item.Value))
                 return false;
         }
         return true;
@@ -33,12 +33,19 @@ public class goap_imp : Factories
     [CanBeNull]
     Node grab_from_state(List<Node> tree, world_states input_worldstate)
     {
-        foreach (var item in tree)
+        for (var i = tree.Count-1; i > 0; i--)
         {
-            if (input_worldstate.check_mult(input_worldstate)) return item;
-        }
+            var c = input_worldstate;
+            var a = input_worldstate.check_mult(tree[i].c_state);
+            if (a == false)
+            {
+                Debug.Log(tree[i].c_state + " " + input_worldstate.states);
+                return tree[i];
+            }
+        } 
         return null;
     }
+
 //I have a filtered tree, all roads lead to the end. 
 //technically this version takes the most complex plan possible. by virtue of being the last element
     [CanBeNull]
@@ -47,28 +54,34 @@ public class goap_imp : Factories
         List<Node> plan = new List<Node>();
         //where our worldstate reaches our target; 
         Node start = grab_from_state(tree, state);
+        Debug.Log(start.held_obj.Name);
         if (start == null) return null; // basically we cant do the goal.real k    
         //get root
+        Debug.Log(start.held_obj.Name);
         plan.Add(start);
-        Node cNode = start;
-        while (cNode.Parent != null)
+      //  Node cNode = start;
+        while (start.Parent != null)
         {
-            plan.Add(cNode);
-            cNode = cNode.Parent;
+            plan.Add(start);
+            start = start.Parent;
         }
         plan.Reverse();
         return plan;
     }
 
     //action validation
-    public bool clean_filter(world_states current, IActionAdjacent other)
+    public bool clean_filter(world_states current, Action other)
     {
+        //if other has requirements
         if (other._requirements != null)
         {
             foreach (var req in other._requirements)
             {
-               // Debug.Log(current.check_is_valid(req.Key, req.Value));
-                if (!current.cheap_modification(req.Key, req.Value)) return false;
+                if (current.has_state(req.Key.Name))
+                {
+                    Debug.Log(current.check_is_valid(req.Key, req.Value));
+                    if (!current.check_is_valid(req.Key, req.Value)) return false;
+                }
             }
         }
         return true;
@@ -81,7 +94,6 @@ public class goap_imp : Factories
         
         foreach (var act in allowed_actions)
         {
-            Debug.Log(act.Name);
             if (clean_filter(c_worldstate, act))
             {
                 naction_list.Add(act);
@@ -94,7 +106,9 @@ public class goap_imp : Factories
     {
         foreach (var item in real_worldstate.states)
         {
-            if (!sim_state.cheap_modification(item.Key, item.Value)) return false;
+            if (!sim_state.has_state(item.Key.Name)) return false;
+            
+            if (!sim_state.comparison(item.Key, item.Value)) return false;
         }
         return true;
     }
@@ -119,7 +133,6 @@ public class goap_imp : Factories
         //create a tree structure
         do
         {
-            Debug.Log(nm);
             Node current = queue.Dequeue();
             List<IActionAdjacent> potentialOptions = find_all_suitable_actions(current.c_state, allowed);
             //Debug.Log(potentialOptions.Count);
@@ -130,92 +143,91 @@ public class goap_imp : Factories
                 current.add_child(c_child);
                 
                 Action itm = c_child.held_obj as Action;
-                if (action_validation(current.c_state, itm))
-                {
+             /*   if (action_validation(current.c_state, itm))
+                {*/
                     //c_child is valid
-                    
                     var a = c_child.Parent.c_state;
 
-                    Debug.Log(a);
-                    
-                    c_child.c_state.init(mutate_state(c_child.Parent.grab_state(), c_child.held_obj as Action));
+                    c_child.c_state.init(a);
+                    c_child.c_state.poor_copy(mutate_state(c_child.Parent.grab_state(), c_child.held_obj as Action));
                     
                     queue.Enqueue(c_child);
                     visited.Add(c_child);
                     if (worldstate_validation(c_child.c_state, sim_state)) return visited;
-                }
             }
-            
-            // consider breaking when queue gets too long and if there are no options left
-        } while (queue.Count > 0 && nm < 25);
-        return null;
-    }
-    //change input 
-    private world_states mutate_state(world_states state, Action input)
-    {
-        foreach (var req in input._impact)
-        {
-            if (!state.has_state(req.Key.Name))
-            {
-                state.add_state(req.Key, req.Value);
-            }
-            else
-            {
-                state.change_state(req);
-            }
-        }
-        return state;
-    }
+/*  }*/
 
-    //tree traversal and finish planner;
+  // consider breaking when queue gets too long and if there are no options left
+        } while (queue.Count > 0 && nm < 60);
+return visited;
+}
+//change input
+private world_states mutate_state(world_states state, Action input)
+{
+world_states edited_ver = new world_states();
+edited_ver.init(state);
+foreach (var req in input._requirements)
+{
+  if (!edited_ver.has_state(req.Key.Name))
+  {
+      edited_ver.add_state(req.Key, req.Value);
+  }
+  else
+  {
+      edited_ver.change_state(req);
+  }
+}
+return edited_ver;
+}
 
-    public void Planner(List<Goal> goals, List<Action> allowed_actions)
-    {
-        //order by ascending
-        IOrderedEnumerable<Goal> ordered_goals = goals.OrderBy(goal => goal.Priority);
-        world_states simulated_worldstate = current_worldstate;
-         foreach (var goal in ordered_goals)
-        {
-            List<Node> tree = discover_tree(simulated_worldstate, goal, allowed_actions);
-            if (create_basic_plan(tree, simulated_worldstate) != null) ;
+//tree traversal and finish planner;
 
-
-
-        }
-    }
-    
-    [CanBeNull]
-    public List<Action> bPlanner(List<Goal> goals, world_states worldstate,List<Action> allowed_actions)
-    {
-        //order by ascending
-        IOrderedEnumerable<Goal> ordered_goals = goals.OrderBy(goal => goal.Priority);
-        world_states simulated_worldstate = worldstate;
-  
-        
-            List<Node> tree = discover_tree(simulated_worldstate, goals[0], allowed_actions);
-            foreach (var VARIABLE in allowed_actions)
-            {
-                Debug.Log(VARIABLE.Name);
-            }
-            List<Action> plan = new List<Action>();
-            var pln = create_basic_plan(tree, simulated_worldstate);
-            if (pln != null)
-            {
-                foreach (var itm in pln)
-                {
-                    plan.Add(itm.held_obj as Action);
-                }
-                return plan;
-            }
-            
-            return null;
+public void Planner(List<Goal> goals, List<Action> allowed_actions)
+{
+//order by ascending
+IOrderedEnumerable<Goal> ordered_goals = goals.OrderBy(goal => goal.Priority);
+world_states simulated_worldstate = current_worldstate;
+foreach (var goal in ordered_goals)
+{
+  List<Node> tree = discover_tree(simulated_worldstate, goal, allowed_actions);
+  if (create_basic_plan(tree, simulated_worldstate) != null) ;
 
 
 
-    }
+}
+}
 
-    
-    
+[CanBeNull]
+public List<Action> bPlanner(List<Goal> goals, world_states worldstate, List<Action> allowed_actions)
+{
+//order by ascending
+IOrderedEnumerable<Goal> ordered_goals = goals.OrderBy(goal => goal.Priority);
+world_states simulated_worldstate = worldstate;
+
+
+  List<Node> tree = discover_tree(simulated_worldstate, goals[0], allowed_actions);
+  Debug.Log(tree.Count);
+
+
+  List<Action> plan = new List<Action>();
+  var pln = create_basic_plan(tree, worldstate);
+  if (pln != null)
+  {
+      for (var i = 0; i < pln.Count; i++)
+      {
+          plan.Add(pln.ElementAt(i).held_obj.self as Action);
+      }
+      return plan;
+  }
+
+  return null;
+
+
+
+}
+
+
+
 }
 
 

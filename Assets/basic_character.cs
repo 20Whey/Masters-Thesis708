@@ -54,6 +54,10 @@ public class basic_character : MonoBehaviour
         GoalFactory g = basic_init.init_goal_factory(b);
     
         plan = goap.bPlanner(g.return_goals(), local_worldstate, a.return_actions());
+        foreach (var act in plan)
+        {
+            Debug.Log(act.Name);
+        }
 
     }
     void FixedUpdate()
