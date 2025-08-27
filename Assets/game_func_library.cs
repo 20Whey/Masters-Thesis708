@@ -81,9 +81,10 @@ namespace init
           af.add_action_to_list("move_to_enemy", () => simple_game.set_moving(true, belief_factory.Agent.this_ob.GetComponent<basic_character>()), 
           new Dictionary<string, bool>()
           {
-          { "close_to_enemy", false}
+          { "close_to_enemy", false},
+          {"is_enemy_alive", true}
           }, 
-          new Dictionary<string, bool>() { {"close_to_enemy", true}
+          new Dictionary<string, bool>() { {"close_to_enemy", true}, {"moving", true}
           } );
           return af;
       }

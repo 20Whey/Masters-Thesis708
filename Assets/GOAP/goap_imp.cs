@@ -31,35 +31,32 @@ public class goap_imp : Factories
 
 //used to find 
     [CanBeNull]
-    Node grab_from_state(List<Node> tree, world_states input_worldstate)
+   Node grab_from_state(List<Node> tree, world_states input_worldstate)
     {
         List<Node> matches = new List<Node>();
         for (var i = tree.Count-1; i > 0; i--)
         {
             var a = input_worldstate;
+            var c =  tree[i].c_state;
             var b = input_worldstate.check_mult(tree[i].c_state);
             
             if (b)
             {
-                Debug.Log(tree[i].c_state + " " + input_worldstate.states);
                 matches.Add(tree[i]);
             }
         }
-        return matches[0];
+            return matches[0];
     }
 
 //I have a filtered tree, all roads lead to the end. 
 //technically this version takes the most complex plan possible. by virtue of being the last element
-    [CanBeNull]
     List<Node> create_basic_plan(List<Node> tree, world_states state)
     {
         List<Node> plan = new List<Node>();
         //where our worldstate reaches our target; 
         Node start = grab_from_state(tree, state);
-        Debug.Log(start.held_obj.Name);
         if (start == null) return null; // basically we cant do the goal.real k    
         //get root
-        Debug.Log(start.held_obj.Name);
         plan.Add(start);
       //  Node cNode = start;
         while (start.Parent != null)
@@ -75,13 +72,13 @@ public class goap_imp : Factories
     public bool clean_filter(world_states current, Action other)
     {
         //if other has requirements
-        if (other._requirements != null)
+        if (other._impact != null)
         {
-            foreach (var req in other._requirements)
+            foreach (var req in other._impact)
             {
                 if (current.has_state(req.Key))
                 {
-                    Debug.Log(current.check_is_valid(req.Key, req.Value));
+//                    Debug.Log(current.check_is_valid(req.Key, req.Value));
                     if (!current.check_is_valid(req.Key, req.Value)) return false;
                 }
             }
@@ -231,7 +228,6 @@ world_states simulated_worldstate = worldstate;
 
 
   List<Node> tree = discover_tree(simulated_worldstate, goals[0], allowed_actions);
-  Debug.Log(tree.Count);
 
 
   List<Action> plan = new List<Action>();

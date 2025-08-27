@@ -594,10 +594,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8791113f7e0392b419650fd646d8eb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isdummy: 1
   blocking: 0
   stunned: 0
   moving: 0
   health: 0
+  started_combo: 0
+  finishing_combo: 0
   timer: 0
   struck: 0
   target: {fileID: 0}
@@ -704,10 +707,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8791113f7e0392b419650fd646d8eb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isdummy: 0
   blocking: 0
   stunned: 0
   moving: 0
   health: 5
+  started_combo: 0
+  finishing_combo: 0
   timer: 0
   struck: 0
   target: {fileID: 0}
@@ -1025,6 +1031,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1727350751}
   - component: {fileID: 1727350750}
+  - component: {fileID: 1727350752}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1059,6 +1066,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1727350752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1727350749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b233af03143bf846862239a097eb92f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1996732754
 GameObject:
   m_ObjectHideFlags: 0

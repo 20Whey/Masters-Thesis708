@@ -147,10 +147,8 @@ namespace Goap
           
         public bool comparison(string key, bool value)
         {
-            foreach (string itm in states.Keys)
-            {
-                if (states[itm] == value) return true;
-            }
+                if (states[key] == value) return true;
+            
             return false;
         }
 
