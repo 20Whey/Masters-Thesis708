@@ -39,55 +39,59 @@ namespace init
         bf.add_belief("is_enemy_alive", () => simple_game.evaluate(simple_game.get_closest_target(bf.Agent.this_ob)));
         
         bf.add_belief("starting_combo", (() => bf.Agent.this_ob.GetComponent<basic_character>().started_combo));
-        
+
+        foreach (var itm in bf.Beliefs)
+        {
+            if (!singleton.Instance.global_beliefs.ContainsKey(itm.Key)) singleton.Instance.global_beliefs.Add(itm.Key, itm.Value);
+        }
         return bf;
       }
       public static Factories.ActionFactory init_action_factory(Factories.BeliefFactory belief_factory)
       {
           var af =  new Factories.ActionFactory();
-          af.add_action_to_list("Straight",() => null, new Dictionary<Belief, bool>()
+          af.add_action_to_list("Straight",() => null, new Dictionary<string, bool>()
           {
-          { belief_factory.grab_belief("close_to_enemy"), true},
-          { belief_factory.grab_belief("moving"), false},
-          { belief_factory.grab_belief("starting_combo"), false}
+          { "close_to_enemy", true},
+          { "moving", false},
+          { "starting_combo", false}
          // {belief_factory.grab_belief("starting_combo"), false}
-          }, new Dictionary<Belief, bool>()
+          }, new Dictionary<string, bool>()
           {
-          {belief_factory.grab_belief("starting_combo"), true},
+          {"starting_combo", true},
           } );
           
           af.add_action_to_list("stop_moving", () => simple_game.set_moving(false, belief_factory.Agent.this_ob.GetComponent<basic_character>())
-          , new Dictionary<Belief, bool>()
+          , new Dictionary<string, bool>()
           {
-          {belief_factory.grab_belief("moving"), true}
-          }, new Dictionary<Belief, bool>(){{belief_factory.grab_belief("moving"), false}});
+          {"moving", true}
+          }, new Dictionary<string, bool>(){{"moving", false}});
           
-          af.add_action_to_list("Kick",() => null, new Dictionary<Belief, bool>()
+          af.add_action_to_list("Kick",() => null, new Dictionary<string, bool>()
           {
-          { belief_factory.grab_belief("close_to_enemy"), true},
-          { belief_factory.grab_belief("moving"), false},
-          { belief_factory.grab_belief("starting_combo"), true}
+          { "close_to_enemy", true},
+          {"moving", false},
+          { "starting_combo", true}
           // {belief_factory.grab_belief("starting_combo"), false}
-          }, new Dictionary<Belief, bool>()
+          }, new Dictionary<string, bool>()
           {
-          {belief_factory.grab_belief("starting_combo"), false},
-          {belief_factory.grab_belief("is_enemy_alive"), false}
+          {"starting_combo", false},
+          {"is_enemy_alive", false}
           });
           
           af.add_action_to_list("move_to_enemy", () => simple_game.set_moving(true, belief_factory.Agent.this_ob.GetComponent<basic_character>()), 
-          new Dictionary<Belief, bool>()
+          new Dictionary<string, bool>()
           {
-          { belief_factory.grab_belief("close_to_enemy"), false}
+          { "close_to_enemy", false}
           }, 
-          new Dictionary<Belief, bool>() { { belief_factory.grab_belief("close_to_enemy"), true}
+          new Dictionary<string, bool>() { {"close_to_enemy", true}
           } );
           return af;
       }
       public static Factories.GoalFactory  init_goal_factory(Factories.BeliefFactory  belief_factory)
       {
           var go =  new Factories.GoalFactory();
-          go.add_goal("kill_enemy", new KeyValuePair<Belief, bool>(belief_factory.grab_belief("is_enemy_alive"), false), .5f, 
-          belief_factory.grab_belief("is_enemy_alive"));
+          go.add_goal("kill_enemy", new KeyValuePair<string, bool>("is_enemy_alive", false), .5f, 
+          "is_enemy_alive");
           return go;
       }
   }

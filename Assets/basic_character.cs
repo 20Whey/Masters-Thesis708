@@ -38,18 +38,17 @@ public class basic_character : MonoBehaviour
         
         Dictionary<string, basic_move> movedict = basic_init.create(new Dictionary<string, basic_move>());
         BeliefFactory b = basic_init.init_belief_factory(self);
-
         ActionFactory a = basic_init.init_action_factory(b);
         world_states local_worldstate = new world_states();
         local_worldstate.init(null);
         
-        local_worldstate.add_state(b.grab_belief("moving"), false);
+        local_worldstate.add_state("moving", false);
         
-        local_worldstate.add_state(b.grab_belief("starting_combo"), false);
+        local_worldstate.add_state("starting_combo", false);
         
-        local_worldstate.add_state(b.grab_belief("close_to_enemy"), false);
+        local_worldstate.add_state("close_to_enemy", false);
         
-        local_worldstate.add_state(b.grab_belief("is_enemy_alive"), true);
+        local_worldstate.add_state("is_enemy_alive", true);
 
         GoalFactory g = basic_init.init_goal_factory(b);
     

@@ -79,7 +79,7 @@ public class goap_imp : Factories
         {
             foreach (var req in other._requirements)
             {
-                if (current.has_state(req.Key.Name))
+                if (current.has_state(req.Key))
                 {
                     Debug.Log(current.check_is_valid(req.Key, req.Value));
                     if (!current.check_is_valid(req.Key, req.Value)) return false;
@@ -193,13 +193,13 @@ world_states edited_ver = new world_states();
 edited_ver.init(state);
 foreach (var req in input._requirements)
 {
-  if (!edited_ver.has_state(req.Key.Name))
+  if (!edited_ver.has_state(req.Key))
   {
       edited_ver.add_state(req.Key, req.Value);
   }
   else
   {
-      edited_ver.change_state(req);
+      edited_ver.change_state( new KeyValuePair<string, bool>(req.Key, req.Value));
   }
 }
 return edited_ver;

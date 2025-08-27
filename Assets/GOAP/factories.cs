@@ -16,7 +16,7 @@ namespace Production
         public class GoalFactory
         {
             readonly List<Goal> _goals = new List<Goal>();
-            public void add_goal(string name, KeyValuePair<Belief, bool> goal_validation,float priority, params Belief[] beliefs)
+            public void add_goal(string name, KeyValuePair<string, bool> goal_validation,float priority, params string[] beliefs)
             {
                 _goals.Add(new Goal.Builder(name)
                 .set_goal_validation(goal_validation)
@@ -24,13 +24,13 @@ namespace Production
                 .add_beliefs(beliefs)
                 .Build());
             }
-            public void add_simple_goal(string name,float priority, params Belief[] beliefs)
+      /*      public void add_simple_goal(string name,float priority, params Belief[] beliefs)
             {
                 _goals.Add(new Goal.Builder(name)
                 .set_priority(priority)
                 .add_beliefs(beliefs)
                 .Build());
-            }
+            }*/
             public List<Goal> return_goals()
             {
                 return _goals;
@@ -41,7 +41,7 @@ namespace Production
         {
             //may change costs
             private List<Action> _output = new  List<Action>();
-            public void add_action_to_list(string name, Func<bool?> func, Dictionary<Belief, bool> requirements, Dictionary<Belief, bool> impacts)
+            public void add_action_to_list(string name, Func<bool?> func, Dictionary<string, bool> requirements, Dictionary<string, bool> impacts)
             {
                  this._output.Add(new Action.Builder(name)
                 .add_function(func)
@@ -100,7 +100,7 @@ namespace Production
 
           public bool add_global_sensor(world_states c_world, Belief key, bool value)
             {
-                return c_world.comparison(key, value);  
+                return c_world.comparison(key.Name, value);  
             }
             
             bool in_range_of(Vector2 position, float range)
@@ -181,11 +181,11 @@ namespace Production
                 Goal = new Goal(name);
                 Goal.Beliefs = new Dictionary<string, Belief>();
             }
-            public Builder add_beliefs( params Belief[] beliefs)
+            public Builder add_beliefs( params string[] beliefs)
             {
                 foreach (var item in beliefs)
                 {
-                    Goal.Beliefs.Add(item.Name, item);
+                    Goal.Beliefs.Add(item, singleton.Instance.retrieve_belief(item));
                 }
                 return this;
             }
@@ -194,10 +194,11 @@ namespace Production
                 Goal.Priority = value;
                 return this;
             }
-            public Builder set_goal_validation(KeyValuePair<Belief, bool> state)
+            public Builder set_goal_validation(KeyValuePair<string, bool> state)
             {
                 //refactor for subm
                 var c = new world_state();
+                
                 c.init(state);
                 Goal.Target = c;
                 return this;
@@ -214,7 +215,7 @@ namespace Production
             set;
         }
 
-        public Dictionary<Belief, bool> _requirements
+        public Dictionary<string, bool> _requirements
         {
             get;
             set;
@@ -228,11 +229,10 @@ namespace Production
 
     public class Action : IActionAdjacent
     {
-
         private float _cost = 0.5f;
         public Func<bool?> Func;
       
-        public Dictionary<Belief, bool> _impact;
+        public Dictionary<string, bool> _impact;
         public bool has_requirements;
         public Action(string name)
         {
@@ -248,9 +248,9 @@ namespace Production
                action = new Action(name);
             }
 
-            public Builder add_requirement(Dictionary<Belief, bool> condition)
+            public Builder add_requirement(Dictionary<string, bool> condition)
             {
-                action._requirements = new Dictionary<Belief, bool>();
+                action._requirements = new Dictionary<string, bool>();
                 foreach (var itm in condition)
                 {
                     action._requirements.Add(itm.Key, itm.Value);
@@ -267,9 +267,9 @@ namespace Production
                 action._cost += cost;
                 return this;
             }
-            public Builder add_impacts(Dictionary<Belief, bool> states)
+            public Builder add_impacts(Dictionary<string, bool> states)
             {
-                action._impact = new Dictionary<Belief, bool>();
+                action._impact = new Dictionary<string, bool>();
                 foreach (var itm in states)
                 {
                     action._impact.Add(itm.Key, itm.Value);
@@ -295,7 +295,7 @@ namespace Production
         }
 
         [CanBeNull]
-        public Dictionary<Belief, bool> _requirements
+        public Dictionary<string, bool> _requirements
         {
             get;
             set;

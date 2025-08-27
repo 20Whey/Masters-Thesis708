@@ -29,7 +29,7 @@ namespace Goap
     
     public interface IHasRequirements
     {
-        public Dictionary<Belief, bool> _requirements { get; set; }
+        public Dictionary<string, bool> _requirements { get; set; }
         
     }
     
@@ -78,12 +78,12 @@ namespace Goap
 
     public class world_state
     {
-        public void init(KeyValuePair<Belief, bool> pair)
+        public void init(KeyValuePair<string, bool> pair)
         {
             this.key = pair.Key;
             this.value = pair.Value;
         }
-    public Belief key
+    public string key
         {
             get; set;
         }
@@ -97,7 +97,7 @@ namespace Goap
 
     public class world_states
     {
-        public Dictionary<Belief, bool> states;
+        public Dictionary<string, bool> states;
         public void init([CanBeNull] world_states base_state)
         {
             if (base_state != null)
@@ -106,29 +106,29 @@ namespace Goap
             }
             else
             {
-                states = new Dictionary<Belief, bool>();
+                states = new Dictionary<string, bool>();
             }
         }
         public bool has_state(string key)
         {
-            foreach (Belief itm in states.Keys)
+            foreach (string itm in states.Keys)
             {
-                if (itm.Name == key) return true;
+                if (itm == key) return true;
             }
             return false;
         }
         public bool real_check(string key, bool val)
         {
-            foreach (Belief itm in states.Keys)
+            foreach (string itm in states.Keys)
             {
-                if (itm.Name.Equals(key) && states[itm] == val) return true;
+                if (itm.Equals(key) && states[itm] == val) return true;
             }
             return false;
         }
 
         public void poor_copy(world_states input)
         {
-            states = new Dictionary<Belief, bool>();
+            states = new Dictionary<string, bool>();
             foreach (var inputState in input.states)
             {
                 states.Add(inputState.Key, inputState.Value);
@@ -136,36 +136,30 @@ namespace Goap
         }
         
     
-          public bool check_is_valid(Belief input, bool value)
+        public bool check_is_valid(string input, bool value)
         {
-        if (has_state(input.Name))
-            
+        if (has_state(input))
             if (states[input] == value) return true;
+        
             return false;
         }
        
           
-        public bool comparison(Belief key, bool value)
+        public bool comparison(string key, bool value)
         {
-            foreach (Belief itm in states.Keys)
+            foreach (string itm in states.Keys)
             {
-                if (itm.Name == key.Name)
-                {
-                    if (states[itm] == value)
-                    {
-                        return true;
-                    }
-                }
+                if (states[itm] == value) return true;
             }
             return false;
         }
 
    
-        public void change_state(KeyValuePair <Belief, bool> pair)
+        public void change_state(KeyValuePair <string, bool> pair)
         {
             states[pair.Key] = pair.Value;
         }
-        public void add_state(Belief key, bool val)
+        public void add_state(string key, bool val)
         {
             states.Add(key, val);
         }
@@ -178,6 +172,7 @@ namespace Goap
             }
             return true;
         }
+        
     }
 
 }
