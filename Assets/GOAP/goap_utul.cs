@@ -40,10 +40,12 @@ namespace Goap
             held_obj = heldObj;
             Id = id;
             Children = new List<Node>();
+            Parent = null;
             c_state = new world_states();
             c_state.init(c_state);
             
         }
+        [CanBeNull]
         public Node Parent
         {get; set;} 
         public List<Node> Children
@@ -53,6 +55,10 @@ namespace Goap
         {
             Children.Add(child);
             child.Parent = this;
+        }
+        public void remove_child(Node child)
+        {
+            Children.Remove(child);
         }
 
         public int Id
@@ -128,6 +134,7 @@ namespace Goap
                 states.Add(inputState.Key, inputState.Value);
             }
         }
+        
     
           public bool check_is_valid(Belief input, bool value)
         {
@@ -136,7 +143,8 @@ namespace Goap
             if (states[input] == value) return true;
             return false;
         }
-         
+       
+          
         public bool comparison(Belief key, bool value)
         {
             foreach (Belief itm in states.Keys)
@@ -164,9 +172,9 @@ namespace Goap
        
         public bool check_mult(world_states input)
         {
-            foreach (var item in states)
+            foreach (var item in input.states)
             {
-                if (!real_check(item.Key.Name, item.Value)) return false;
+                if (!comparison(item.Key, item.Value)) return false;
             }
             return true;
         }

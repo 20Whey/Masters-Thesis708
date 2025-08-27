@@ -33,17 +33,19 @@ public class goap_imp : Factories
     [CanBeNull]
     Node grab_from_state(List<Node> tree, world_states input_worldstate)
     {
+        List<Node> matches = new List<Node>();
         for (var i = tree.Count-1; i > 0; i--)
         {
-            var c = input_worldstate;
-            var a = input_worldstate.check_mult(tree[i].c_state);
-            if (a == false)
+            var a = input_worldstate;
+            var b = input_worldstate.check_mult(tree[i].c_state);
+            
+            if (b)
             {
                 Debug.Log(tree[i].c_state + " " + input_worldstate.states);
-                return tree[i];
+                matches.Add(tree[i]);
             }
-        } 
-        return null;
+        }
+        return matches[0];
     }
 
 //I have a filtered tree, all roads lead to the end. 
@@ -106,7 +108,7 @@ public class goap_imp : Factories
     {
         foreach (var item in real_worldstate.states)
         {
-            if (!sim_state.has_state(item.Key.Name)) return false;
+       //     if (!sim_state.has_state(item.Key.Name)) return false;
             
             if (!sim_state.comparison(item.Key, item.Value)) return false;
         }
@@ -136,29 +138,52 @@ public class goap_imp : Factories
             Node current = queue.Dequeue();
             List<IActionAdjacent> potentialOptions = find_all_suitable_actions(current.c_state, allowed);
             //Debug.Log(potentialOptions.Count);
+               
             nm++;
             for (var i = 0; i < potentialOptions.Count; i++)
             {
-                var c_child = new Node(potentialOptions[i], nm);
-                current.add_child(c_child);
-                
-                Action itm = c_child.held_obj as Action;
-             /*   if (action_validation(current.c_state, itm))
-                {*/
-                    //c_child is valid
-                    var a = c_child.Parent.c_state;
+                    var c_child = new Node(potentialOptions[i], nm);
 
-                    c_child.c_state.init(a);
-                    c_child.c_state.poor_copy(mutate_state(c_child.Parent.grab_state(), c_child.held_obj as Action));
-                    
-                    queue.Enqueue(c_child);
-                    visited.Add(c_child);
-                    if (worldstate_validation(c_child.c_state, sim_state)) return visited;
+                    current.add_child(c_child);
+                    if (current.Parent != null )
+                    {
+                        if (current.Parent.held_obj != potentialOptions[i])
+                        {
+                            Action itm = c_child.held_obj as Action;
+                            //c_child is valid
+                            var a = c_child.Parent.c_state;
+
+                            c_child.c_state.init(a);
+                            c_child.c_state.poor_copy(mutate_state(c_child.Parent.grab_state(), c_child.held_obj as Action));
+
+                            queue.Enqueue(c_child);
+                            visited.Add(c_child);
+                            if (worldstate_validation(c_child.c_state, sim_state)) return visited;
+
+                        }
+                        else
+                        {
+                            current.remove_child(c_child);
+                        }
+                    }
+                    else
+                    {
+                        //  Action itm = c_child.held_obj as Action;
+                        //c_child is valid
+                        var b = c_child.Parent.c_state;
+
+                        c_child.c_state.init(b);
+                        c_child.c_state.poor_copy(mutate_state(c_child.Parent.grab_state(), c_child.held_obj as Action));
+
+                        queue.Enqueue(c_child);
+                        visited.Add(c_child);
+                        if (worldstate_validation(c_child.c_state, sim_state)) return visited;
+                    }
             }
 /*  }*/
 
   // consider breaking when queue gets too long and if there are no options left
-        } while (queue.Count > 0 && nm < 60);
+        } while (queue.Count > 0 && nm < 100);
 return visited;
 }
 //change input
