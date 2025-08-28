@@ -155,7 +155,7 @@ public class goap_imp : Factories
 
                             queue.Enqueue(c_child);
                             visited.Add(c_child);
-                            if (worldstate_validation(c_child.c_state, sim_state)) return visited;
+                            //if (worldstate_validation(c_child.c_state, sim_state)) return visited;
 
                         }
                         else

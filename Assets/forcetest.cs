@@ -7,9 +7,12 @@ public class forcetest : MonoBehaviour
     public Transform targ;    
     public Vector3 rotation;
 
+
+    basic_character self;
+
     void Update()
     {
-        
+        self = gameObject.GetComponent<basic_character>();
         TryGetComponent(out Rigidbody2D ours);
         var dir = targ.position - transform.position;
         var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;

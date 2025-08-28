@@ -24,13 +24,7 @@ namespace Production
                 .add_beliefs(beliefs)
                 .Build());
             }
-      /*      public void add_simple_goal(string name,float priority, params Belief[] beliefs)
-            {
-                _goals.Add(new Goal.Builder(name)
-                .set_priority(priority)
-                .add_beliefs(beliefs)
-                .Build());
-            }*/
+ 
             public List<Goal> return_goals()
             {
                 return _goals;
@@ -41,7 +35,7 @@ namespace Production
         {
             //may change costs
             private List<Action> _output = new  List<Action>();
-            public void add_action_to_list(string name, Func<bool?> func, Dictionary<string, bool> requirements, Dictionary<string, bool> impacts)
+            public void add_action_to_list(string name, Func<bool?> func, (string, bool)[] requirements, (string, bool)[] impacts)
             {
                  this._output.Add(new Action.Builder(name)
                 .add_function(func)
@@ -248,12 +242,12 @@ namespace Production
                action = new Action(name);
             }
 
-            public Builder add_requirement(Dictionary<string, bool> condition)
+            public Builder add_requirement((string, bool)[] condition)
             {
                 action._requirements = new Dictionary<string, bool>();
                 foreach (var itm in condition)
                 {
-                    action._requirements.Add(itm.Key, itm.Value);
+                    action._requirements.Add(itm.Item1, itm.Item2);
                 }
                 return this;
             }
@@ -267,12 +261,12 @@ namespace Production
                 action._cost += cost;
                 return this;
             }
-            public Builder add_impacts(Dictionary<string, bool> states)
+            public Builder add_impacts((string, bool)[] states)
             {
                 action._impact = new Dictionary<string, bool>();
                 foreach (var itm in states)
                 {
-                    action._impact.Add(itm.Key, itm.Value);
+                    action._impact.Add(itm.Item1, itm.Item2);
                 }
                 return this;
 

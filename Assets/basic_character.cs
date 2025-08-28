@@ -26,7 +26,7 @@ public class basic_character : MonoBehaviour
     public List<Action> allowed_actions = new List<Action>();
     [CanBeNull] public List<Action> plan;
 
-    void Awake()
+    void Start()
     {
         if (!isdummy)
         {
@@ -51,7 +51,10 @@ public class basic_character : MonoBehaviour
             local_worldstate.add_state("close_to_enemy", false);
 
             local_worldstate.add_state("is_enemy_alive", true);
-
+            local_worldstate.add_state("enemy_exists", false);
+            local_worldstate.add_state("is_opponent_stunned", false);
+            
+    
             GoalFactory g = basic_init.init_goal_factory(b);
 
             plan = goap.bPlanner(g.return_goals(), local_worldstate, a.return_actions());
