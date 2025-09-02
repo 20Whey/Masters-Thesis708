@@ -56,6 +56,7 @@ namespace Production
 
             public Dictionary<string, Belief> Beliefs = new Dictionary<string, Belief>();
 
+            
             public BeliefFactory(character agent)
             {
                 this.Agent = agent;
@@ -99,7 +100,7 @@ namespace Production
             
             bool in_range_of(Vector2 position, float range)
             {
-                return (Vector2.Distance(Agent.this_ob.transform.position, position) > range) ? true : false;
+                return (Vector2.Distance(Agent.this_ob.transform.position, position) < range);
             }
 
          
@@ -116,7 +117,7 @@ namespace Production
             public float Priority;
             public string Name { get; set; }
             public int Id { get; set; }
-            Func<bool> _condition = () => false;
+            public Func<bool> _condition = () => false;
             Func<UnityEngine.Vector2> _observedLocation = () => Vector2.zero;
             public UnityEngine.Vector2 Location;
             Func<UnityEngine.Transform> _observedTarget = () => GameObject.Instantiate(new GameObject()).transform;

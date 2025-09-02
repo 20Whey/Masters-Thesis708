@@ -17,7 +17,7 @@ namespace base_move_classes
     push = 2,
     block = 3
     }
-    public class basic_move
+    public class basic_move 
     {
         public move_types move_type;
         public string name;
@@ -35,11 +35,11 @@ namespace base_move_classes
            self = this;
            return self;
        }
-       public virtual void do_move(basic_character target)
+       public virtual void do_move(basic_character us)
        {
            if (!is_hot)
            {
-               target.health -= damage;
+                us.target.GetComponent<basic_character>().health -= damage;
                self.is_hot = true;
            }
        }

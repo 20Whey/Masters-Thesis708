@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using Production;
 using UnityEngine;
@@ -8,6 +10,14 @@ public class singleton : MonoBehaviour
    
     public static singleton Instance { get; private set; }
     public Dictionary<string, Belief> global_beliefs;
+    [System.Serializable]
+    public struct displayed_beliefs
+    {
+        public string key;
+        public bool condition;
+    }
+  public List<displayed_beliefs> display_beliefsfr;
+    
     
     void Awake()
     {
@@ -19,8 +29,12 @@ public class singleton : MonoBehaviour
         {
             Instance = this;
             global_beliefs = new Dictionary<string, Belief>();
+            display_beliefsfr = new List<displayed_beliefs>();
         }
     }
+
+
+
 
     [CanBeNull]
     public Belief retrieve_belief(string identifier)

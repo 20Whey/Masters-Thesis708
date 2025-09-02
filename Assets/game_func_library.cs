@@ -35,7 +35,7 @@ namespace init
             var us = bf.Agent.this_ob.GetComponent<basic_character>();
 
             bf.add_location_belief("close_to_enemy", simple_game.get_closest_target(bf.Agent.this_ob).transform.position,
-            0.5f);
+            0.01f);
 
             bf.add_belief("moving", () => bf.Agent.this_ob.GetComponent<basic_character>().moving);
 
@@ -49,7 +49,16 @@ namespace init
             foreach (var itm in bf.Beliefs)
             {
                 if (!singleton.Instance.global_beliefs.ContainsKey(itm.Key))
+                {
                     singleton.Instance.global_beliefs.Add(itm.Key, itm.Value);
+                
+                        var bel = new singleton.displayed_beliefs();
+                        bel.key = itm.Key;
+                        bel.condition = itm.Value._condition();
+                        singleton.Instance.display_beliefsfr.Add(bel);
+                    
+                }
+                
             }
             return bf;
         }
@@ -91,7 +100,7 @@ namespace init
 
             af.add_action_to_list("move_to_enemy", () => simple_game.set_moving(true, us),
            new []{
-            ( "close_to_enemy", false ),
+            ( "close_to_enemy", false),
             ( "is_enemy_alive", true )
             },
             new []{
@@ -99,7 +108,7 @@ namespace init
             ( "moving", true) 
             });
             
-            af.add_action_to_list("find_enemy", ()=> (opponent = simple_game.get_closest_target(us.self.this_ob)), 
+            af.add_action_to_list("find_enemy", () => simple_game.evaluate(us.target = simple_game.get_closest_target(us.self.this_ob)), 
            new [] {
            ("enemy_exists", false)
            }, new []

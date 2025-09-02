@@ -64,7 +64,6 @@ public class goap_imp : Factories
             plan.Add(start);
             start = start.Parent;
         }
-        plan.Reverse();
         return plan;
     }
 
@@ -196,7 +195,7 @@ foreach (var req in input._requirements)
   }
   else
   {
-      edited_ver.change_state( new KeyValuePair<string, bool>(req.Key, req.Value));
+      edited_ver.change_state((req.Key, req.Value));
   }
 }
 return edited_ver;

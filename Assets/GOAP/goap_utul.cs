@@ -15,22 +15,24 @@ namespace Goap
         [CanBeNull] public int Id { get; set; }
 
     }
-    public interface IActionAdjacent : IGoapComponent, IHasRequirements
+    public interface IActionAdjacent : IGoapComponent, IHasRequirements,INeedsReference
     {
-            public object self {get; set;}
-        
-        public object return_self()
-        {
-            return this.self;
-        }
-       
     }
-    
     
     public interface IHasRequirements
     {
         public Dictionary<string, bool> _requirements { get; set; }
         
+    }
+
+    public interface INeedsReference
+    {
+        public object self {get; set;}
+        
+        public object return_self()
+        {
+            return this.self;
+        }
     }
     
     public class Node
@@ -43,7 +45,6 @@ namespace Goap
             Parent = null;
             c_state = new world_states();
             c_state.init(c_state);
-            
         }
         [CanBeNull]
         public Node Parent
@@ -109,6 +110,13 @@ namespace Goap
                 states = new Dictionary<string, bool>();
             }
         }
+        /*     public void update(Factories.BeliefFactory bf)
+        {
+            foreach (KeyValuePair<string, bool> itm in states)
+            {
+                change_state(new KeyValuePair<string, bool> (itm.Key, bf.grab_belief(itm.Key)._condition()));
+            }
+        }*/
         public bool has_state(string key)
         {
             foreach (string itm in states.Keys)
@@ -153,9 +161,10 @@ namespace Goap
         }
 
    
-        public void change_state(KeyValuePair <string, bool> pair)
+        public void change_state((string, bool) pair)
         {
-            states[pair.Key] = pair.Value;
+           
+           states[pair.Item1] = pair.Item2;
         }
         public void add_state(string key, bool val)
         {
