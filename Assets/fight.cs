@@ -31,7 +31,9 @@ public class fight : MonoBehaviour
     {
         foreach (Action action in our_unit.plan)
         {
-            while (!validation(action, the_world))
+            var valid = validation(action, the_world);
+            Debug.Log("doing" +" "+  action.Name + " "+our_unit.plan.IndexOf(action));
+            while (!valid)
             {
                 //RUN THE ACTION 
                 //THIS WILL WORK FOR MOVES
@@ -39,14 +41,16 @@ public class fight : MonoBehaviour
                 if (moves.ContainsKey(action.Name))
                 {
                     moves[action.Name].do_move(our_unit);
+                    valid = true;
                 }
                 else
                 //we contain everything we need
                 { 
                     action.Func();
+                    break;
                 }
                 yield return new WaitForSeconds(0.1f);
-                Debug.Log("doing" +" "+  action.Name);
+               
             }
             Debug.Log("passed " + " "+ action.Name);
         }

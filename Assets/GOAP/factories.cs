@@ -35,12 +35,13 @@ namespace Production
         {
             //may change costs
             private List<Action> _output = new  List<Action>();
-            public void add_action_to_list(string name, Func<bool?> func, (string, bool)[] requirements, (string, bool)[] impacts)
+            public void add_action_to_list(string name, Func<bool?> func, float cost,(string, bool)[] requirements, (string, bool)[] impacts)
             {
                  this._output.Add(new Action.Builder(name)
                 .add_function(func)
                 .add_impacts(impacts)
                 .add_requirement(requirements)
+                .modify_cost(cost)
                 .Build());
             }
 
@@ -224,7 +225,8 @@ namespace Production
 
     public class Action : IActionAdjacent
     {
-        private float _cost = 0.5f;
+        public bool is_mutable = true;
+        public float Cost;
         public Func<bool?> Func;
       
         public Dictionary<string, bool> _impact;
@@ -259,7 +261,7 @@ namespace Production
             }
             public Builder modify_cost(float cost)
             {
-                action._cost += cost;
+                action.Cost += cost;
                 return this;
             }
             public Builder add_impacts((string, bool)[] states)

@@ -6,6 +6,7 @@ using base_move_classes;
 using Goap;
 using Production;
 using Sensors;
+using Unity.Mathematics;
 
 
 
@@ -68,7 +69,7 @@ namespace init
             var us = belief_factory.Agent.this_ob.GetComponent<basic_character>();
             Transform? opponent = belief_factory.Agent.this_ob.GetComponent<basic_character>().target;
             basic_character? opponentdat = opponent != null ? opponent.GetComponent<basic_character>() : null;
-            af.add_action_to_list("Straight", () => null, new []
+            af.add_action_to_list("Straight", () => null,0.5f, new []
             {
              ("close_to_enemy", true),
             ( "moving", false ),
@@ -80,7 +81,8 @@ namespace init
             });
 
             af.add_action_to_list("stop_moving", () => simple_game.set_moving(false, us)
-            , new []
+            ,0.5f,
+            new []
             {
             ( "moving", true )
             }, new [] {
@@ -88,7 +90,7 @@ namespace init
 
             af.add_action_to_list("Kick", () => null, 
             
-            new []{( "close_to_enemy", true ),
+            0.5f,new []{( "close_to_enemy", true ),
             ( "moving", false ),
             ( "starting_combo", true )
             // {belief_factory.grab_belief("starting_combo"), false}
@@ -99,7 +101,7 @@ namespace init
             });
 
             af.add_action_to_list("move_to_enemy", () => simple_game.set_moving(true, us),
-           new []{
+            0.5f,new []{
             ( "close_to_enemy", false),
             ( "is_enemy_alive", true )
             },
@@ -109,14 +111,14 @@ namespace init
             });
             
             af.add_action_to_list("find_enemy", () => simple_game.evaluate(us.target = simple_game.get_closest_target(us.self.this_ob)), 
-           new [] {
+            0.5f,new [] {
            ("enemy_exists", false)
            }, new []
            {
            ("enemy_exists", true)
            });
 
-            af.add_action_to_list("bamboozle", () => (opponentdat.stunned = true),new[]{
+            af.add_action_to_list("bamboozle", () => (opponentdat.stunned = true),0.5f,new[]{
                 ("is_enemy_alive", true),
                 ("close_to_enemy", true),
                 ("is_opponent_stunned", false)
@@ -125,17 +127,19 @@ namespace init
             ( "starting_combo", true )
             });
 
-            af.add_action_to_list("follow_up_strike", (() => null), new[]{
-
-             ("is_opponent_stunned", true) ,
-             ("is_enemy_alive", true) ,
-             ("close_to_enemy", true) }
-            , new []
+            af.add_action_to_list("follow_up_strike", (() => null),0.5f, new[]{
+             ("is_opponent_stunned", true),
+             ("is_enemy_alive", true),
+             ("close_to_enemy", true) 
+             }
+            ,new []
             {
              ("starting_combo", false ),
              ("is_opponent_stunned", false) 
             }
             );
+            
+           // af.add_action_to_list("finish_off_enemy", (() => singleton.Instance.Destroy(opponent.gameObject)), 0.5f);
             return af;
         }
     

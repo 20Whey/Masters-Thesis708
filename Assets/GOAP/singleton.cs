@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class singleton : MonoBehaviour
 {
-   
+    public goap_imp GoapImp = new goap_imp();
     public static singleton Instance { get; private set; }
     public Dictionary<string, Belief> global_beliefs;
     [System.Serializable]

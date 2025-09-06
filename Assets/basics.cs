@@ -70,7 +70,7 @@ namespace base_move_classes
     public class push_move : stun_move
     {
         public float push_dist;
-        public override basic_move setup(string nm,int dam, float cd)
+        public override basic_move setup(string nm, int dam, float cd)
         {
             move_type =  move_types.push;
             push_dist = cd * 1.5f;

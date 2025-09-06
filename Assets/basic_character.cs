@@ -20,18 +20,25 @@ public class basic_character : MonoBehaviour
     public bool stunned;
     public bool moving;
 	public float health;
+    
     public bool started_combo;
     public bool finishing_combo;
-    public float timer;
     public bool struck;
+    public float timer;
+    
     [CanBeNull] public Transform target;
     public character self;
     public List<Action> allowed_actions = new List<Action>();
+    
+    
     [CanBeNull] public List<Action> plan;
-    public BeliefFactory b;
     public world_states local_worldstate;
-    public bool a;
-
+    public goap_imp goap;
+    
+    public BeliefFactory belief_factory;
+    public GoalFactory goals;
+    public ActionFactory actions;
+    
     [System.Serializable]
     public struct WorldStates
     {
@@ -48,31 +55,30 @@ public class basic_character : MonoBehaviour
             stunned = false;
             moving = false;
             started_combo = false;
-            goap_imp goap = new goap_imp();
-
+            goap = singleton.Instance.GoapImp;
             self = new character(gameObject);
 
            // Dictionary<string, basic_move> movedict = basic_init.create(new Dictionary<string, basic_move>());
-            b = basic_init.init_belief_factory(self);
-            ActionFactory a = basic_init.init_action_factory(b);  
+           belief_factory = basic_init.init_belief_factory(self);
+            actions = basic_init.init_action_factory(belief_factory);  
             
-            GoalFactory g = basic_init.init_goal_factory(b);
+            goals = basic_init.init_goal_factory(belief_factory);
             local_worldstate = new world_states();
             local_worldstate.init(null);
 
-            local_worldstate.add_state(b.grab_belief("moving").Name, b.grab_belief("moving")._condition());
-            local_worldstate.add_state(b.grab_belief("close_to_enemy").Name, b.grab_belief("close_to_enemy")._condition());
-            local_worldstate.add_state(b.grab_belief("is_enemy_alive").Name, b.grab_belief("is_enemy_alive")._condition());
+            local_worldstate.add_state(belief_factory.grab_belief("moving").Name, belief_factory.grab_belief("moving")._condition());
+            local_worldstate.add_state(belief_factory.grab_belief("close_to_enemy").Name, belief_factory.grab_belief("close_to_enemy")._condition());
+            local_worldstate.add_state(belief_factory.grab_belief("is_enemy_alive").Name, belief_factory.grab_belief("is_enemy_alive")._condition());
 
-            local_worldstate.add_state(b.grab_belief("starting_combo").Name, b.grab_belief("starting_combo")._condition());
-            local_worldstate.add_state(b.grab_belief("is_opponent_stunned").Name, b.grab_belief("is_opponent_stunned")._condition());
-            local_worldstate.add_state(b.grab_belief("enemy_exists").Name, b.grab_belief("enemy_exists")._condition());
+            local_worldstate.add_state(belief_factory.grab_belief("starting_combo").Name, belief_factory.grab_belief("starting_combo")._condition());
+            local_worldstate.add_state(belief_factory.grab_belief("is_opponent_stunned").Name, belief_factory.grab_belief("is_opponent_stunned")._condition());
+            local_worldstate.add_state(belief_factory.grab_belief("enemy_exists").Name, belief_factory.grab_belief("enemy_exists")._condition());
             
-          
+            
 
-            plan = goap.bPlanner(g.return_goals(), local_worldstate, a.return_actions());
+          
   
-    
+            plan = goap.bPlanner(goals.return_goals(), local_worldstate, actions.return_actions());
             
             
      
@@ -98,7 +104,7 @@ public class basic_character : MonoBehaviour
 
             if (Input.GetKey(KeyCode.A))
             {
-               
+                plan = goap.bPlanner(goals.return_goals(), local_worldstate, actions.return_actions());
             }
             if (moving)
             {
