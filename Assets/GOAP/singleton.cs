@@ -10,6 +10,7 @@ public class singleton : MonoBehaviour
     public goap_imp GoapImp = new goap_imp();
     public static singleton Instance { get; private set; }
     public Dictionary<string, Belief> global_beliefs;
+    public goap_imp goap;
     [System.Serializable]
     public struct displayed_beliefs
     {
@@ -28,6 +29,7 @@ public class singleton : MonoBehaviour
         else
         {
             Instance = this;
+            goap = new goap_imp();
             global_beliefs = new Dictionary<string, Belief>();
             display_beliefsfr = new List<displayed_beliefs>();
         }

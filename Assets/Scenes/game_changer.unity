@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 29758470}
   - component: {fileID: 29758471}
   m_Layer: 0
-  m_Name: DISPLAY
+  m_Name: UNITY_NODE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -163,6 +163,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27983d1d5d34c3b4ba49c9373c4326ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  placement_position: {x: 0, y: 0, z: 0}
+  simulation: {fileID: 2950117775732851686, guid: bdd59fc5bb9b78545ba70b134c5ffadc, type: 3}
+  basic_character: {fileID: 0}
+  is_sim_setup: 0
+  is_simulation_finished: 0
+  weights: []
 --- !u!1 &917989722
 GameObject:
   m_ObjectHideFlags: 0
@@ -172,6 +178,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 917989723}
+  - component: {fileID: 917989724}
+  - component: {fileID: 917989725}
   m_Layer: 0
   m_Name: SIM_MANAGER
   m_TagString: Untagged
@@ -194,6 +202,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &917989724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917989722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2625b4947910c4ca679d19fe4f355c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &917989725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917989722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b233af03143bf846862239a097eb92f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  display_beliefsfr: []
 --- !u!1 &1495302850
 GameObject:
   m_ObjectHideFlags: 0

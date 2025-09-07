@@ -89,11 +89,7 @@ public class basic_character : MonoBehaviour
         if (!isdummy)
         {
             var singltn = singleton.Instance;
-
-
-
-
-
+            
             for (var i = 0; i <  local_worldstate.states.Keys.Count; i++)
             {
                 //Debug.Log("triggered" + itm);
@@ -101,11 +97,7 @@ public class basic_character : MonoBehaviour
                 local_worldstate.change_state((itm, singltn.retrieve_belief(itm)._condition()));
             }
 
-
-            if (Input.GetKey(KeyCode.A))
-            {
-                plan = goap.bPlanner(goals.return_goals(), local_worldstate, actions.return_actions());
-            }
+//MOVE MEE
             if (moving)
             {
                 gameObject.transform.position =

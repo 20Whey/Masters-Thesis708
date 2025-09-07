@@ -9,22 +9,25 @@ using Production;
 using Unity.Collections;
 using Action = Production.Action;
 public class fight : MonoBehaviour
-{ 
+{
+    public bool started;
+    public bool signal = false;
     private Dictionary<string, basic_move> moves;
     public basic_character character;
    void Awake()
    {
       // character = gameObject.GetComponent<basic_character>();
       moves = basic_init.create(moves);
-      
-      
    }
-   
     // Update is called once per frame
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) StartCoroutine(run_action(character.local_worldstate, character));
+        if (signal)
+        {
+            StartCoroutine(run_action(character.local_worldstate, character));
+            signal = false;
+        }
     }
 
     public IEnumerator run_action(world_states the_world, basic_character our_unit )
@@ -61,54 +64,11 @@ public class fight : MonoBehaviour
     {
         foreach (var itm in current._impact) 
         {
-            
-       /*     Debug.Log(itm.Key); 
-        Debug.Log(itm.Value);
-        Debug.Log(the_world.states[itm.Key]);*/
             if (!the_world.comparison(itm.Key, itm.Value)) return false;
         }
         return true;
     }
-
-/*
-    public IEnumerator perform_actions(List<Action> actions)
-    {
-        List<Action> visited = new List<Action>();
-        
-   /*     foreach (Action act in actions)
-        {
-           mvs.Add(moves[act.Name]); 
-        }
-        do
-        {
-            var current = actions[0];
-            if (moves.ContainsKey(current.Name))
-            {
-                var type = moves[current.Name].move_type;
-                var cmove = moves[current.Name];
-                     switch (type)
-                     {
-                         case move_types.block:
-                             cmove = (block_move)cmove;
-                             cmove.do_move(gameObject.GetComponent<basic_character>());
-                             break;
-                         default:
-                             cmove.do_move(gameObject.GetComponent<basic_character>().target.gameObject
-                             .GetComponent<basic_character>());
-                             break;
-                     }
-                     yield return new WaitForSeconds(cmove.cooldown);
-                 } else
-                              {
-                                  
-                              } 
-                             visited.Add(current);
-                             actions.RemoveAt(0);
-                
-            }while (actions.Count > 0);
-           
-           
-        } */
+    
     }
     
     
