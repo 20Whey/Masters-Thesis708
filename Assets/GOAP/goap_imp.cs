@@ -12,10 +12,6 @@ using Unity.VisualScripting;
 using UnityEngine.InputSystem.LowLevel;
 public class goap_imp : Factories
 {
-    public GameObject first_ai;
-
-    public Dictionary<string, Belief> beliefs;
-    public List<Action> actions;
     public world_states current_worldstate;
 
     //is Action valid
@@ -30,24 +26,56 @@ public class goap_imp : Factories
     }
 
 //used to find 
+
+//adding in quick action float validation
     [CanBeNull]
    Node grab_from_state(List<Node> tree, world_states input_worldstate)
     {
         List<Node> matches = new List<Node>();
-        for (var i = tree.Count-1; i > 0; i--)
+        for (var i = 0; i < tree.Count; i++)
         {
-            var a = input_worldstate;
-            var c =  tree[i].c_state;
             var b = input_worldstate.check_mult(tree[i].c_state);
-            
             if (b)
             {
                 matches.Add(tree[i]);
             }
         }
-            return matches[0];
+        return compare_plans(matches)[0];
+    }
+   
+    List<Node> compare_plans(List<Node>possible_start_points)
+    {
+        List<(List<Node>, float)> plans  = new List<(List<Node>, float)>();
+        possible_start_points.ForEach( possible_start_point => plans.Add(create_weighted_plan( possible_start_point)));
+        plans.OrderByDescending(item => item.Item2);
+
+        List<List<Node>> ordered_plans = new List<List<Node>>(); 
+        plans.ForEach(item => ordered_plans.Add(item.Item1));
+        
+        return ordered_plans[0]; 
+
     }
 
+    (List<Node>, float) create_weighted_plan(Node start)
+    {
+        (List<Node>, float) plan = (new List<Node>(), 0f);
+        //where our worldstate reaches our target; 
+      
+        //get root
+        plan.Item1.Add(start);
+        plan.Item2 = start.held_obj.Cost;
+        //  Node cNode = start;
+        while (start.Parent != null)
+        {
+            plan.Item1.Add(start);
+            plan.Item2 += start.held_obj.Cost;
+            start = start.Parent;
+        }
+        return plan;
+    }
+
+   
+   
 //I have a filtered tree, all roads lead to the end. 
 //technically this version takes the most complex plan possible. by virtue of being the last element
     List<Node> create_basic_plan(List<Node> tree, world_states state)
@@ -239,10 +267,7 @@ world_states simulated_worldstate = worldstate;
       }
       return plan;
   }
-
   return null;
-
-
 
 }
 

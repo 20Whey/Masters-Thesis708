@@ -17,6 +17,8 @@ namespace Goap
     }
     public interface IActionAdjacent : IGoapComponent, IHasRequirements,INeedsReference
     {
+        public float Cost { get; set; }
+
     }
     
     public interface IHasRequirements

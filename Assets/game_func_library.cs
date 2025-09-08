@@ -102,6 +102,7 @@ namespace init
 
             af.add_action_to_list("move_to_enemy", () => simple_game.set_moving(true, us),
             0.5f,new []{
+            ("enemy_exists", true),
             ( "close_to_enemy", false),
             ( "is_enemy_alive", true )
             },
@@ -119,8 +120,8 @@ namespace init
            });
 
             af.add_action_to_list("bamboozle", () => (opponentdat.stunned = true),0.5f,new[]{
+                ("close_to_enemy", true),    
                 ("is_enemy_alive", true),
-                ("close_to_enemy", true),
                 ("is_opponent_stunned", false)
                 },new [] {
             ( "is_opponent_stunned", true ),

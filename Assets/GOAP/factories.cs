@@ -221,12 +221,16 @@ namespace Production
             get;
             set;
         }
+        public float Cost
+        {
+            get;
+            set;
+        }
     }
 
     public class Action : IActionAdjacent
     {
         public bool is_mutable = true;
-        public float Cost;
         public Func<bool?> Func;
       
         public Dictionary<string, bool> _impact;
@@ -298,6 +302,11 @@ namespace Production
             set;
         }
         public object self
+        {
+            get;
+            set;
+        }
+        public float Cost
         {
             get;
             set;

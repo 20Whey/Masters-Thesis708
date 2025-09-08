@@ -48,7 +48,7 @@ public class basic_character : MonoBehaviour
     public WorldStates[] state;
     void Start()
     {
-        health = 35f;
+        health = 10f;
         if (!isdummy)
         {
             blocking = false;
@@ -69,7 +69,8 @@ public class basic_character : MonoBehaviour
             local_worldstate.add_state(belief_factory.grab_belief("moving").Name, belief_factory.grab_belief("moving")._condition());
             local_worldstate.add_state(belief_factory.grab_belief("close_to_enemy").Name, belief_factory.grab_belief("close_to_enemy")._condition());
             local_worldstate.add_state(belief_factory.grab_belief("is_enemy_alive").Name, belief_factory.grab_belief("is_enemy_alive")._condition());
-
+            
+            
             local_worldstate.add_state(belief_factory.grab_belief("starting_combo").Name, belief_factory.grab_belief("starting_combo")._condition());
             local_worldstate.add_state(belief_factory.grab_belief("is_opponent_stunned").Name, belief_factory.grab_belief("is_opponent_stunned")._condition());
             local_worldstate.add_state(belief_factory.grab_belief("enemy_exists").Name, belief_factory.grab_belief("enemy_exists")._condition());
