@@ -34,10 +34,10 @@ namespace Production
         public class ActionFactory 
         {
             //may change costs
-            private List<Action> _output = new  List<Action>();
+            public Dictionary<string, Action> actions = new Dictionary<string, Action>();
             public void add_action_to_list(string name, Func<bool?> func, float cost,(string, bool)[] requirements, (string, bool)[] impacts)
             {
-                 this._output.Add(new Action.Builder(name)
+                 this.actions.Add(name,new Action.Builder(name)
                 .add_function(func)
                 .add_impacts(impacts)
                 .add_requirement(requirements)
@@ -47,7 +47,12 @@ namespace Production
 
             public List<Action> return_actions()
             {
-                return this._output;
+                return this.actions.Values.ToList();
+            }
+
+            public Action grab_Action(string identifier)
+            {
+                return this.actions[identifier];
             }
                             
         }
@@ -104,12 +109,14 @@ namespace Production
                 return (Vector2.Distance(Agent.this_ob.transform.position, position) < range);
             }
 
-         
            public Belief grab_belief(string identifier)
            {
                return this.Beliefs[identifier];
            }
             //     new fuzzy_value = (current_value - smallest_value)  /(biggest_value - smallest_value)
+            
+            
+            
         }
     }
     

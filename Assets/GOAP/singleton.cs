@@ -35,9 +35,6 @@ public class singleton : MonoBehaviour
         }
     }
 
-
-
-
     [CanBeNull]
     public Belief retrieve_belief(string identifier)
     {
@@ -47,5 +44,12 @@ public class singleton : MonoBehaviour
         }
         return null;
     }
+    
+    public void s()
+    {
+        
+    }
+    
+    
 }
 

@@ -59,9 +59,9 @@ public class basic_character : MonoBehaviour
             self = new character(gameObject);
 
            // Dictionary<string, basic_move> movedict = basic_init.create(new Dictionary<string, basic_move>());
-           belief_factory = basic_init.init_belief_factory(self);
+            belief_factory = basic_init.init_belief_factory(self);
             actions = basic_init.init_action_factory(belief_factory);  
-            
+
             goals = basic_init.init_goal_factory(belief_factory);
             local_worldstate = new world_states();
             local_worldstate.init(null);
@@ -70,20 +70,18 @@ public class basic_character : MonoBehaviour
             local_worldstate.add_state(belief_factory.grab_belief("close_to_enemy").Name, belief_factory.grab_belief("close_to_enemy")._condition());
             local_worldstate.add_state(belief_factory.grab_belief("is_enemy_alive").Name, belief_factory.grab_belief("is_enemy_alive")._condition());
             
-            
             local_worldstate.add_state(belief_factory.grab_belief("starting_combo").Name, belief_factory.grab_belief("starting_combo")._condition());
             local_worldstate.add_state(belief_factory.grab_belief("is_opponent_stunned").Name, belief_factory.grab_belief("is_opponent_stunned")._condition());
             local_worldstate.add_state(belief_factory.grab_belief("enemy_exists").Name, belief_factory.grab_belief("enemy_exists")._condition());
-            
-            
-
-          
-  
-            plan = goap.bPlanner(goals.return_goals(), local_worldstate, actions.return_actions());
-            
-            
-     
         }
+    }
+
+    
+    
+
+    public void create_plan(ActionFactory factory)
+    {
+        plan = goap.bPlanner(goals.return_goals(), local_worldstate, factory.return_actions());
     }
     void FixedUpdate()
     {
