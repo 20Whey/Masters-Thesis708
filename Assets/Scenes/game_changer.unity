@@ -119,71 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &29758469
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 29758470}
-  - component: {fileID: 29758471}
-  m_Layer: 0
-  m_Name: UNITY_NODE
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &29758470
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 29758469}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.361977, z: -0.123520054}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &29758471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 29758469}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27983d1d5d34c3b4ba49c9373c4326ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  placement_position: {x: 0, y: 0, z: 0}
-  simulation: {fileID: 2950117775732851686, guid: bdd59fc5bb9b78545ba70b134c5ffadc, type: 3}
-  be_silly: 0
-  basic_character: {fileID: 0}
-  is_sim_setup: 0
-  is_simulation_finished: 0
-  weights:
-  - name: Straight
-    value: 0.3
-  - name: Kick
-    value: 0.3
-  - name: stop_moving
-    value: 0.2
-  - name: move_to_enemy
-    value: 0.3
-  - name: find_enemy
-    value: 0.1
-  - name: bamboozle
-    value: 0.3
-  - name: follow_up_strike
-    value: 0.4
 --- !u!1 &917989722
 GameObject:
   m_ObjectHideFlags: 0
@@ -242,6 +177,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f2625b4947910c4ca679d19fe4f355c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Node: {fileID: 3440729398779850741}
+  sim_number: 4
 --- !u!1 &1495302850
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,10 +316,75 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &2498664382458110482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3440729398779850741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27983d1d5d34c3b4ba49c9373c4326ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  placement_position: {x: 0, y: 0, z: 0}
+  simulation: {fileID: 2950117775732851686, guid: bdd59fc5bb9b78545ba70b134c5ffadc, type: 3}
+  be_silly: 0
+  basic_character: {fileID: 0}
+  is_sim_setup: 0
+  is_simulation_finished: 0
+  weights:
+  - name: Straight
+    value: 0.3
+  - name: Kick
+    value: 0.3
+  - name: stop_moving
+    value: 0.2
+  - name: move_to_enemy
+    value: 0.3
+  - name: find_enemy
+    value: 0.1
+  - name: bamboozle
+    value: 0.3
+  - name: follow_up_strike
+    value: 0.4
+--- !u!1 &3440729398779850741
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8705898393387323229}
+  - component: {fileID: 2498664382458110482}
+  m_Layer: 0
+  m_Name: UNITY_NODE
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8705898393387323229
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3440729398779850741}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 4.361977, z: -0.123520054}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1495302853}
   - {fileID: 917989723}
-  - {fileID: 29758470}
+  - {fileID: 8705898393387323229}

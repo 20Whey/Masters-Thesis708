@@ -2,14 +2,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Goap;
 using Production;
-using UnityEngine;
-using Sensors;
 using Action = Production.Action;
 using Goal = Production.Goal;
-using base_move_classes;
 using JetBrains.Annotations;
-using Unity.VisualScripting;
-using UnityEngine.InputSystem.LowLevel;
+
 public class goap_imp : Factories
 {
     public world_states current_worldstate;

@@ -45,10 +45,7 @@ public class singleton : MonoBehaviour
         return null;
     }
     
-    public void s()
-    {
-        
-    }
+
     
     
 }

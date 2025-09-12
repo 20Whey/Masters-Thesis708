@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Production;
 using UnityEditor.Embree;
 using UnityEngine;
@@ -43,59 +44,40 @@ public class setup : MonoBehaviour
     GameObject placed_sim = Instantiate(simulation, position, Quaternion.identity);
     placed_sim.transform.SetParent(transform);
     basic_character = gameObject.GetComponentInChildren<basic_character>();  //TAKE FIRST WEIGHTS AND APPLY THEM FOR GA VERYY IMPORTANTT
-  //  var actions = basic_character.actions.return_actions();
- /*   for (var i = 0; i < weights.Length; i++)
-    {   
-    }*/
+  
     is_sim_setup = false;
     is_simulation_finished = false;
-    //
-    //  weights = new weight_obj[placed_sim.transform.] 
+    be_silly = true;
+
     }
     //create modified plan.
     public void plug_in_action_weights()
     {
-       // basic_character.allowed_actions = new List<Production.Action>();
         foreach (var item in weights)
         {                                      
             basic_character.actions.grab_Action(item.name).Cost = item.value;
-        //    binput_values(item.name, basic_character.actions, item.value));
             print(basic_character.actions.grab_Action(item.name).Name + " "+ basic_character.actions.grab_Action(item.name).Cost );
-        //     Debug.Log(basic_character.allowed_actions[v].Name);
         }
         basic_character.create_plan(basic_character.actions);
+        is_sim_setup = true;
     }
-    
-    //Dumb redyndant list traversal
-
-  /*  public Production.Action input_values(string name, Factories.ActionFactory collection, float value)
-    {
-        for (var i = 0; i < collection.Count; i++)
-        {
-            if (collection[i].Name == name)
-            {
-                collection[i].Cost = value;
-                return collection[i];
-            }
-        }
-        //badsetup;
-        return null;
-    }*/
-    
     void Update()
     {
-
        // if (basic_character.plan == null && !is_sim_setup)
         if(be_silly){
             Debug.Log("setup plan");
             plug_in_action_weights();
             be_silly = false;
         }
-        
         if (basic_character.plan != null && is_sim_setup)
         {
             gameObject.GetComponentInChildren<fight>().signal = true;
-            is_sim_setup = true;
+            is_sim_setup = false;
+        }
+
+        if (basic_character.plan_finished)
+        {
+            is_simulation_finished = true;
         }
     }
 

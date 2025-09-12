@@ -54,14 +54,11 @@ namespace Production
             {
                 return this.actions[identifier];
             }
-                            
         }
         public class BeliefFactory
         {
             [CanBeNull] public character Agent;
-
             public Dictionary<string, Belief> Beliefs = new Dictionary<string, Belief>();
-
             
             public BeliefFactory(character agent)
             {

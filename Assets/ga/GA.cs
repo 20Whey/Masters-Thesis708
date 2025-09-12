@@ -1,10 +1,7 @@
-using System;
+
 using System.Collections.Generic;
 using System.Linq;
-using JetBrains.Annotations;
-using Unity.Mathematics;
-using Unity.Mathematics.Geometry;
-using Unity.VisualScripting;    
+using Unity.VisualScripting;
 using UnityEngine;
 using Action = Production.Action;
 using Random = UnityEngine.Random;
@@ -20,23 +17,31 @@ namespace GA_namespce
         public (string, float)?[] exposed_costs;
         public List<(string, float)> exposed_Immutable_costs;
         public float fitness;
+        public GameObject simulation;
         //first_time_setup
-        public GA_Agent(basic_character character, int id)
+        public GA_Agent(GameObject Node, int id)
         {
-            allowed_actions = new List<Action>();
+            
+            simulation = Node.transform.GetChild(0).gameObject; 
+            character = Node.GetComponent<setup>().basic_character;
+            //bug
+            this.allowed_actions = character.actions.return_actions(); 
+            
             exposed_costs = new (string, float)?[allowed_actions.Count];
             exposed_Immutable_costs = new List<(string, float)>();
             fitness = 0f;
             this.id = id;
-            this.character = character;
+            
+            
         }
 
+       //get actions
         public void prepare_for_operations()
         {
-            for (var i = 0; i < character.allowed_actions.Count; i++)
+            for (var i = 0; i < this.allowed_actions.Count; i++)
             {
-                var curr_acc = character.allowed_actions[i];
-                allowed_actions.Add(curr_acc);
+                var curr_acc = allowed_actions[i];
+              //  allowed_actions.Add(curr_acc);
                 if (curr_acc.is_mutable)
                 {
                     exposed_costs[i] = (curr_acc.Name, curr_acc.Cost);
@@ -51,19 +56,14 @@ namespace GA_namespce
         public GA_Agent create_from(GA_Agent other)
         {
             this.allowed_actions = other.allowed_actions;
-
-
             return this;
         }
         
         //for after mutation
-        public  (string, float)?[] rebind_costs( (string, float)?[]  exposed_costs)
+        public  (string, float)?[] rebind_costs((string, float)?[]  exposed_costs)
         {
-            var nm = 0;
-            while (exposed_costs.Contains(null))
-            {
-                if (exposed_costs[nm] == null) exposed_costs[nm] = this.exposed_Immutable_costs[nm];
-                nm++;
+            for (var i = 0; i < exposed_costs.Length; i++){
+                if (exposed_costs[i] == null) exposed_costs[i] = exposed_Immutable_costs[i];
             }
             return exposed_costs;
         }
@@ -72,22 +72,23 @@ namespace GA_namespce
     public class GA
     {
         
-       public (string, float)?[] create_deviants(GA_Agent first_agent, GA_Agent other_agent)
+       public static(string, float)?[] create_deviants(GA_Agent first_agent, GA_Agent other_agent)
        {
            (string, float)?[] random_simple_crossover(GA_Agent first_agent, GA_Agent other_agent)
            {
+               //FIX ME
                var rnd = Random.Range(0, first_agent.exposed_costs.Length);
                var cost_one = first_agent.exposed_costs.Take(rnd).ToArray(); 
                var cost_two = other_agent.exposed_costs.Skip(rnd).ToArray();
                
-              var combined =  cost_one.Concat(cost_two).ToArray();
+               var combined =  cost_one.Concat(cost_two).ToArray();
               //Silly Mutation
-              for (var i = 0; i < combined.Length; i++)
-              {
+               for (var i = 0; i < combined.Length; i++)
+               {
                   if (combined[i] != null)
                     if (Random.Range(0, 10) > 8) 
                       combined[i] = Random.Range(0, 1) == 0 ? (combined[i].Value.Item1, combined[i].Value.Item2 + 0.125f) : (combined[i].Value.Item1, combined[i].Value.Item2 -0.125f);
-              }
+               }
               //since both agents are the same.
                return first_agent.rebind_costs(combined);
            }

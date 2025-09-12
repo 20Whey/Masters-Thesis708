@@ -56,6 +56,8 @@ public class fight : MonoBehaviour
             }
             Debug.Log("passed " + " "+ action.Name);
         }
+        //plan finished. tell parent
+        our_unit.plan_finished = true;
     }
 
 

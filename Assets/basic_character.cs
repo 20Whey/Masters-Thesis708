@@ -20,6 +20,8 @@ public class basic_character : MonoBehaviour
     public bool stunned;
     public bool moving;
 	public float health;
+
+    public bool plan_finished;
     
     public bool started_combo;
     public bool finishing_combo;
