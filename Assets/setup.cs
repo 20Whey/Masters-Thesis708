@@ -61,6 +61,7 @@ public class setup : MonoBehaviour
         basic_character.create_plan(basic_character.actions);
         is_sim_setup = true;
     }
+    
     void Update()
     {
        // if (basic_character.plan == null && !is_sim_setup)
