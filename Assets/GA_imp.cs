@@ -56,9 +56,10 @@ public class GA_imp : MonoBehaviour
             if (deploy)
             {
            //  GameObject nd = Instantiate(Node);
-           var gm = Instantiate(Node);
-
            var element = tree[Random.Range(0, tree.Count - 1)];
+           var gm = Instantiate(Node, new Vector3(element.id,0f,0f), Quaternion.identity);
+
+           
            var comp = gm.GetComponent<setup>();
            comp.id = element.id;
            

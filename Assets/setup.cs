@@ -40,7 +40,7 @@ public class setup : MonoBehaviour
     public void create_and_ready_sim(Vector3 position, float id)
     { 
         //transform.position = 
-    GameObject placed_sim = Instantiate(simulation, new Vector3(id*position.x, 0,0), Quaternion.identity);
+    GameObject placed_sim = Instantiate(simulation, new Vector3(position.x+=id, 0,0), Quaternion.identity);
     placed_sim.transform.SetParent(transform);
     basic_character = gameObject.GetComponentInChildren<basic_character>();  //TAKE FIRST WEIGHTS AND APPLY THEM FOR GA VERYY IMPORTANTT
   

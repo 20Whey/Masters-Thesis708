@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 9001312247809399885}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4.361977, z: -0.123520054}
+  m_LocalPosition: {x: 1, y: 4.361977, z: -0.123520054}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   placement_position: {x: 0, y: 0, z: 0}
   simulation: {fileID: 2950117775732851686, guid: bdd59fc5bb9b78545ba70b134c5ffadc, type: 3}
+  id: 0
   be_silly: 0
   basic_character: {fileID: 0}
   is_sim_setup: 0
