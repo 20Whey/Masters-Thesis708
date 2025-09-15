@@ -7,8 +7,8 @@ using UnityEngine;
 
 public class singleton : MonoBehaviour
 {
-    public goap_imp GoapImp = new goap_imp();
-    public static singleton Instance { get; private set; }
+    public static goap_imp GoapImp = new goap_imp();
+
     public Dictionary<string, Belief> global_beliefs;
     public goap_imp goap;
     [System.Serializable]
@@ -22,17 +22,11 @@ public class singleton : MonoBehaviour
     
     void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            Instance = this;
+      
             goap = new goap_imp();
             global_beliefs = new Dictionary<string, Belief>();
             display_beliefsfr = new List<displayed_beliefs>();
-        }
+        
     }
 
     [CanBeNull]

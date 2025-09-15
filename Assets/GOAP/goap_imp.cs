@@ -140,6 +140,9 @@ public class goap_imp : Factories
     public List<Node> discover_tree(world_states sim_state, Goal start, List<Action> allowed)
     {       
         
+        
+        
+        
         //create root 
         int nm = 0;
         List<Node> visited = new List<Node>();
@@ -251,7 +254,7 @@ world_states simulated_worldstate = worldstate;
 
 
   List<Node> tree = discover_tree(simulated_worldstate, goals[0], allowed_actions);
-
+//foreach goal in ordered_goals...
 
   List<Action> plan = new List<Action>();
   var pln = create_basic_plan(tree, worldstate);

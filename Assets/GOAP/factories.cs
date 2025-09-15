@@ -16,12 +16,12 @@ namespace Production
         public class GoalFactory
         {
             readonly List<Goal> _goals = new List<Goal>();
-            public void add_goal(string name, KeyValuePair<string, bool> goal_validation,float priority, params string[] beliefs)
+            public void add_goal(string name, KeyValuePair<string, bool> goal_validation,float priority, singleton singleton_ref,  params string[] beliefs)
             {
                 _goals.Add(new Goal.Builder(name)
                 .set_goal_validation(goal_validation)
                 .set_priority(priority)
-                .add_beliefs(beliefs)
+                .add_beliefs(singleton_ref,beliefs)
                 .Build());
             }
  
@@ -181,11 +181,11 @@ namespace Production
                 Goal = new Goal(name);
                 Goal.Beliefs = new Dictionary<string, Belief>();
             }
-            public Builder add_beliefs( params string[] beliefs)
+            public Builder add_beliefs(singleton singleton_ref, params string[] beliefs)
             {
                 foreach (var item in beliefs)
                 {
-                    Goal.Beliefs.Add(item, singleton.Instance.retrieve_belief(item));
+                    Goal.Beliefs.Add(item, singleton_ref.retrieve_belief(item));
                 }
                 return this;
             }

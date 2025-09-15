@@ -15,6 +15,8 @@ using Action = Production.Action;
 using Vector2 = UnityEngine.Vector2;
 public class basic_character : MonoBehaviour
 {
+
+    public singleton singleton_ref;
     public bool isdummy;
     public bool blocking;
     public bool stunned;
@@ -40,14 +42,6 @@ public class basic_character : MonoBehaviour
     public BeliefFactory belief_factory;
     public GoalFactory goals;
     public ActionFactory actions;
-    
-    [System.Serializable]
-    public struct WorldStates
-    {
-        public string state;
-        public bool value;
-    }
-    public WorldStates[] state;
     void Start()
     {
         health = 10f;
@@ -57,14 +51,14 @@ public class basic_character : MonoBehaviour
             stunned = false;
             moving = false;
             started_combo = false;
-            goap = singleton.Instance.GoapImp;
+            goap = singleton.GoapImp;
             self = new character(gameObject);
 
            // Dictionary<string, basic_move> movedict = basic_init.create(new Dictionary<string, basic_move>());
-            belief_factory = basic_init.init_belief_factory(self);
+            belief_factory = basic_init.init_belief_factory(self, singleton_ref);
             actions = basic_init.init_action_factory(belief_factory);  
 
-            goals = basic_init.init_goal_factory(belief_factory);
+            goals = basic_init.init_goal_factory(belief_factory, singleton_ref);
             local_worldstate = new world_states();
             local_worldstate.init(null);
 
@@ -89,13 +83,11 @@ public class basic_character : MonoBehaviour
     {
         if (!isdummy)
         {
-            var singltn = singleton.Instance;
-            
             for (var i = 0; i <  local_worldstate.states.Keys.Count; i++)
             {
                 //Debug.Log("triggered" + itm);
                 var itm = local_worldstate.states.Keys.ElementAt(i);
-                local_worldstate.change_state((itm, singltn.retrieve_belief(itm)._condition()));
+                local_worldstate.change_state((itm, singleton_ref.retrieve_belief(itm)._condition()));
             }
 
 //MOVE MEE

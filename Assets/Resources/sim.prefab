@@ -102,17 +102,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8791113f7e0392b419650fd646d8eb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  singleton_ref: {fileID: 4646473280335710062}
   isdummy: 0
   blocking: 0
   stunned: 0
   moving: 0
   health: 5
+  plan_finished: 0
   started_combo: 0
   finishing_combo: 0
   struck: 0
   timer: 0
   target: {fileID: 0}
-  state: []
 --- !u!50 &6351510196025735576
 Rigidbody2D:
   serializedVersion: 5
@@ -410,17 +411,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8791113f7e0392b419650fd646d8eb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  singleton_ref: {fileID: 4646473280335710062}
   isdummy: 1
   blocking: 0
   stunned: 0
   moving: 0
   health: 0
+  plan_finished: 0
   started_combo: 0
   finishing_combo: 0
   struck: 0
   timer: 0
   target: {fileID: 0}
-  state: []
 --- !u!50 &6450115820808761077
 Rigidbody2D:
   serializedVersion: 5
@@ -458,6 +460,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8885110451742231202}
   - component: {fileID: 1841066199436382873}
+  - component: {fileID: 4646473280335710062}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -492,5 +495,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76ba5add78c163149acdb204358fed02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  started: 0
   signal: 0
   character: {fileID: 4618797236073341403}
+--- !u!114 &4646473280335710062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8527041142332581734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b233af03143bf846862239a097eb92f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  display_beliefsfr: []

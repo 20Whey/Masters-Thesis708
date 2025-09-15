@@ -44,8 +44,6 @@ public class GA_imp : MonoBehaviour
 
             Debug.Log(count);
             return visited;
-
-
         }
  
  
@@ -55,16 +53,21 @@ public class GA_imp : MonoBehaviour
                 tree = construct_tree();
                 start = false;}
 
-
             if (deploy)
             {
            //  GameObject nd = Instantiate(Node);
-           foreach (var itm in tree[tree.Count - 1].wrapped_costs)
-           {
-               Debug.Log(itm.Item1 +" "+ itm.Item2);
-           }
+           var gm = Instantiate(Node);
+
+           var element = tree[Random.Range(0, tree.Count - 1)];
+           var comp = gm.GetComponent<setup>();
+           comp.id = element.id;
            
-             
+           for (var i = 0; i < element.wrapped_costs.Length; i++)
+            {
+               //Debug.Log(itm.Item1 +" "+ itm.Item2);  itm.Item2
+               comp.weights[i].name = element.wrapped_costs[i].Item1;
+               comp.weights[i].value = element.wrapped_costs[i].Item2;
+            }
              
             // nd.GetComponent<setup>().weights = ;
                 deploy = false;

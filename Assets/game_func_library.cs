@@ -30,7 +30,7 @@ namespace init
             moves.Add("counter", new stun_move() { }.setup("counter", 3, 0.7f));
             return moves;
         }
-        public static Factories.BeliefFactory init_belief_factory(character slf)
+        public static Factories.BeliefFactory init_belief_factory(character slf, singleton singleton)
         {
             var bf = new Factories.BeliefFactory(slf);
             var us = bf.Agent.this_ob.GetComponent<basic_character>();
@@ -49,14 +49,14 @@ namespace init
             bf.add_belief("enemy_exists", (() => simple_game.evaluate(us.target)));
             foreach (var itm in bf.Beliefs)
             {
-                if (!singleton.Instance.global_beliefs.ContainsKey(itm.Key))
+                if (!singleton.global_beliefs.ContainsKey(itm.Key))
                 {
-                    singleton.Instance.global_beliefs.Add(itm.Key, itm.Value);
+                    singleton.global_beliefs.Add(itm.Key, itm.Value);
                 
                         var bel = new singleton.displayed_beliefs();
                         bel.key = itm.Key;
                         bel.condition = itm.Value._condition();
-                        singleton.Instance.display_beliefsfr.Add(bel);
+                        singleton.display_beliefsfr.Add(bel);
                     
                 }
                 
@@ -145,11 +145,11 @@ namespace init
         }
     
 
-    public static Factories.GoalFactory  init_goal_factory(Factories.BeliefFactory  belief_factory)
+    public static Factories.GoalFactory  init_goal_factory(Factories.BeliefFactory  belief_factory, singleton singleton_ref)
       {
           var go =  new Factories.GoalFactory();
           go.add_goal("kill_enemy", new KeyValuePair<string, bool>("is_enemy_alive", false), .5f, 
-          "is_enemy_alive");
+          singleton_ref,"is_enemy_alive");
           return go;
       }
   }

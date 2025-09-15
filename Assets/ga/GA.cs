@@ -18,12 +18,10 @@ namespace GA_namespce
         public (string, float)[] wrapped_costs;
         public List<(string, float)> exposed_Immutable_costs;
         public float fitness;
-        public GameObject simulation;
         //first_time_setup
         public GA_Agent(GameObject Node, int id)
         {
             allowed_actions = new  List<Action>();
-            simulation = Node.transform.GetChild(0).gameObject; 
             character = Node.GetComponent<setup>().basic_character;
             //bug
             allowed_actions = character.actions.return_actions(); 
