@@ -49,7 +49,6 @@ public class goap_imp : Factories
         plans.ForEach(item => ordered_plans.Add(item.Item1));
         
         return ordered_plans[0]; 
-
     }
 
     (List<Node>, float) create_weighted_plan(Node start)
@@ -140,9 +139,6 @@ public class goap_imp : Factories
     public List<Node> discover_tree(world_states sim_state, Goal start, List<Action> allowed)
     {       
         
-        
-        
-        
         //create root 
         int nm = 0;
         List<Node> visited = new List<Node>();
@@ -150,7 +146,7 @@ public class goap_imp : Factories
         
         Node root = new Node(start, nm);
         root.c_state.init(null);
-        root.c_state.add_state(start.Target.key, start.Target.value);
+        root.c_state.add_state(start.Target.key, rushed_additions.convert_bool(start.Target.value));
         
         //add root to BFS queue and visited
         queue.Enqueue(root);
@@ -206,7 +202,7 @@ public class goap_imp : Factories
 /*  }*/
 
   // consider breaking when queue gets too long and if there are no options left
-        } while (queue.Count > 0 && nm < 100);
+        } while (queue.Count > 0 && nm < 500);
 return visited;
 }
 //change input

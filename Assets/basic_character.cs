@@ -6,11 +6,10 @@ using JetBrains.Annotations;
 using UnityEngine;
 using init;
 using static Production.Factories;
+
 using Goap;
-using BFactory = Production.Factories.BeliefFactory;
-using AFactory = Production.Factories.ActionFactory;
-using Gfactory = Production.Factories.GoalFactory;
-using Production;
+using static Goap.rushed_additions;
+
 using Action = Production.Action;
 using Vector2 = UnityEngine.Vector2;
 public class basic_character : MonoBehaviour
@@ -58,17 +57,18 @@ public class basic_character : MonoBehaviour
             belief_factory = basic_init.init_belief_factory(self, singleton_ref);
             actions = basic_init.init_action_factory(belief_factory);  
 
-            goals = basic_init.init_goal_factory(belief_factory, singleton_ref);
+            goals = basic_init.init_goal_factory(singleton_ref);
             local_worldstate = new world_states();
             local_worldstate.init(null);
 
-            local_worldstate.add_state(belief_factory.grab_belief("moving").Name, belief_factory.grab_belief("moving")._condition());
-            local_worldstate.add_state(belief_factory.grab_belief("close_to_enemy").Name, belief_factory.grab_belief("close_to_enemy")._condition());
-            local_worldstate.add_state(belief_factory.grab_belief("is_enemy_alive").Name, belief_factory.grab_belief("is_enemy_alive")._condition());
+            local_worldstate.add_state(belief_factory.grab_belief("moving").Name, (belief_factory.grab_belief("moving")._condition()));
+            local_worldstate.add_state(belief_factory.grab_belief("close_to_enemy").Name, (belief_factory.grab_belief("close_to_enemy")._condition()));
+            local_worldstate.add_state(belief_factory.grab_belief("is_enemy_alive").Name, (belief_factory.grab_belief("is_enemy_alive")._condition()));
             
-            local_worldstate.add_state(belief_factory.grab_belief("starting_combo").Name, belief_factory.grab_belief("starting_combo")._condition());
-            local_worldstate.add_state(belief_factory.grab_belief("is_opponent_stunned").Name, belief_factory.grab_belief("is_opponent_stunned")._condition());
-            local_worldstate.add_state(belief_factory.grab_belief("enemy_exists").Name, belief_factory.grab_belief("enemy_exists")._condition());
+            local_worldstate.add_state(belief_factory.grab_belief("starting_combo").Name, (belief_factory.grab_belief("starting_combo")._condition()));
+            local_worldstate.add_state(belief_factory.grab_belief("is_opponent_stunned").Name, (belief_factory.grab_belief("is_opponent_stunned")._condition()));
+            local_worldstate.add_state(belief_factory.grab_belief("enemy_exists").Name, (belief_factory.grab_belief("enemy_exists")._condition()));
+            local_worldstate.add_state(belief_factory.grab_belief("is_enemy_healthy").Name,belief_factory.grab_belief("is_enemy_healthy")._condition());
         }
     }
 
@@ -85,7 +85,7 @@ public class basic_character : MonoBehaviour
         {
             for (var i = 0; i <  local_worldstate.states.Keys.Count; i++)
             {
-                //Debug.Log("triggered" + itm);
+                //update states
                 var itm = local_worldstate.states.Keys.ElementAt(i);
                 local_worldstate.change_state((itm, singleton_ref.retrieve_belief(itm)._condition()));
             }

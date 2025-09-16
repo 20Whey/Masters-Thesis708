@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -29,14 +30,19 @@ namespace Sensors
         }
         public static bool evaluate(Transform targ)
         {
-            if (targ != null) return true;
-            return false;
+            return (targ != null) ? true : false;
         }
         public static bool is_target_close_enough(GameObject us)
         {
             return Vector2.Distance(us.transform.position, get_closest_target(us).position) < 2 ? true : false;
         }
 
+        public static bool is_paramater_within_range(float value, int limit)
+        {
+          return  (value < limit) ? true : false;
+    
+        }
+        
         public static bool set_moving(bool input, basic_character self)
         {
             self.moving = input;
@@ -48,7 +54,8 @@ namespace Sensors
         }
         public static bool is_opponent_stunned(basic_character self)
         {
-            return self.stunned;
+            //self.stunned
+            return get_closest_target(self.gameObject).GetComponent<basic_character>().stunned;
         }
         public static bool did_opponent_hit_my_guard(basic_character self)
         {

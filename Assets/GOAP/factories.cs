@@ -35,12 +35,13 @@ namespace Production
         {
             //may change costs
             public Dictionary<string, Action> actions = new Dictionary<string, Action>();
-            public void add_action_to_list(string name, Func<bool?> func, float cost,(string, bool)[] requirements, (string, bool)[] impacts)
+            public void add_action_to_list(string name, Func<float?> func, float cost,(string, float)[] requirements, (string, float)[] impacts, bool is_mutable=true)
             {
                  this.actions.Add(name,new Action.Builder(name)
                 .add_function(func)
                 .add_impacts(impacts)
                 .add_requirement(requirements)
+                .set_mutable(is_mutable)
                 .modify_cost(cost)
                 .Build());
             }
@@ -64,13 +65,23 @@ namespace Production
             {
                 this.Agent = agent;
             }
-            public void add_belief(string identifier, Func<bool> condition)
+            public void add_belief(string identifier, Func<float> condition)
             {
                 Beliefs.Add(identifier, new Belief.Builder(identifier)
                 .add_sensor(condition)
                 .Build()
                 );
             }
+
+           public void add_numerical_belief(string identifier, float input,  Func<float> condition)
+            {
+                Beliefs.Add(identifier, new Belief.Builder(identifier)
+                .add_numerical_target(input)
+                .add_sensor(condition)
+                .Build()
+                );
+            }
+            
             public void add_location_belief(string identifier, Vector2 targetLocation, float dist)
             {
                 Beliefs.Add(identifier,new Belief.Builder(identifier)
@@ -89,21 +100,21 @@ namespace Production
                 );
             }
             //this one is legacy
-            public void add_desired_worldstate_belief(string identifier, world_states c_world, Belief key, bool value)
+            public void add_desired_worldstate_belief(string identifier, world_states c_world, Belief key, float value)
             {
                 Beliefs.Add(identifier,new Belief.Builder(identifier)
                 .add_sensor(() => add_global_sensor(c_world, key, value))
                 .Build());
             }
-
-          public bool add_global_sensor(world_states c_world, Belief key, bool value)
+           
+          public float add_global_sensor(world_states c_world, Belief key, float value)
             {
-                return c_world.comparison(key.Name, value);  
+                return rushed_additions.convert_bool(c_world.comparison(key.Name, value));  
             }
             
-            bool in_range_of(Vector2 position, float range)
+            float in_range_of(Vector2 position, float range)
             {
-                return (Vector2.Distance(Agent.this_ob.transform.position, position) < range);
+                return rushed_additions.convert_bool(Vector2.Distance(Agent.this_ob.transform.position, position) < range);
             }
 
            public Belief grab_belief(string identifier)
@@ -122,7 +133,8 @@ namespace Production
             public float Priority;
             public string Name { get; set; }
             public int Id { get; set; }
-            public Func<bool> _condition = () => false;
+            public Func<float> _condition = () => 0.0f;
+            public float? _target_value;
             Func<UnityEngine.Vector2> _observedLocation = () => Vector2.zero;
             public UnityEngine.Vector2 Location;
             Func<UnityEngine.Transform> _observedTarget = () => GameObject.Instantiate(new GameObject()).transform;
@@ -138,7 +150,7 @@ namespace Production
                 {
                     Belief = new Belief(name);
                 }
-                public Builder add_sensor(Func<bool> condition)
+                public Builder add_sensor(Func<float> condition)
                 {
                     Belief._condition = condition;
                     return this;
@@ -153,6 +165,12 @@ namespace Production
                     Belief._observedTarget = observed_character;
                     return this;
                 }
+                public Builder add_numerical_target(float value)
+                {
+                Belief._target_value = value;
+                return this;
+                }
+                
                 public Belief Build()
                 {
                     return this.Belief;
@@ -215,7 +233,7 @@ namespace Production
             set;
         }
 
-        public Dictionary<string, bool> _requirements
+        public Dictionary<string, float> _requirements
         {
             get;
             set;
@@ -234,10 +252,10 @@ namespace Production
 
     public class Action : IActionAdjacent
     {
-        public bool is_mutable = true;
-        public Func<bool?> Func;
+        public bool is_mutable;
+        public Func<float?> Func;
       
-        public Dictionary<string, bool> _impact;
+        public Dictionary<string, float> _impact;
         public bool has_requirements;
         public Action(string name)
         {
@@ -253,16 +271,16 @@ namespace Production
                action = new Action(name);
             }
 
-            public Builder add_requirement((string, bool)[] condition)
+            public Builder add_requirement((string, float)[] condition)
             {
-                action._requirements = new Dictionary<string, bool>();
+                action._requirements = new Dictionary<string, float>();
                 foreach (var itm in condition)
                 {
                     action._requirements.Add(itm.Item1, itm.Item2);
                 }
                 return this;
             }
-            public Builder add_function(Func<bool?> func)
+            public Builder add_function(Func<float?> func)
             {
                 action.Func = func;
                 return this;
@@ -272,9 +290,16 @@ namespace Production
                 action.Cost += cost;
                 return this;
             }
-            public Builder add_impacts((string, bool)[] states)
+            public Builder set_mutable(bool mutable)
             {
-                action._impact = new Dictionary<string, bool>();
+                action.is_mutable = mutable;
+                return this;
+            }
+            
+            
+            public Builder add_impacts((string, float)[] states)
+            {
+                action._impact = new Dictionary<string, float>();
                 foreach (var itm in states)
                 {
                     action._impact.Add(itm.Item1, itm.Item2);
@@ -300,7 +325,7 @@ namespace Production
         }
 
         [CanBeNull]
-        public Dictionary<string, bool> _requirements
+        public Dictionary<string, float> _requirements
         {
             get;
             set;

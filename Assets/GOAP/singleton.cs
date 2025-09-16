@@ -16,6 +16,7 @@ public class singleton : MonoBehaviour
     {
         public string key;
         public bool condition;
+        public float? value;
     }
   public List<displayed_beliefs> display_beliefsfr;
     

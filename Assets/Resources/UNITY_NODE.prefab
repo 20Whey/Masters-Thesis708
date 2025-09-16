@@ -66,3 +66,5 @@ MonoBehaviour:
     value: 0.3
   - name: follow_up_strike
     value: 0.4
+  - name: killing_blow
+    value: 0.1

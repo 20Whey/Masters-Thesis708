@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Node: {fileID: 3440729398779850741}
-  max_sim_number: 300
+  max_sim_number: 30000
   deploy: 0
   start: 0
 --- !u!1 &1495302850

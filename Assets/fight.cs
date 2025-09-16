@@ -65,7 +65,7 @@ public class fight : MonoBehaviour
     {
         foreach (var itm in current._impact) 
         {
-            if (!the_world.comparison(itm.Key, itm.Value)) return false;
+            if (!(the_world.comparison(itm.Key, itm.Value))) return false;
         } 
         return true;
     }

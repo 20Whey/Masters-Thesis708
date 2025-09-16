@@ -23,7 +23,7 @@ namespace Goap
     
     public interface IHasRequirements
     {
-        public Dictionary<string, bool> _requirements { get; set; }
+        public Dictionary<string, float> _requirements { get; set; }
         
     }
 
@@ -98,9 +98,24 @@ namespace Goap
     
     //VISIBLE WORLDSTATES
 
+
+
+    public class rushed_additions
+    {
+        public static float convert_bool(bool input)
+        {
+            return (input) ? 1.0f : 0.0f;
+        }
+
+        public static bool convert_float(float input)
+        {
+            return (input !=  0.0f) ? true : false;
+        }
+
+    }
     public class world_states
     {
-        public Dictionary<string, bool> states;
+        public Dictionary<string, float> states;
         public void init([CanBeNull] world_states base_state)
         {
             if (base_state != null)
@@ -109,7 +124,7 @@ namespace Goap
             }
             else
             {
-                states = new Dictionary<string, bool>();
+                states = new Dictionary<string, float>();
             }
         }
         /*     public void update(Factories.BeliefFactory bf)
@@ -127,7 +142,9 @@ namespace Goap
             }
             return false;
         }
-        public bool real_check(string key, bool val)
+
+
+        public bool real_check(string key, float val)
         {
             foreach (string itm in states.Keys)
             {
@@ -138,7 +155,7 @@ namespace Goap
 
         public void poor_copy(world_states input)
         {
-            states = new Dictionary<string, bool>();
+            states = new Dictionary<string, float>();
             foreach (var inputState in input.states)
             {
                 states.Add(inputState.Key, inputState.Value);
@@ -146,7 +163,7 @@ namespace Goap
         }
         
     
-        public bool check_is_valid(string input, bool value)
+        public bool check_is_valid(string input, float value)
         {
         if (has_state(input))
             if (states[input] == value) return true;
@@ -155,20 +172,20 @@ namespace Goap
         }
        
           
-        public bool comparison(string key, bool value)
+        public bool comparison(string key, float value)
         {
                 if (states[key] == value) return true;
             
             return false;
         }
-
+        
    
-        public void change_state((string, bool) pair)
+        public void change_state((string, float) pair)
         {
            
            states[pair.Item1] = pair.Item2;
         }
-        public void add_state(string key, bool val)
+        public void add_state(string key, float val)
         {
             states.Add(key, val);
         }
