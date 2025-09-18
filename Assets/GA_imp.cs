@@ -104,12 +104,19 @@ public class GA_imp : MonoBehaviour
                 }
                 for (var c = 0; c < unique_sequence.Count; c++)
                 {
+                 //   Debug.Log()
                     if (input.plan.SequenceEqual(unique_sequence[c].plan))
                     {
                         return;
                     }
                 }
                 unique_sequence.Add(input);
+                
+                
+                foreach (var itm in unique_sequence)
+                {
+                    Debug.Log(itm.plan); 
+                }
             }
             
             List<GA_Agent> unique_entries = new List<GA_Agent>();
@@ -141,6 +148,7 @@ public class GA_imp : MonoBehaviour
             if (start) 
             {
                 population = create_initial_population(100);
+                
                 start = false;
             }
 

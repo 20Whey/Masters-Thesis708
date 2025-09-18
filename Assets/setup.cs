@@ -46,7 +46,7 @@ public class setup : MonoBehaviour
   
     is_sim_setup = false;
     is_simulation_finished = false;
-    be_silly = true;
+    be_silly = false;
 
     }
     //create modified plan.

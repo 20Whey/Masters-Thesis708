@@ -55,7 +55,7 @@ MonoBehaviour:
   - name: Straight
     value: 0.5
   - name: Kick
-    value: 20
+    value: 0.5
   - name: stop_moving
     value: 0.5
   - name: move_to_enemy
@@ -63,10 +63,10 @@ MonoBehaviour:
   - name: find_enemy
     value: 0.5
   - name: bamboozle
-    value: 0.1
+    value: 0.5
   - name: Shove
     value: 0.5
   - name: Round_House
     value: 0.5
   - name: follow_up_strike
-    value: 0.1
+    value: 0.5

@@ -34,33 +34,28 @@ public class fight : MonoBehaviour
     {
         foreach (Action action in our_unit.plan)
         {
-            var valid = validation(action, the_world);
-           Debug.Log("doing" +" "+  action.Name + " "+our_unit.plan.IndexOf(action) + " " + action.Cost);
+            var valid = false;
+//           Debug.Log("doing" +" "+  action.Name + " "+our_unit.plan.IndexOf(action) + " " + action.Cost);
            
-            while (!valid)
+            while (validation(action, the_world))
             {
-                
-                
                 //RUN THE ACTION 
                 //THIS WILL WORK FOR MOVES
             //    Debug.Log(action.Name);
                 if (moves.ContainsKey(action.Name))
                 {
                     moves[action.Name].do_move(our_unit);
-                    valid = true;
-                }
-                else
-                //we contain everything we need
-                { 
-                    action.Func(); 
                     break;
                 }
+                    action.Func(); 
+                
                 yield return new WaitForSeconds(0.1f);
-            }
-         Debug.Log("passed " + " "+ action.Name);
+            } 
+            Debug.Log("passed " + " "+ action.Name);
         }
         //plan finished. tell parent
         our_unit.plan_finished = true;
+        yield return null;
     }
 
 
