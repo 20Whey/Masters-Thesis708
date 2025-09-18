@@ -26,7 +26,6 @@ public class singleton : MonoBehaviour
             goap = new goap_imp();
             global_beliefs = new Dictionary<string, Belief>();
             display_beliefsfr = new List<displayed_beliefs>();
-        
     }
 
     [CanBeNull]
@@ -38,9 +37,13 @@ public class singleton : MonoBehaviour
         }
         return null;
     }
-    
 
-    
-    
+
+    void FixedUpdate()
+    {
+        
+    }
+
+
 }
 

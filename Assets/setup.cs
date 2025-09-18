@@ -73,6 +73,7 @@ public class setup : MonoBehaviour
         }
         if (basic_character.plan != null && is_sim_setup)
         {
+            plan = basic_character.plan;
             gameObject.GetComponentInChildren<fight>().signal = true;
             is_sim_setup = false;
         }

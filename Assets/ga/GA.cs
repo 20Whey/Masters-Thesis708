@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -13,14 +14,18 @@ namespace GA_namespce
     {
         public basic_character character;
         public int id;
+        public GameObject self;
+        public List<string> plan;
         public List<Action> allowed_actions;
         public (string, float)?[] exposed_costs;
         public (string, float)[] wrapped_costs;
         public List<(string, float)> exposed_Immutable_costs;
-        public float fitness;
+        public float fitness; //uniqueness
         //first_time_setup
         public GA_Agent(GameObject Node, int id)
         {
+            
+            plan = new List<string>();
             allowed_actions = new  List<Action>();
             character = Node.GetComponent<setup>().basic_character;
             //bug
@@ -30,8 +35,6 @@ namespace GA_namespce
             exposed_Immutable_costs = new List<(string, float)>();
             fitness = 0f;
             this.id = id;
-            
-            
         }
 
        //get actions
@@ -49,6 +52,18 @@ namespace GA_namespce
                 {
                     exposed_costs[i] = null;
                     exposed_Immutable_costs.Add((curr_acc.Name, curr_acc.Cost));
+                }
+            }
+        }
+
+        public void mixup()
+        {
+            for (var i = 0; i < exposed_costs.Length; i++)
+            {
+                if (exposed_costs[i] != null)
+                {
+                    var val = exposed_costs[i].Value.Item2;
+                    exposed_costs[i] = (exposed_costs[i].Value.Item1, val +=  Random.Range(-0.5f, 0.5f));
                 }
             }
         }
@@ -78,12 +93,10 @@ namespace GA_namespce
             }
             return wrapped_costs;
         }
-        
     }
     
     public class GA
     {
-        
        public static(string, float)[] create_deviants(GA_Agent first_agent, GA_Agent other_agent)
        {
            (string, float)[] random_simple_crossover(GA_Agent first_agent, GA_Agent other_agent)

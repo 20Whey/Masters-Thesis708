@@ -61,10 +61,6 @@ public class character
             List<Goal> goals = goalFactory.return_goals();  }
                                                                   
 */
-
-
-
-      
         public character(GameObject our_object)
         {
             self = this;

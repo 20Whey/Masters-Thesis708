@@ -53,16 +53,20 @@ MonoBehaviour:
   is_simulation_finished: 0
   weights:
   - name: Straight
-    value: 0.3
+    value: 0.5
   - name: Kick
-    value: 0.3
+    value: 20
   - name: stop_moving
-    value: 0.2
+    value: 0.5
   - name: move_to_enemy
-    value: 0.3
+    value: 0.5
   - name: find_enemy
-    value: 0.1
+    value: 0.5
   - name: bamboozle
-    value: 0.3
+    value: 0.1
+  - name: Shove
+    value: 0.5
+  - name: Round_House
+    value: 0.5
   - name: follow_up_strike
-    value: 0.4
+    value: 0.1

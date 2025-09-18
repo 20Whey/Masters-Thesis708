@@ -72,7 +72,7 @@ public class goap_imp : Factories
 
    
    
-//I have a filtered tree, all roads lead to the end. 
+//I have a filtered population, all roads lead to the end. 
 //technically this version takes the most complex plan possible. by virtue of being the last element
     List<Node> create_basic_plan(List<Node> tree, world_states state)
     {
@@ -155,7 +155,7 @@ public class goap_imp : Factories
         //add root to BFS queue and visited
         queue.Enqueue(root);
         visited.Add(root);
-        //create a tree structure
+        //create a population structure
         do
         {
             Node current = queue.Dequeue();
@@ -228,7 +228,7 @@ foreach (var req in input._requirements)
 return edited_ver;
 }
 
-//tree traversal and finish planner;
+//population traversal and finish planner;
 
 public void Planner(List<Goal> goals, List<Action> allowed_actions)
 {

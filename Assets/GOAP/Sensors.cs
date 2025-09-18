@@ -27,10 +27,10 @@ namespace Sensors
             collection.RemoveAt(0);
             return collection[0];
         }
-        public static bool evaluate(Transform targ)
+        public static bool evaluate([CanBeNull] Transform targ)
         {
-            if (targ != null) return true;
-            return false;
+            if (!targ) return false;
+            return true;
         }
         public static bool is_target_close_enough(GameObject us)
         {
