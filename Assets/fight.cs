@@ -35,7 +35,7 @@ public class fight : MonoBehaviour
         foreach (Action action in our_unit.plan)
         {
             var valid = validation(action, the_world);
-            Debug.Log("doing" +" "+  action.Name + " "+our_unit.plan.IndexOf(action) + " " + action.Cost);
+           Debug.Log("doing" +" "+  action.Name + " "+our_unit.plan.IndexOf(action) + " " + action.Cost);
             while (!valid)
             {
                 //RUN THE ACTION 
@@ -54,7 +54,7 @@ public class fight : MonoBehaviour
                 }
                 yield return new WaitForSeconds(0.1f);
             }
-            Debug.Log("passed " + " "+ action.Name);
+//            Debug.Log("passed " + " "+ action.Name);
         }
         //plan finished. tell parent
         our_unit.plan_finished = true;

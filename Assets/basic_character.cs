@@ -20,7 +20,7 @@ public class basic_character : MonoBehaviour
     public bool blocking;
     public bool stunned;
     public bool moving;
-	public float health;
+    private float health= 10f;
 
     public bool plan_finished;
     
@@ -43,7 +43,7 @@ public class basic_character : MonoBehaviour
     public ActionFactory actions;
     void Start()
     {
-        health = 10f;
+        
         if (!isdummy)
         {
             blocking = false;
@@ -61,23 +61,29 @@ public class basic_character : MonoBehaviour
             local_worldstate = new world_states();
             local_worldstate.init(null);
 
-            local_worldstate.add_state(belief_factory.grab_belief("moving").Name, (belief_factory.grab_belief("moving")._condition()));
-            local_worldstate.add_state(belief_factory.grab_belief("close_to_enemy").Name, (belief_factory.grab_belief("close_to_enemy")._condition()));
+            local_worldstate.add_state("moving",  belief_factory.grab_belief("moving")._condition());
+            local_worldstate.add_state("close_to_enemy", (belief_factory.grab_belief("close_to_enemy")._condition()));
             local_worldstate.add_state(belief_factory.grab_belief("is_enemy_alive").Name, (belief_factory.grab_belief("is_enemy_alive")._condition()));
             
             local_worldstate.add_state(belief_factory.grab_belief("starting_combo").Name, (belief_factory.grab_belief("starting_combo")._condition()));
-            local_worldstate.add_state(belief_factory.grab_belief("is_opponent_stunned").Name, (belief_factory.grab_belief("is_opponent_stunned")._condition()));
+            
+           // local_worldstate.add_state(belief_factory.grab_belief("is_opponent_stunned").Name, (belief_factory.grab_belief("is_opponent_stunned")._condition()));
             local_worldstate.add_state(belief_factory.grab_belief("enemy_exists").Name, (belief_factory.grab_belief("enemy_exists")._condition()));
-            local_worldstate.add_state(belief_factory.grab_belief("is_enemy_healthy").Name,belief_factory.grab_belief("is_enemy_healthy")._condition());
+            
+            local_worldstate.add_state(belief_factory.grab_belief("enemy_health").Name,belief_factory.grab_belief("enemy_health")._condition());
         }
     }
 
     
     
-
+    public float getHealth() { return health; }
     public void create_plan(ActionFactory factory)
     {
-        plan = goap.bPlanner(goals.return_goals(), local_worldstate, factory.return_actions());
+        plan = goap.bPlanner(goals.return_goals(), local_worldstate, factory.return_actions(), belief_factory);
+    }
+    public void take_damage(float value)
+    {
+        health -= value;
     }
     void FixedUpdate()
     {

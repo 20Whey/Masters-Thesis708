@@ -40,7 +40,6 @@ namespace Sensors
         public static bool is_paramater_within_range(float value, int limit)
         {
           return  (value < limit) ? true : false;
-    
         }
         
         public static bool set_moving(bool input, basic_character self)

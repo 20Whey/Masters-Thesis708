@@ -15,7 +15,7 @@ namespace Goap
         [CanBeNull] public int Id { get; set; }
 
     }
-    public interface IActionAdjacent : IGoapComponent, IHasRequirements,INeedsReference
+    public interface IActionAdjacent : IGoapComponent, IHasRequirements, INeedsReference
     {
         public float Cost { get; set; }
 
@@ -81,7 +81,7 @@ namespace Goap
 
     public class world_state
     {
-        public void init(KeyValuePair<string, bool> pair)
+        public void init(KeyValuePair<string, float> pair)
         {
             this.key = pair.Key;
             this.value = pair.Value;
@@ -90,7 +90,7 @@ namespace Goap
         {
             get; set;
         }
-        public bool value
+        public float value
         {
             get; set;
         }
@@ -104,7 +104,7 @@ namespace Goap
     {
         public static float convert_bool(bool input)
         {
-            return (input) ? 1.0f : 0.0f;
+            return (input) ? 0.0f : 1.0f;
         }
 
         public static bool convert_float(float input)
@@ -127,6 +127,8 @@ namespace Goap
                 states = new Dictionary<string, float>();
             }
         }
+
+ 
         /*     public void update(Factories.BeliefFactory bf)
         {
             foreach (KeyValuePair<string, bool> itm in states)
@@ -162,29 +164,36 @@ namespace Goap
             }
         }
         
-    
         public bool check_is_valid(string input, float value)
         {
-        if (has_state(input))
-            if (states[input] == value) return true;
-        
+          
+                if (states[input] == Math.Floor(value)) return true;
+            
             return false;
         }
        
           
         public bool comparison(string key, float value)
         {
+           // for (var i = 0; i < states.Count; i++){Debug.Log(key);}
+            if (states.ContainsKey(key))
+            {
                 if (states[key] == value) return true;
-            
+            }
             return false;
         }
         
    
         public void change_state((string, float) pair)
         {
-           
            states[pair.Item1] = pair.Item2;
         }
+
+        public void addition_state((string, float) pair)
+        {
+            states[pair.Item1] -= pair.Item2;
+//            Debug.Log(pair.Item1 + " " +pair.Item2);
+        }               
         public void add_state(string key, float val)
         {
             states.Add(key, val);

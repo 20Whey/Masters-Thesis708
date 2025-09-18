@@ -55,7 +55,7 @@ public class setup : MonoBehaviour
         foreach (var item in weights)
         {                                      
             basic_character.actions.grab_Action(item.name).Cost = item.value;
-            print(basic_character.actions.grab_Action(item.name).Name + " " + basic_character.actions.grab_Action(item.name).Cost );
+//            print(basic_character.actions.grab_Action(item.name).Name + " " + basic_character.actions.grab_Action(item.name).Cost );
         }
     }
     

@@ -48,8 +48,8 @@ namespace init
             
             bf.add_belief("enemy_exists", (() => rushed_additions.convert_bool(simple_game.evaluate(us.target))));
             
-            bf.add_numerical_belief("is_enemy_healthy",simple_game.get_closest_target(us.gameObject).GetComponent<basic_character>().health ,(() => rushed_additions.convert_bool(simple_game.is_paramater_within_range(simple_game.get_closest_target(us.gameObject).GetComponent<basic_character>().health, 0))));
-            
+            bf.add_numerical_belief("enemy_health",  simple_game.get_closest_target(us.gameObject).GetComponent<basic_character>().getHealth(),
+            0.0f,  simple_game.get_closest_target(us.gameObject).GetComponent<basic_character>().getHealth, "<");
             
             foreach (var itm in bf.Beliefs)
             {
@@ -73,17 +73,19 @@ namespace init
             var us = belief_factory.Agent.this_ob.GetComponent<basic_character>();
             Transform? opponent = belief_factory.Agent.this_ob.GetComponent<basic_character>().target;
             basic_character? opponentdat = opponent != null ? opponent.GetComponent<basic_character>() : null;
+            
+            
             af.add_action_to_list("Straight", () => null,0.5f, new []
-            {
+            { 
              ("close_to_enemy", 1.0f),
-             ("is_enemy_healthy", 1.0f),
             ( "moving", 0.0f ),
             ( "starting_combo", 0.0f )
             // {belief_factory.grab_belief("starting_combo"), 0.0f}
             }, new []
             {
+            ("enemy_health", -2.0f),
             ( "starting_combo", 1.0f ),
-            });
+            }, true, -1f);
 
             af.add_action_to_list("stop_moving", () => rushed_additions.convert_bool(simple_game.set_moving(false, us))
             ,0.5f,
@@ -91,32 +93,31 @@ namespace init
             {
             ( "moving", 1.0f )
             }, new [] {
-                ("moving", 0.0f ) });
-
-            af.add_action_to_list("Kick", () => null, 
+            ("moving", 0.0f ) });
             
-            0.5f,new []{( "close_to_enemy", 1.0f ),
-            ( "moving", 0.0f ),
-            ( "starting_combo", 1.0f )
-            // {belief_factory.grab_belief("starting_combo"), 0.0f}
-           } , new []
-            {
-            ( "starting_combo", 0.0f)
-            });
-
             af.add_action_to_list("move_to_enemy", () => rushed_additions.convert_bool(simple_game.set_moving(true, us)),
             0.5f,new []{
             ("enemy_exists", 1.0f),
             ( "close_to_enemy", 0.0f),
-            ("is_enemy_healthy", 1.0f),
+            ("is_enemy_alive", 1.0f),
 
-            ( "is_enemy_alive", 1.0f )
             },
             new []{
             ("close_to_enemy", 1.0f),
             ( "moving", 1.0f) 
             });
-
+            
+            af.add_action_to_list("Kick", () => null, 
+            0.5f,new []{
+            ( "close_to_enemy", 1.0f ),
+            ( "starting_combo", 1.0f )
+            // {belief_factory.grab_belief("starting_combo"), 0.0f}
+           } , new []
+            {
+              ("enemy_health", -2.0f),
+            ( "starting_combo", 0.0f)
+            }, true, -1f);
+            
             af.add_action_to_list("find_enemy",
             () => rushed_additions.convert_bool(simple_game.evaluate(us.target = simple_game.get_closest_target(us.self.this_ob))),
             0.5f, new[]
@@ -124,44 +125,45 @@ namespace init
             ("enemy_exists", 0.0f)
             }, new[]
             {
-            ("enemy_exists", 1.0f)
-            }, false);
-
-            af.add_action_to_list("bamboozle", () => rushed_additions.convert_bool(opponentdat.stunned = true),0.5f,new[]{
-                ("close_to_enemy", 1.0f),    
-                ("is_enemy_alive", 1.0f),
-                ("is_enemy_healthy", 1.0f),
-                ("is_opponent_stunned", 0.0f)
-                },new [] {
-            ( "is_opponent_stunned", 1.0f ),
-            ( "starting_combo", 1.0f )
-            });
+            ("enemy_exists", 1.0f),
+            ("is_enemy_alive", 1.0f)
+            
+            },false);
+/*
+            af.add_action_to_list("bamboozle", () => rushed_additions.convert_bool(opponentdat.stunned = true), 0.5f, new[]
+            {
+            ("close_to_enemy", 1.0f),
+            ("is_enemy_alive", 1.0f),
+            ("is_opponent_stunned", 0.0f)
+            }, new[]
+            {
+            ("is_opponent_stunned", 1.0f),
+            ("starting_combo", 1.0f)
+            }, true);
 
             af.add_action_to_list("follow_up_strike", (() => null),0.5f, new[]{
              ("is_opponent_stunned", 1.0f),
              ("is_enemy_alive", 1.0f),
-             ("is_enemy_healthy", 1.0f),
+             ("enemy_health", -4.0f),
              ("close_to_enemy", 1.0f) 
              }
             ,new []
             {
              ("starting_combo", 0.0f ),
              ("is_opponent_stunned", 0.0f) 
-            }
-            );
+            }, true
+            );*/
             //shadow of war style
             af.add_action_to_list("killing_blow", (() => null), 0.1f, new[]
             {
+            ("enemy_health", 0.0f),
             ("is_enemy_alive", 1.0f),
-            ("is_enemy_healthy", 1.0f),
-            ("close_to_enemy", 1.0f),
-            ("moving", 0.0f)
             }, new[]
             {
             ("is_enemy_alive", 0.0f)
             }, false);
             
-           // af.add_action_to_list("finish_off_enemy", (() => singleton.Instance.Destroy(opponent.gameObject)), 0.5f);
+            // af.add_action_to_list("finish_off_enemy", (() => singleton.Instance.Destroy(opponent.gameObject)), 0.5f);
             return af;
         }
     
@@ -169,8 +171,8 @@ namespace init
     public static Factories.GoalFactory  init_goal_factory(singleton singleton_ref)
       {
           var go =  new Factories.GoalFactory();
-          go.add_goal("kill_enemy", new KeyValuePair<string, bool>("is_enemy_alive", false), .5f, 
-          singleton_ref,"is_enemy_alive");
+          go.add_goal("kill_enemy", new KeyValuePair<string, float>("is_enemy_alive", 0.0f), .5f, 
+          singleton_ref,"enemy_health");
           return go;
       }
   }

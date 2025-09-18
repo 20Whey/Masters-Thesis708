@@ -16,7 +16,7 @@ namespace Production
         public class GoalFactory
         {
             readonly List<Goal> _goals = new List<Goal>();
-            public void add_goal(string name, KeyValuePair<string, bool> goal_validation,float priority, singleton singleton_ref,  params string[] beliefs)
+            public void add_goal(string name, KeyValuePair<string, float> goal_validation,float priority, singleton singleton_ref,  params string[] beliefs)
             {
                 _goals.Add(new Goal.Builder(name)
                 .set_goal_validation(goal_validation)
@@ -35,12 +35,13 @@ namespace Production
         {
             //may change costs
             public Dictionary<string, Action> actions = new Dictionary<string, Action>();
-            public void add_action_to_list(string name, Func<float?> func, float cost,(string, float)[] requirements, (string, float)[] impacts, bool is_mutable=true)
+            public void add_action_to_list(string name, Func<float?> func, float cost,(string, float)[] requirements, (string, float)[] impacts,bool is_mutable=true, float variable_impact=0f )
             {
                  this.actions.Add(name,new Action.Builder(name)
                 .add_function(func)
                 .add_impacts(impacts)
                 .add_requirement(requirements)
+                .set_variable_impact(variable_impact)
                 .set_mutable(is_mutable)
                 .modify_cost(cost)
                 .Build());
@@ -73,11 +74,14 @@ namespace Production
                 );
             }
 
-           public void add_numerical_belief(string identifier, float input,  Func<float> condition)
+           public void add_numerical_belief(string identifier, float input,  float target, Func<float> condition, string operation)
             {
                 Beliefs.Add(identifier, new Belief.Builder(identifier)
-                .add_numerical_target(input)
+                .add_numerical_target(target)
+                .add_numerical_start_point(input)
                 .add_sensor(condition)
+                .add_operator(operation)
+                .is_numbr()
                 .Build()
                 );
             }
@@ -116,7 +120,7 @@ namespace Production
             {
                 return rushed_additions.convert_bool(Vector2.Distance(Agent.this_ob.transform.position, position) < range);
             }
-
+            
            public Belief grab_belief(string identifier)
            {
                return this.Beliefs[identifier];
@@ -133,8 +137,12 @@ namespace Production
             public float Priority;
             public string Name { get; set; }
             public int Id { get; set; }
+            // we need to check against target value in tree.
+            public bool is_numerical;
             public Func<float> _condition = () => 0.0f;
+            [CanBeNull] public string operation;
             public float? _target_value;
+            public float? start_point;
             Func<UnityEngine.Vector2> _observedLocation = () => Vector2.zero;
             public UnityEngine.Vector2 Location;
             Func<UnityEngine.Transform> _observedTarget = () => GameObject.Instantiate(new GameObject()).transform;
@@ -142,6 +150,8 @@ namespace Production
             {
                 Name = name;
             }
+            
+        
             public class Builder
             {
                 //Beliefs are the agents eyes for a case by case 
@@ -153,6 +163,16 @@ namespace Production
                 public Builder add_sensor(Func<float> condition)
                 {
                     Belief._condition = condition;
+                    return this;
+                }
+                public Builder add_operator(string operation)
+                {
+                    Belief.operation = operation;
+                    return this;
+                }
+                public Builder is_numbr()
+                {
+                    Belief.is_numerical = true;
                     return this;
                 }
                 public Builder add_location(Func<Vector2> observedLocation)
@@ -170,7 +190,11 @@ namespace Production
                 Belief._target_value = value;
                 return this;
                 }
-                
+                public Builder add_numerical_start_point(float value)
+                {
+                    Belief.start_point = value;
+                    return this;
+                }
                 public Belief Build()
                 {
                     return this.Belief;
@@ -212,7 +236,7 @@ namespace Production
                 Goal.Priority = value;
                 return this;
             }
-            public Builder set_goal_validation(KeyValuePair<string, bool> state)
+            public Builder set_goal_validation(KeyValuePair<string, float> state)
             {
                 //refactor for subm
                 var c = new world_state();
@@ -238,7 +262,7 @@ namespace Production
             get;
             set;
         }
-        public object self
+        public object self 
         {
             get;
             set;
@@ -254,13 +278,11 @@ namespace Production
     {
         public bool is_mutable;
         public Func<float?> Func;
-      
+        public float sim_variable; 
         public Dictionary<string, float> _impact;
-        public bool has_requirements;
         public Action(string name)
         {
             this.Name = name;
-            this.has_requirements = true;
         }
         
         public class Builder
@@ -283,6 +305,11 @@ namespace Production
             public Builder add_function(Func<float?> func)
             {
                 action.Func = func;
+                return this;
+            }
+            public Builder set_variable_impact(float val)
+            {
+                action.sim_variable = val;
                 return this;
             }
             public Builder modify_cost(float cost)

@@ -39,7 +39,7 @@ namespace base_move_classes
        {
            if (!is_hot)
            {
-                us.target.GetComponent<basic_character>().health -= damage;
+                us.target.GetComponent<basic_character>().take_damage(damage);
                self.is_hot = true;
            }
        }
@@ -61,7 +61,7 @@ namespace base_move_classes
             {
                 target.stunned = true;
                 target.timer = stuns_dur; 
-                target.health -= damage;
+                target.take_damage(damage);
                 self.is_hot = true;
             }
             
