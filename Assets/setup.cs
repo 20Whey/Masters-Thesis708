@@ -27,22 +27,21 @@ public class setup : MonoBehaviour
 
     void Awake()
     {
-        if (simulation == null)
+       /* if (simulation == null)
         {
             simulation = Resources.Load(transform.parent.GetComponent<setup>().name) as GameObject;
-        }
+        }*/
       //  if (transform.parent != null) create_and_ready_sim(new Vector3(transform.parent.transform.position.x+10, 0,0), id);
-        create_and_ready_sim(new Vector3(1f,0,0), id); //setup root
+        create_and_ready_sim(); //setup root
         
         //grab sim
     }
     
-    public void create_and_ready_sim(Vector3 position, float id)
+    public void create_and_ready_sim()
     { 
         //transform.position = 
-    GameObject placed_sim = Instantiate(simulation, new Vector3(position.x+=id, 0,0), Quaternion.identity);
-    placed_sim.transform.SetParent(transform);
-    basic_character = gameObject.GetComponentInChildren<basic_character>();  //TAKE FIRST WEIGHTS AND APPLY THEM FOR GA VERYY IMPORTANTT
+    //GameObject placed_sim = Instantiate(simulation, new Vector3(0, 0,0), Quaternion.identity);
+   // basic_character = gameObject.GetComponentInChildren<basic_character>();  //TAKE FIRST WEIGHTS AND APPLY THEM FOR GA VERYY IMPORTANTT
   
     is_sim_setup = false;
     is_simulation_finished = false;

@@ -24,19 +24,24 @@ namespace GA_namespce
         //first_time_setup
         public GA_Agent(GameObject Node, int id)
         {
-            
+            //basic
             plan = new List<string>();
             allowed_actions = new  List<Action>();
             character = Node.GetComponent<setup>().basic_character;
-            //bug
             allowed_actions = character.actions.return_actions(); 
-            
             exposed_costs = new (string, float)?[allowed_actions.Count];
+            //bug
             exposed_Immutable_costs = new List<(string, float)>();
             fitness = 0f;
             this.id = id;
         }
 
+
+        public void more_complex_init(GA_Agent agent)
+        {
+            allowed_actions = character.actions.return_actions(); 
+            exposed_costs = new (string, float)?[allowed_actions.Count];
+        }
        //get actions
         public void prepare_for_operations()
         {

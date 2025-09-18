@@ -11,6 +11,7 @@ public class GA_imp : MonoBehaviour
     public GameObject Node;
     public int max_sim_number;
     public List<GA_Agent> population;
+    public GameObject rt;
     public GA_Agent root;
     public bool create_elites;
     public bool deploy;
@@ -24,7 +25,7 @@ public class GA_imp : MonoBehaviour
             List<GA_Agent> visited = new List<GA_Agent>();
             
             int count = 0;
-            root = new GA_Agent(Node, 0);
+            root = new GA_Agent(rt, 0);
             root.prepare_for_operations();
             queue.Enqueue(root);
             do
@@ -58,9 +59,11 @@ public class GA_imp : MonoBehaviour
         public List<GA_Agent> create_initial_population(int starting_population_size)
         {
             List<GA_Agent> population = new List<GA_Agent>();
+            root = new GA_Agent(rt, 0);
+            
             for (int i = 0; i < starting_population_size; i++)
             {
-                GA_Agent agent = new GA_Agent(Node, i);
+                GA_Agent agent = root.create_from(root);
                 agent.prepare_for_operations();
                 agent.mixup();
                 agent.rebind_costs(agent.exposed_costs);
@@ -73,10 +76,6 @@ public class GA_imp : MonoBehaviour
      /*   public List<GA_Agent> grab_elites(int starting_elites_size, List<GA_Agent> population)
         {
             //Some sort of linq devilry, find every unique plan combination in the list
-            
-            
-            
-            
             
             
         }*/
