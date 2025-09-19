@@ -25,7 +25,7 @@ public class GA_imp : MonoBehaviour
             List<GA_Agent> visited = new List<GA_Agent>();
             
             int count = 0;
-            root = new GA_Agent(rt, 0);
+            root = new GA_Agent(-1, null, rt);
             root.prepare_for_operations();
             queue.Enqueue(root);
             do
@@ -59,11 +59,11 @@ public class GA_imp : MonoBehaviour
         public List<GA_Agent> create_initial_population(int starting_population_size)
         {
             List<GA_Agent> population = new List<GA_Agent>();
-            root = new GA_Agent(rt, 0);
+            root = new GA_Agent(0, null, rt);
             
             for (int i = 0; i < starting_population_size; i++)
             {
-                GA_Agent agent = root.create_from(root);
+                GA_Agent agent = new GA_Agent(i, root,Node);
                 agent.prepare_for_operations();
                 agent.mixup();
                 agent.rebind_costs(agent.exposed_costs);

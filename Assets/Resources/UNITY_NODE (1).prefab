@@ -46,17 +46,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   placement_position: {x: 0, y: 0, z: 0}
-  simulation: {fileID: 2950117775732851686, guid: bdd59fc5bb9b78545ba70b134c5ffadc, type: 3}
+  simulation: {fileID: 2585756347429119941}
   id: 0
   be_silly: 0
-  basic_character: {fileID: 0}
+  basic_character: {fileID: 5407658027728963064}
   is_sim_setup: 0
   is_simulation_finished: 0
   weights:
   - name: Straight
     value: 0.5
   - name: Kick
-    value: 20
+    value: 0.5
   - name: stop_moving
     value: 0.5
   - name: move_to_enemy
@@ -64,13 +64,13 @@ MonoBehaviour:
   - name: find_enemy
     value: 0.5
   - name: bamboozle
-    value: 0.1
+    value: 0.5
   - name: Shove
     value: 0.5
   - name: Round_House
-    value: 0.5
+    value: 0.6
   - name: follow_up_strike
-    value: 0.1
+    value: 0.5
 --- !u!1001 &797875791649448995
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -128,6 +128,22 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bdd59fc5bb9b78545ba70b134c5ffadc, type: 3}
+--- !u!1 &2585756347429119941 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2950117775732851686, guid: bdd59fc5bb9b78545ba70b134c5ffadc, type: 3}
+  m_PrefabInstance: {fileID: 797875791649448995}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5407658027728963064 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4618797236073341403, guid: bdd59fc5bb9b78545ba70b134c5ffadc, type: 3}
+  m_PrefabInstance: {fileID: 797875791649448995}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8791113f7e0392b419650fd646d8eb6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6191151580919920203 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6843778467745649256, guid: bdd59fc5bb9b78545ba70b134c5ffadc, type: 3}

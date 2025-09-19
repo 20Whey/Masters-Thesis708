@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Production;
 using UnityEditor.Embree;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class setup : MonoBehaviour
 {
@@ -12,7 +13,7 @@ public class setup : MonoBehaviour
     public GameObject simulation;
     public List<Production.Action> plan;
     public int id;
-    public bool be_silly;
+    [FormerlySerializedAs("be_silly")] public bool run_plan;
     public basic_character basic_character;
     public bool is_sim_setup;
     public bool is_simulation_finished;
@@ -27,13 +28,14 @@ public class setup : MonoBehaviour
 
     void Awake()
     {
+        
        /* if (simulation == null)
         {
             simulation = Resources.Load(transform.parent.GetComponent<setup>().name) as GameObject;
         }*/
       //  if (transform.parent != null) create_and_ready_sim(new Vector3(transform.parent.transform.position.x+10, 0,0), id);
         create_and_ready_sim(); //setup root
-        
+        basic_character = gameObject.GetComponentInChildren<basic_character>();
         //grab sim
     }
     
@@ -41,11 +43,11 @@ public class setup : MonoBehaviour
     { 
         //transform.position = 
     //GameObject placed_sim = Instantiate(simulation, new Vector3(0, 0,0), Quaternion.identity);
-   // basic_character = gameObject.GetComponentInChildren<basic_character>();  //TAKE FIRST WEIGHTS AND APPLY THEM FOR GA VERYY IMPORTANTT
+      //TAKE FIRST WEIGHTS AND APPLY THEM FOR GA VERYY IMPORTANTT
   
     is_sim_setup = false;
     is_simulation_finished = false;
-    be_silly = true;
+    run_plan = false;
 
     }
     //create modified plan.
@@ -61,12 +63,12 @@ public class setup : MonoBehaviour
     void Update()
     {
        // if (basic_character.plan == null && !is_sim_setup)
-        if(be_silly){
+        if(run_plan){
             Debug.Log("setup plan");
             plug_in_action_weights();
             basic_character.create_plan(basic_character.actions);
             is_sim_setup = true;
-            be_silly = false;
+            run_plan = false;
             
             
         }

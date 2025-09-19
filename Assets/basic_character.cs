@@ -41,9 +41,11 @@ public class basic_character : MonoBehaviour
 
     public BeliefFactory belief_factory;
     public GoalFactory goals;
+    public basic_init  bsic_init;
     public ActionFactory actions;
     void Start()
     {
+        
         health = 10f;
         if (!isdummy)
         {
@@ -51,11 +53,12 @@ public class basic_character : MonoBehaviour
             stunned = false;
             moving = false;
             started_combo = false;
-            goap = singleton.GoapImp;
+            goap = new goap_imp();
             self = new character(gameObject);
 
             // Dictionary<string, basic_move> movedict = basic_init.create(new Dictionary<string, basic_move>());
             belief_factory = basic_init.init_belief_factory(self, singleton_ref);
+            
             actions = basic_init.init_action_factory(belief_factory, this);
 
             goals = basic_init.init_goal_factory(belief_factory, singleton_ref);

@@ -95,14 +95,14 @@ namespace init
             af.add_action_to_list("Shove", () => null, 
             
             0.5f,new []{
-            ( "close_to_enemy", true ),
             ( "moving", false ),
             ( "starting_combo", false )
 
             // {belief_factory.grab_belief("starting_combo"), false}
            } , new []
             {
-            ( "starting_combo", false)
+            ( "starting_combo", true),
+            ("opponent_stunned", true)
             });
 
             
@@ -120,18 +120,18 @@ namespace init
             
             af.add_action_to_list("Round_House", () => null, 
             0.5f,new []{( "close_to_enemy", true ),
-            ( "moving", true ),
-            ( "starting_combo", false)
+            ( "moving", false ),
+            ( "starting_combo", true )
             // {belief_factory.grab_belief("starting_combo"), false}
             } , new []
             {
-            ( "starting_combo", true),
+            ( "starting_combo", false) ,
             ("is_enemy_alive", false) 
             });
             
-            
             af.add_action_to_list("move_to_enemy", () => simple_game.set_moving(true, us),
             0.5f,new []{
+            ("enemy_exists", true),
             ( "close_to_enemy", false),
             ( "is_enemy_alive", true )
             },
@@ -141,26 +141,25 @@ namespace init
             });
             
             af.add_action_to_list("find_enemy", 
-            () => (input.target = simple_game.get_closest_target(us.self.this_ob)), 
+            () => (us.target = simple_game.get_closest_target(us.self.this_ob)), 
             0.5f,new [] {
-           ("is_enemy_alive", false)
+            ("enemy_exists", false)
            }, new []
            {
            ("is_enemy_alive", true),
+           ("enemy_exists", true)
            });
 
             af.add_action_to_list("bamboozle", () => (opponentdat.stunned = true),0.5f,new[]{
-                ("close_to_enemy", true),    
-                ("is_enemy_alive", true),
-                ("starting_combo", true ),
+                ("close_to_enemy", true),
                 ("is_opponent_stunned", false)
                 },new [] {
-            ("is_opponent_stunned", true )
+            ("is_opponent_stunned", true),
+            ("starting_combo", true)
             });
 
             af.add_action_to_list("follow_up_strike", (() => null),0.5f, new[]{
              ("is_opponent_stunned", true),
-             ("is_enemy_alive", true),
              ("close_to_enemy", true) 
              }
             ,new []

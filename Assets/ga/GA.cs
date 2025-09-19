@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 using Action = Production.Action;
@@ -9,7 +10,7 @@ using Random = UnityEngine.Random;
 
 namespace GA_namespce
 {
-
+    
     public class GA_Agent
     {
         public basic_character character;
@@ -22,20 +23,29 @@ namespace GA_namespce
         public List<(string, float)> exposed_Immutable_costs;
         public float fitness; //uniqueness
         //first_time_setup
-        public GA_Agent(GameObject Node, int id)
+        public GA_Agent(int id, [CanBeNull] GA_Agent root, GameObject Node /*predefined and created lil guy*/)
         {
             //basic
             plan = new List<string>();
-            allowed_actions = new  List<Action>();
-            character = Node.GetComponent<setup>().basic_character;
-            allowed_actions = character.actions.return_actions(); 
+            allowed_actions = new List<Action>();
+            if (root == null)
+            {
+                character = Node.GetComponent<setup>().basic_character;
+                allowed_actions = character.allowed_actions;
+            }
+            else
+            {
+                allowed_actions = root.character.actions.return_actions();
+            }
+            self = Node;
             exposed_costs = new (string, float)?[allowed_actions.Count];
             //bug
             exposed_Immutable_costs = new List<(string, float)>();
             fitness = 0f;
             this.id = id;
+            
         }
-
+       
 
         public void more_complex_init(GA_Agent agent)
         {
@@ -48,7 +58,7 @@ namespace GA_namespce
             for (var i = 0; i < allowed_actions.Count; i++)
             {
                 var curr_acc = allowed_actions.ElementAt(i);
-              //  allowed_actions.Add(curr_acc);
+                //allowed_actions.Add(curr_acc);
                 if (curr_acc.is_mutable)
                 {
                     exposed_costs[i] = (curr_acc.Name, curr_acc.Cost);
@@ -102,6 +112,8 @@ namespace GA_namespce
     
     public class GA
     {
+        
+        
        public static(string, float)[] create_deviants(GA_Agent first_agent, GA_Agent other_agent)
        {
            (string, float)[] random_simple_crossover(GA_Agent first_agent, GA_Agent other_agent)
