@@ -24,7 +24,7 @@ public class fight : MonoBehaviour
     {
         if (signal)
         {
-            StartCoroutine(run_action(character.current_world_state, character));
+            StartCoroutine(run_action(character.local_worldstate, character));
             signal = false;
         }
     }

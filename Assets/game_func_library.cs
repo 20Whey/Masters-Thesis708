@@ -71,6 +71,7 @@ namespace init
             af.add_action_to_list("Straight", () => null,0.5f, new []
             {
              ("close_to_enemy", true),
+            
             ( "moving", false ),
             ( "starting_combo", false )
             // {belief_factory.grab_belief("starting_combo"), false}
@@ -133,7 +134,6 @@ namespace init
             0.5f,new []{
             ("enemy_exists", true),
             ( "close_to_enemy", false),
-            ( "is_enemy_alive", true )
             },
             new []{
             ("close_to_enemy", true),
@@ -143,7 +143,6 @@ namespace init
             af.add_action_to_list("find_enemy", 
              () => simple_game.set_closest_target(us.self.this_ob), 
             0.5f,new [] {
-            ("enemy_exists", false), 
             ("is_enemy_alive", true),
            }, new []
            {

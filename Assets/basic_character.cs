@@ -36,8 +36,7 @@ public class basic_character : MonoBehaviour
 
 
     [CanBeNull] public List<Action> plan;
-    private world_states local_worldstate;
-    public world_states current_world_state;
+    public world_states local_worldstate;
     public goap_imp goap;
 
     public BeliefFactory belief_factory;
@@ -97,7 +96,6 @@ public class basic_character : MonoBehaviour
     {
         if (!isdummy)
         {
-            current_world_state = new world_states();
             for (var i = 0; i < singleton_ref.display_beliefsfr.Count; i++)
             {
                 //Debug.Log("triggered" + itm);
