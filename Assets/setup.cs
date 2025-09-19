@@ -56,8 +56,12 @@ public class setup : MonoBehaviour
         foreach (var item in weights)
         {                                      
             basic_character.actions.grab_Action(item.name).Cost = item.value;
-            print(basic_character.actions.grab_Action(item.name).Name + " " + basic_character.actions.grab_Action(item.name).Cost );
+          //  print(basic_character.actions.grab_Action(item.name).Name + " " + basic_character.actions.grab_Action(item.name).Cost );
         }
+        
+        basic_character.create_plan(basic_character.actions);
+        is_sim_setup = true;
+        run_plan = false;
     }
     
     void Update()
@@ -66,11 +70,6 @@ public class setup : MonoBehaviour
         if(run_plan){
             Debug.Log("setup plan");
             plug_in_action_weights();
-            basic_character.create_plan(basic_character.actions);
-            is_sim_setup = true;
-            run_plan = false;
-            
-            
         }
         if (basic_character.plan != null && is_sim_setup)
         {

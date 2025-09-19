@@ -53,9 +53,6 @@ public class GA_imp : MonoBehaviour
 
      //  var sortedDict = mx.OrderBy(pair => pair.Value).ToDictionary(pair => pair.Key, pair => pair.Value);
 
-
-
-
         public List<GA_Agent> create_initial_population(int starting_population_size)
         {
             List<GA_Agent> population = new List<GA_Agent>();
@@ -167,22 +164,5 @@ public class GA_imp : MonoBehaviour
                 grab_all_plans_and_return_uniques_as_elites(population);
                 create_elites = false;
             }
-
-
-
-
-
-
-
-
-
         }
-       
-
-
-
-        
-        
-    
-
 }

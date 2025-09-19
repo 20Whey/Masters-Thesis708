@@ -5,6 +5,7 @@ using Production;
 using Action = Production.Action;
 using Goal = Production.Goal;
 using JetBrains.Annotations;
+using UnityEngine;
 
 public class goap_imp : Factories
 {
@@ -25,7 +26,7 @@ public class goap_imp : Factories
 
 //adding in quick action float validation
     [CanBeNull]
-   Node grab_from_state(List<Node> tree, world_states input_worldstate)
+   List<Node> grab_from_state(List<Node> tree, world_states input_worldstate)
     {
         List<Node> matches = new List<Node>();
         for (var i = 0; i < tree.Count; i++)
@@ -36,58 +37,56 @@ public class goap_imp : Factories
                 matches.Add(tree[i]);
             }
         }
-        return compare_plans(matches)[0];
+/*        foreach (var itm in matches)
+        {
+            Debug.Log( itm.held_obj.Name + "" + itm.held_obj.Cost);
+        }*/
+        return compare_plans(matches);
     }
-   
-    List<Node> compare_plans(List<Node>possible_start_points)
-    {
-        List<(List<Node>, float)> plans  = new List<(List<Node>, float)>();
-        possible_start_points.ForEach( possible_start_point => plans.Add(create_weighted_plan( possible_start_point)));
-        plans.OrderByDescending(item => item.Item2);
 
+   /* List<Node> return_w_plan(List<Node> tree, world_states input_worldstate)
+    {
+        foreach (var VARIABLE in grab_from_state(tree, input_worldstate)){
+            
+        }
+    }*/
+    List<Node> compare_plans(List<Node> possible_start_points)
+    {
+        List<(List<Node>, float)> plans = new List<(List<Node>, float)>();
         List<List<Node>> ordered_plans = new List<List<Node>>(); 
+        
+        possible_start_points.ForEach(possible_start_point => plans.Add(create_weighted_plan(possible_start_point)));
+        
+        plans.OrderByDescending(item => item.Item2);
         plans.ForEach(item => ordered_plans.Add(item.Item1));
         
+        //This is supposed to be the lowest cost plan.
         return ordered_plans[0]; 
-
     }
-
     (List<Node>, float) create_weighted_plan(Node start)
     {
-        (List<Node>, float) plan = (new List<Node>(), 0f);
+        List<Node> nodes = new List<Node>();
         //where our worldstate reaches our target; 
-      
+        float w = start.held_obj.Cost;
         //get root
-        plan.Item1.Add(start);
-        plan.Item2 = start.held_obj.Cost;
+        nodes.Add(start);
         //  Node cNode = start;
         while (start.Parent != null)
         {
-            plan.Item1.Add(start);
-            plan.Item2 += start.held_obj.Cost;
+            nodes.Add(start);
+            w += start.held_obj.Cost;
             start = start.Parent;
         }
-        return plan;
+        return (nodes, w);
     }
-
-   
    
 //I have a filtered population, all roads lead to the end. 
-//technically this version takes the most complex plan possible. by virtue of being the last element
+
     List<Node> create_basic_plan(List<Node> tree, world_states state)
     {
-        List<Node> plan = new List<Node>();
         //where our worldstate reaches our target; 
-        Node start = grab_from_state(tree, state);
-        if (start == null) return null; // basically we cant do the goal.real k    
-        //get root
-        plan.Add(start);
-      //  Node cNode = start;
-        while (start.Parent != null)
-        {
-            plan.Add(start);
-            start = start.Parent;
-        }
+        List<Node> plan = grab_from_state(tree, state);
+        plan.ForEach(item => Debug.Log(item.held_obj.Name + "" + item.held_obj.Cost));
         return plan;
     }
 
@@ -206,7 +205,7 @@ public class goap_imp : Factories
 /*  }*/
 
   // consider breaking when queue gets too long and if there are no options left
-        } while (queue.Count > 0 && nm < 100);
+        } while (queue.Count > 0 && nm < 700);
 return visited;
 }
 //change input
@@ -230,20 +229,7 @@ return edited_ver;
 
 //population traversal and finish planner;
 
-public void Planner(List<Goal> goals, List<Action> allowed_actions)
-{
-//order by ascending
-IOrderedEnumerable<Goal> ordered_goals = goals.OrderBy(goal => goal.Priority);
-world_states simulated_worldstate = current_worldstate;
-foreach (var goal in ordered_goals)
-{
-  List<Node> tree = discover_tree(simulated_worldstate, goal, allowed_actions);
-  if (create_basic_plan(tree, simulated_worldstate) != null) ;
 
-
-
-}
-}
 
 [CanBeNull]
 public List<Action> bPlanner(List<Goal> goals, world_states worldstate, List<Action> allowed_actions)

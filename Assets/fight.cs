@@ -19,13 +19,12 @@ public class fight : MonoBehaviour
       // character = gameObject.GetComponent<basic_character>();
       moves = basic_init.create(moves);
    }
-    // Update is called once per frame
 
     void Update()
     {
         if (signal)
         {
-            StartCoroutine(run_action(character.local_worldstate, character));
+            StartCoroutine(run_action(character.current_world_state, character));
             signal = false;
         }
     }
@@ -34,26 +33,22 @@ public class fight : MonoBehaviour
     {
         foreach (Action action in our_unit.plan)
         {
-            var valid = validation(action, the_world);
            Debug.Log("doing" +" "+  action.Name + " "+our_unit.plan.IndexOf(action) + " " + action.Cost);
            
-            while (!valid)
+            while (!validation(action, the_world))
             {
-                
-                
                 //RUN THE ACTION 
                 //THIS WILL WORK FOR MOVES
             //    Debug.Log(action.Name);
                 if (moves.ContainsKey(action.Name))
                 {
                     moves[action.Name].do_move(our_unit);
-                    valid = true;
+                    break;
                 }
                 else
                 //we contain everything we need
                 { 
                     action.Func(); 
-                    break;
                 }
                 yield return new WaitForSeconds(0.1f);
             }

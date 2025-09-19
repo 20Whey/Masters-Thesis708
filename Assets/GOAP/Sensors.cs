@@ -27,10 +27,15 @@ namespace Sensors
             collection.RemoveAt(0);
             return collection[0];
         }
+        public static bool set_closest_target(GameObject current_car)
+        {
+            current_car.GetComponent<basic_character>().target = get_closest_target(current_car);
+            return true;
+        }
         public static bool evaluate([CanBeNull] Transform targ)
         {
-            if (!targ) return false;
-            return true;
+            if (targ != null) {return true;}
+            return false;
         }
         public static bool is_target_close_enough(GameObject us)
         {

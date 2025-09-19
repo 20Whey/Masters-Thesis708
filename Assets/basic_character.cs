@@ -36,7 +36,8 @@ public class basic_character : MonoBehaviour
 
 
     [CanBeNull] public List<Action> plan;
-    public world_states local_worldstate;
+    private world_states local_worldstate;
+    public world_states current_world_state;
     public goap_imp goap;
 
     public BeliefFactory belief_factory;
@@ -53,6 +54,7 @@ public class basic_character : MonoBehaviour
             stunned = false;
             moving = false;
             started_combo = false;
+           // target = null;
             goap = new goap_imp();
             self = new character(gameObject);
 
@@ -95,7 +97,8 @@ public class basic_character : MonoBehaviour
     {
         if (!isdummy)
         {
-            for (var i = 0; i < local_worldstate.states.Keys.Count; i++)
+            current_world_state = new world_states();
+            for (var i = 0; i < singleton_ref.display_beliefsfr.Count; i++)
             {
                 //Debug.Log("triggered" + itm);
                 var itm = local_worldstate.states.Keys.ElementAt(i);

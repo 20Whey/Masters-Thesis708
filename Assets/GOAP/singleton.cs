@@ -11,6 +11,8 @@ public class singleton : MonoBehaviour
 
     public Dictionary<string, Belief> global_beliefs;
     public goap_imp goap;
+
+    public bool signal;
     [System.Serializable]
     public struct displayed_beliefs
     {
@@ -41,6 +43,22 @@ public class singleton : MonoBehaviour
 
     void FixedUpdate()
     {
+
+        if (signal)
+        {
+            for (var i = 0; i < display_beliefsfr.Count; i++)
+            {
+                var db = new displayed_beliefs();
+
+                db.key = display_beliefsfr[i].key;
+                db.condition = retrieve_belief(display_beliefsfr[i].key)._condition();
+                
+                display_beliefsfr[i]=db;
+            }
+            
+            
+        }
+        
         
     }
 

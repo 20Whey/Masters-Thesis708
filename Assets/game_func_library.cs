@@ -141,12 +141,12 @@ namespace init
             });
             
             af.add_action_to_list("find_enemy", 
-            () => (us.target = simple_game.get_closest_target(us.self.this_ob)), 
+             () => simple_game.set_closest_target(us.self.this_ob), 
             0.5f,new [] {
-            ("enemy_exists", false)
+            ("enemy_exists", false), 
+            ("is_enemy_alive", true),
            }, new []
            {
-           ("is_enemy_alive", true),
            ("enemy_exists", true)
            });
 
