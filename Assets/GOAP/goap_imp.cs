@@ -61,7 +61,7 @@ public class goap_imp : Factories
         plans.ForEach(item => ordered_plans.Add(item.Item1));
         
         //This is supposed to be the lowest cost plan.
-        return ordered_plans[0]; 
+            return ordered_plans[0]; 
     }
     (List<Node>, float) create_weighted_plan(Node start)
     {
@@ -199,7 +199,7 @@ public class goap_imp : Factories
 
                         queue.Enqueue(c_child);
                         visited.Add(c_child);
-                        if (worldstate_validation(c_child.c_state, sim_state)) return visited;
+                      //  if (worldstate_validation(c_child.c_state, sim_state)) return visited;
                     }
             }
 /*  }*/

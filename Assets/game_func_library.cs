@@ -40,13 +40,13 @@ namespace init
 
             bf.add_belief("moving", () => bf.Agent.this_ob.GetComponent<basic_character>().moving);
 
-            bf.add_belief("is_enemy_alive", () => simple_game.evaluate(simple_game.get_closest_target(bf.Agent.this_ob)));
+            bf.add_belief("enemy_exists", () => simple_game.evaluate(simple_game.get_closest_target(bf.Agent.this_ob)));
 
             bf.add_belief("starting_combo", (() => bf.Agent.this_ob.GetComponent<basic_character>().started_combo));
 
             bf.add_belief("is_opponent_stunned", (() => simple_game.is_opponent_stunned(us)));
             
-            bf.add_belief("enemy_exists", (() => simple_game.evaluate(us.target)));
+            bf.add_belief("is_enemy_alive", (() => simple_game.evaluate(us.target)));
             foreach (var itm in bf.Beliefs)
             {
                 if (!singleton.global_beliefs.ContainsKey(itm.Key))
@@ -71,7 +71,6 @@ namespace init
             af.add_action_to_list("Straight", () => null,0.5f, new []
             {
              ("close_to_enemy", true),
-            
             ( "moving", false ),
             ( "starting_combo", false )
             // {belief_factory.grab_belief("starting_combo"), false}
@@ -89,9 +88,6 @@ namespace init
            
             }, new [] {
             ("moving", false ) });
-
-            
-            
             
             af.add_action_to_list("Shove", () => null, 
             
@@ -116,7 +112,7 @@ namespace init
             } , new []
             {
             ( "starting_combo", false) ,
-            ("is_enemy_alive", false) 
+            ("enemy_exists", false),
             });
             
             af.add_action_to_list("Round_House", () => null, 
@@ -127,12 +123,13 @@ namespace init
             } , new []
             {
             ( "starting_combo", false) ,
-            ("is_enemy_alive", false) 
+            ("enemy_exists", false),
+
             });
             
             af.add_action_to_list("move_to_enemy", () => simple_game.set_moving(true, us),
             0.5f,new []{
-            ("enemy_exists", true),
+            ("is_enemy_alive", true),
             ( "close_to_enemy", false),
             },
             new []{
@@ -143,10 +140,11 @@ namespace init
             af.add_action_to_list("find_enemy", 
              () => simple_game.set_closest_target(us.self.this_ob), 
             0.5f,new [] {
-            ("is_enemy_alive", true),
+            ("enemy_exists", true),
+            ("is_enemy_alive", false)
            }, new []
            {
-           ("enemy_exists", true)
+           ("is_enemy_alive", true)
            });
 
             af.add_action_to_list("bamboozle", () => (opponentdat.stunned = true),0.5f,new[]{
@@ -164,7 +162,7 @@ namespace init
             ,new []
             {
              ("starting_combo", false ),
-            ("is_enemy_alive", false),
+            ("enemy_exists", false),
              ("is_opponent_stunned", false) 
             }
             );
@@ -177,9 +175,20 @@ namespace init
     public static Factories.GoalFactory  init_goal_factory(Factories.BeliefFactory  belief_factory, singleton singleton_ref)
       {
           var go =  new Factories.GoalFactory();
-          go.add_goal("kill_enemy", new KeyValuePair<string, bool>("is_enemy_alive", false), .5f, 
-          singleton_ref,"is_enemy_alive");
+          /*  go.add_goal("kill_enemy", new KeyValuePair<string, bool>("is_enemy_alive", false), .5f, 
+          singleton_ref,"is_enemy_alive");*/
+          
+          go.add_goal("kill_all_enemies", new KeyValuePair<string, bool>("enemy_exists", false), .5f,
+          singleton_ref,"enemy_exists");
+          
+          
+          
           return go;
+          
+          
+          
+          
+          
       }
   }
 
