@@ -14,7 +14,7 @@ public class goap_imp : Factories
     //is Action valid
     bool action_validation(world_states simulated_worldstate, Action next_action)
     {
-        foreach (var item in next_action._requirements)
+        foreach (var item in next_action._impact)
         {
             if (!simulated_worldstate.comparison(item.Key, item.Value))
                 return false;

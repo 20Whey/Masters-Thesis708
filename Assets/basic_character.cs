@@ -72,8 +72,8 @@ public class basic_character : MonoBehaviour
             belief_factory.grab_belief("moving")._condition());
             local_worldstate.add_state(belief_factory.grab_belief("close_to_enemy").Name,
             belief_factory.grab_belief("close_to_enemy")._condition());
-            local_worldstate.add_state(belief_factory.grab_belief("is_enemy_alive").Name,
-            belief_factory.grab_belief("is_enemy_alive")._condition());
+            local_worldstate.add_state(belief_factory.grab_belief("is_target_set").Name,
+            belief_factory.grab_belief("is_target_set")._condition());
 
 
 
