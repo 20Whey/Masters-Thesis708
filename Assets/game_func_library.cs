@@ -40,13 +40,14 @@ namespace init
 
             bf.add_belief("moving", () => bf.Agent.this_ob.GetComponent<basic_character>().moving);
 
-            bf.add_belief("is_enemy_alive", () => simple_game.evaluate(simple_game.get_closest_target(bf.Agent.this_ob)));
+            bf.add_belief("is_enemy_alive", () =>  simple_game.evaluate(simple_game.get_closest_target(bf.Agent.this_ob)));
 
             bf.add_belief("starting_combo", (() => bf.Agent.this_ob.GetComponent<basic_character>().started_combo));
 
             bf.add_belief("is_opponent_stunned", (() => simple_game.is_opponent_stunned(us)));
             
-            bf.add_belief("enemy_exists", (() => simple_game.evaluate(us.target)));
+            bf.add_belief("is_target_set", (() => us.target));
+            
             foreach (var itm in bf.Beliefs)
             {
                 if (!singleton.global_beliefs.ContainsKey(itm.Key))
@@ -65,15 +66,14 @@ namespace init
         public static Factories.ActionFactory init_action_factory(Factories.BeliefFactory belief_factory, basic_character input)
         {
             var af = new Factories.ActionFactory();
-            var us = belief_factory.Agent.this_ob.GetComponent<basic_character>();
-            Transform? opponent = belief_factory.Agent.this_ob.GetComponent<basic_character>().target;
+            var us = input;
+            Transform? opponent = input.target;
             basic_character? opponentdat = opponent != null ? opponent.GetComponent<basic_character>() : null;
             af.add_action_to_list("Straight", () => null,0.5f, new []
             {
-             ("close_to_enemy", true),
-            
-            ( "moving", false ),
-            ( "starting_combo", false )
+            ( "starting_combo", false),
+            ("close_to_enemy", true),
+            ("is_target_set", true)
             // {belief_factory.grab_belief("starting_combo"), false}
             }, new []
             {
@@ -85,32 +85,30 @@ namespace init
             new []
             {
             ("close_to_enemy", true),
+            ("is_target_set", true),
             ( "moving", true )
-           
             }, new [] {
             ("moving", false ) });
 
             
-            
-            
             af.add_action_to_list("Shove", () => null, 
-            
             0.5f,new []{
-            ( "moving", false ),
-            ( "starting_combo", false )
+            ("starting_combo", false),
+            ("close_to_enemy", true),
+            ("is_target_set", true)
 
             // {belief_factory.grab_belief("starting_combo"), false}
            } , new []
             {
-            ( "starting_combo", true),
+            ("starting_combo", true),
             ("opponent_stunned", true)
             });
 
             
             af.add_action_to_list("Kick", () => null, 
             
-            0.5f,new []{( "close_to_enemy", true ),
-            ( "moving", false ),
+            0.5f,new []{
+            ("close_to_enemy", true),
             ( "starting_combo", true )
             // {belief_factory.grab_belief("starting_combo"), false}
             } , new []
@@ -120,36 +118,37 @@ namespace init
             });
             
             af.add_action_to_list("Round_House", () => null, 
-            0.5f,new []{( "close_to_enemy", true ),
-            ( "moving", false ),
-            ( "starting_combo", true )
-            // {belief_factory.grab_belief("starting_combo"), false}
+            0.5f,new []{
+            ( "starting_combo", true)
             } , new []
             {
-            ( "starting_combo", false) ,
+            ("starting_combo", false),
             ("is_enemy_alive", false) 
             });
             
             af.add_action_to_list("move_to_enemy", () => simple_game.set_moving(true, us),
             0.5f,new []{
-            ("enemy_exists", true),
-            ( "close_to_enemy", false),
+            ("is_target_set", true),
+            ("close_to_enemy", false),
             },
             new []{
-            ("close_to_enemy", true),
-            ( "moving", true) 
+            ("moving", true),
+            ("close_to_enemy",true)
             });
             
             af.add_action_to_list("find_enemy", 
-             () => simple_game.set_closest_target(us.self.this_ob), 
+             () => (simple_game.set_closest_target(us.self.this_ob)), 
             0.5f,new [] {
-            ("is_enemy_alive", true),
+           ("enemy_alive", true),
+            ("is_target_set", false)
            }, new []
            {
-           ("enemy_exists", true)
+           ("is_target_set", true),
+           ("enemy_alive", true)
            });
 
-            af.add_action_to_list("bamboozle", () => (opponentdat.stunned = true),0.5f,new[]{
+            af.add_action_to_list("bamboozle", () => (opponentdat.stunned = true),0.5f,
+            new[]{
                 ("close_to_enemy", true),
                 ("is_opponent_stunned", false)
                 },new [] {
@@ -157,19 +156,17 @@ namespace init
             ("starting_combo", true)
             });
 
-            af.add_action_to_list("follow_up_strike", (() => null),0.5f, new[]{
-             ("is_opponent_stunned", true),
-             ("close_to_enemy", true) 
+            af.add_action_to_list("follow_up_strike", (() => null),0.5f,
+            new[]{
+             ("is_opponent_stunned", true)
              }
             ,new []
             {
-             ("starting_combo", false ),
-            ("is_enemy_alive", false),
+             ("starting_combo", false),
+             ("is_enemy_alive", false),
              ("is_opponent_stunned", false) 
             }
             );
-            
-           // af.add_action_to_list("finish_off_enemy", (() => singleton.Instance.Destroy(opponent.gameObject)), 0.5f);
             return af;
         }
     

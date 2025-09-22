@@ -58,9 +58,9 @@ public class setup : MonoBehaviour
             basic_character.actions.grab_Action(item.name).Cost = item.value;
           //  print(basic_character.actions.grab_Action(item.name).Name + " " + basic_character.actions.grab_Action(item.name).Cost );
         }
-        
-        basic_character.create_plan(basic_character.actions);
         is_sim_setup = true;
+        basic_character.create_plan(basic_character.actions);
+
         run_plan = false;
     }
     

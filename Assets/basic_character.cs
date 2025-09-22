@@ -41,6 +41,7 @@ public class basic_character : MonoBehaviour
 
     public BeliefFactory belief_factory;
     public GoalFactory goals;
+    
     public basic_init  bsic_init;
     public ActionFactory actions;
     void Start()
@@ -63,15 +64,16 @@ public class basic_character : MonoBehaviour
             actions = basic_init.init_action_factory(belief_factory, this);
 
             goals = basic_init.init_goal_factory(belief_factory, singleton_ref);
+            
             local_worldstate = new world_states();
             local_worldstate.init(null);
 
-
-
             local_worldstate.add_state(belief_factory.grab_belief("moving").Name,
             belief_factory.grab_belief("moving")._condition());
+
             local_worldstate.add_state(belief_factory.grab_belief("close_to_enemy").Name,
             belief_factory.grab_belief("close_to_enemy")._condition());
+            
             local_worldstate.add_state(belief_factory.grab_belief("is_enemy_alive").Name,
             belief_factory.grab_belief("is_enemy_alive")._condition());
 
@@ -79,12 +81,12 @@ public class basic_character : MonoBehaviour
 
             local_worldstate.add_state(belief_factory.grab_belief("starting_combo").Name,
             belief_factory.grab_belief("starting_combo")._condition());
+            
             local_worldstate.add_state(belief_factory.grab_belief("is_opponent_stunned").Name,
             belief_factory.grab_belief("is_opponent_stunned")._condition());
-            local_worldstate.add_state(belief_factory.grab_belief("enemy_exists").Name,
-            belief_factory.grab_belief("enemy_exists")._condition());
-
-
+            
+            local_worldstate.add_state(belief_factory.grab_belief("is_target_set").Name,
+            belief_factory.grab_belief("is_target_set")._condition());
         }
 
     }

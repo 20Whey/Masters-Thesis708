@@ -37,6 +37,8 @@ public class goap_imp : Factories
                 matches.Add(tree[i]);
             }
         }
+        
+        
 /*        foreach (var itm in matches)
         {
             Debug.Log( itm.held_obj.Name + "" + itm.held_obj.Cost);
@@ -138,10 +140,6 @@ public class goap_imp : Factories
     [CanBeNull]
     public List<Node> discover_tree(world_states sim_state, Goal start, List<Action> allowed)
     {       
-        
-        
-        
-        
         //create root 
         int nm = 0;
         List<Node> visited = new List<Node>();
@@ -160,12 +158,10 @@ public class goap_imp : Factories
             Node current = queue.Dequeue();
             List<IActionAdjacent> potentialOptions = find_all_suitable_actions(current.c_state, allowed);
             //Debug.Log(potentialOptions.Count);
-               
             nm++;
             for (var i = 0; i < potentialOptions.Count; i++)
             {
                     var c_child = new Node(potentialOptions[i], nm);
-
                     current.add_child(c_child);
                     if (current.Parent != null )
                     {
@@ -199,7 +195,7 @@ public class goap_imp : Factories
 
                         queue.Enqueue(c_child);
                         visited.Add(c_child);
-                        if (worldstate_validation(c_child.c_state, sim_state)) return visited;
+                        if (worldstate_validation(c_child.c_state, sim_state)) Debug.Log("plan_hit");
                     }
             }
 /*  }*/
