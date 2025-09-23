@@ -115,7 +115,7 @@ namespace init
             af.add_action_to_list("Round_House", () => null, 
             0.5f,new []{
             ("close_to_enemy", true),
-            ("starting_combo", true )
+            ("starting_combo", true)
             // {belief_factory.grab_belief("starting_combo"), false}
             } , new []
             {

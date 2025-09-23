@@ -41,6 +41,7 @@ public class goap_imp : Factories
         {
             Debug.Log( itm.held_obj.Name + "" + itm.held_obj.Cost);
         }*/
+        
         return compare_plans(matches);
     }
 
@@ -86,10 +87,32 @@ public class goap_imp : Factories
     {
         //where our worldstate reaches our target; 
         List<Node> plan = grab_from_state(tree, state);
+        
         plan.ForEach(item => Debug.Log(item.held_obj.Name + "" + item.held_obj.Cost));
+        
         return plan;
     }
+    //silly version
+    public bool rough_filter(world_states current, Action other)
+    {
+        //if other has requirements
+        if (other._impact != null)
+        {
+            foreach (var req in other._impact)
+            {
+                if (current.has_state(req.Key))
+                {
+//                  Debug.Log(current.check_is_valid(req.Key, req.Value));
+                    if (current.check_is_valid(req.Key, req.Value)) return true;
+                }
+            }
+        }
+        return false;
+    }
 
+    
+    
+    
     //action validation
     public bool clean_filter(world_states current, Action other)
     {
@@ -115,7 +138,7 @@ public class goap_imp : Factories
         
         foreach (var act in allowed_actions)
         {
-            if (clean_filter(c_worldstate, act))
+            if (rough_filter(c_worldstate, act))
             {
                 naction_list.Add(act);
             }
@@ -138,10 +161,6 @@ public class goap_imp : Factories
     [CanBeNull]
     public List<Node> discover_tree(world_states sim_state, Goal start, List<Action> allowed)
     {       
-        
-        
-        
-        
         //create root 
         int nm = 0;
         List<Node> visited = new List<Node>();
@@ -175,7 +194,8 @@ public class goap_imp : Factories
                             //c_child is valid
                             var a = c_child.Parent.c_state;
 
-                            c_child.c_state.init(a);
+                            c_child.c_state.init(a); 
+                            
                             c_child.c_state.poor_copy(mutate_state(c_child.Parent.grab_state(), c_child.held_obj as Action));
 
                             queue.Enqueue(c_child);

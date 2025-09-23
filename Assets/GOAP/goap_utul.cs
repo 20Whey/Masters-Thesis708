@@ -148,10 +148,7 @@ namespace Goap
     
         public bool check_is_valid(string input, bool value)
         {
-        if (has_state(input))
-            if (states[input] == value) return true;
-        
-            return false;
+          return states[input] == value ?  true : false;
         }
        
           
