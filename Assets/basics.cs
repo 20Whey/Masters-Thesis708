@@ -55,8 +55,9 @@ namespace base_move_classes
             return base.setup(nm, dam, cd);
         }
 
-        public override void do_move(basic_character target)
+        public override void do_move(basic_character us)
         {
+            var target = us.target.gameObject.GetComponent<basic_character>();
             if (!is_hot)
             {
                 target.stunned = true;

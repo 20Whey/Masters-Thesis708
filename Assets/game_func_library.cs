@@ -21,7 +21,7 @@ namespace init
             moves.Add("Straight", new basic_move { }.setup("Straight", 1, 0.5f));
             moves.Add("Kick", new basic_move { }.setup("Kick", 2, 0.8f));
 
-            moves.Add("shove", new push_move { }.setup("shove", 1, 0.5f));
+            moves.Add("Shove", new stun_move() { }.setup("Shove", 0, 0.5f));
             moves.Add("bamboozle", new stun_move { }.setup("bamboozle", 0, 2f));
             moves.Add("follow_up_strike", new basic_move { }.setup("follow_up_strike", 3, 0.4f));
 
@@ -30,7 +30,7 @@ namespace init
             moves.Add("counter", new stun_move() { }.setup("counter", 3, 0.7f));
             return moves;
         }
-        public static Factories.BeliefFactory init_belief_factory(character slf, singleton singleton)
+        public static Factories.BeliefFactory init_belief_factory(character slf, manager singleton)
         {
             var bf = new Factories.BeliefFactory(slf);
             var us = bf.Agent.this_ob.GetComponent<basic_character>();
@@ -53,7 +53,7 @@ namespace init
                 {
                     singleton.global_beliefs.Add(itm.Key, itm.Value);
                 
-                        var bel = new singleton.displayed_beliefs();
+                        var bel = new manager.displayed_beliefs();
                         bel.key = itm.Key;
                         bel.condition = itm.Value._condition();
                         singleton.display_beliefsfr.Add(bel);
@@ -68,10 +68,13 @@ namespace init
             var us = belief_factory.Agent.this_ob.GetComponent<basic_character>();
             Transform? opponent = belief_factory.Agent.this_ob.GetComponent<basic_character>().target;
             basic_character? opponentdat = opponent != null ? opponent.GetComponent<basic_character>() : null;
+            
+            
+            
             af.add_action_to_list("Straight", () => null,0.5f, new []
             {
              ("close_to_enemy", true),
-            ( "starting_combo", false)
+             ( "starting_combo", false)
             // {belief_factory.grab_belief("starting_combo"), false}
             }, new []
             {
@@ -87,29 +90,25 @@ namespace init
             ("moving", false ) });
             
             af.add_action_to_list("Shove", () => null, 
-            
             0.5f,new []{
-            ( "moving", false ),
-            ( "starting_combo", false )
-
+            ( "close_to_enemy", true),
             // {belief_factory.grab_belief("starting_combo"), false}
-           } , new []
+            }, new []
             {
-            ( "starting_combo", true),
+            ("starting_combo", true),
             ("opponent_stunned", true)
             });
 
             
-            af.add_action_to_list("Kick", () => null, 
-            
-            0.5f,new []{
-            ("close_to_enemy", true),
-            ("starting_combo", true )
-            // {belief_factory.grab_belief("starting_combo"), false}
-            } , new []
+            af.add_action_to_list("Kick", () => null,0.5f, new []
             {
-            ( "starting_combo", false) ,
-            ("enemy_exists", false),
+            ("close_to_enemy", true),
+            ("is_target_set", true),
+            ("starting_combo", false)
+            // {belief_factory.grab_belief("starting_combo"), false}
+            }, new []
+            {
+            ( "starting_combo", true),
             });
             
             af.add_action_to_list("Round_House", () => null, 
@@ -145,14 +144,14 @@ namespace init
 
             af.add_action_to_list("bamboozle", () => (opponentdat.stunned = true),0.5f,new[]{
                 ("close_to_enemy", true),
-                ("is_opponent_stunned", false)
                 },new [] {
-            ("is_opponent_stunned", true),
-            ("starting_combo", true)
-            });
+                ("is_opponent_stunned", true),
+                ("starting_combo", true)
+                });
 
             af.add_action_to_list("follow_up_strike", (() => null),0.5f, new[]{
              ("is_opponent_stunned", true),
+             ("is_target_set", true),
              ("close_to_enemy", true) 
              }
             ,new []
@@ -168,7 +167,7 @@ namespace init
         }
     
 
-    public static Factories.GoalFactory  init_goal_factory(Factories.BeliefFactory  belief_factory, singleton singleton_ref)
+    public static Factories.GoalFactory  init_goal_factory(Factories.BeliefFactory  belief_factory, manager singleton_ref)
       {
           var go =  new Factories.GoalFactory();
           /*  go.add_goal("kill_enemy", new KeyValuePair<string, bool>("is_enemy_alive", false), .5f, 

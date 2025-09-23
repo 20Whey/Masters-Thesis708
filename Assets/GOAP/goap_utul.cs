@@ -75,7 +75,31 @@ namespace Goap
         {
             return this.c_state;
         }
+        
+    /* public void display_tree(List<Node> tree )
+     {
+         string indent = "";
+            Debug.Log(indent);
+            if (last)
+            {
+                Debug.Log("\\-");
+                indent += "  ";
+            }
+            else
+            {
+                Debug.Log("|-");
+                indent += "| ";
+            }
+            Debug.Log(Name);
+
+            for (int i = 0; i < Children.Count; i++)
+                Children[i].display_tree(indent, i == Children.Count - 1);
+        }*/
+        
+        
+        
     }
+    
 
 
 

@@ -33,10 +33,9 @@ public class fight : MonoBehaviour
     {
         foreach (Action action in our_unit.plan)
         {
-           Debug.Log("doing" +" "+  action.Name + " "+our_unit.plan.IndexOf(action) + " " + action.Cost);
-           
             while (!validation(action, the_world))
             {
+                Debug.Log("doing" +" "+  action.Name + " "+our_unit.plan.IndexOf(action) + "        " + action.Cost);
                 //RUN THE ACTION 
                 //THIS WILL WORK FOR MOVES
             //    Debug.Log(action.Name);
@@ -45,20 +44,19 @@ public class fight : MonoBehaviour
                     moves[action.Name].do_move(our_unit);
                     break;
                 }
-                else
                 //we contain everything we need
-                { 
+                
                     action.Func(); 
-                }
+                
+               
                 yield return new WaitForSeconds(0.1f);
             }
-         Debug.Log("passed " + " "+ action.Name);
+            Debug.Log("passed " + " "+ action.Name + " " + our_unit.plan.IndexOf(action));
         }
         //plan finished. tell parent
         our_unit.plan_finished = true;
     }
-
-
+    
     public bool validation(Action current, world_states the_world)
     {
         foreach (var itm in current._impact) 

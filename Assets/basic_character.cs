@@ -16,7 +16,7 @@ using Vector2 = UnityEngine.Vector2;
 public class basic_character : MonoBehaviour
 {
 
-    public singleton singleton_ref;
+    public manager singleton_ref;
     public bool isdummy;
     public bool blocking;
     public bool stunned;
@@ -61,13 +61,13 @@ public class basic_character : MonoBehaviour
             belief_factory = basic_init.init_belief_factory(self, singleton_ref);
             
             actions = basic_init.init_action_factory(belief_factory, this);
-
+ 
             goals = basic_init.init_goal_factory(belief_factory, singleton_ref);
             local_worldstate = new world_states();
             local_worldstate.init(null);
 
 
-
+      
             local_worldstate.add_state(belief_factory.grab_belief("moving").Name,
             belief_factory.grab_belief("moving")._condition());
             local_worldstate.add_state(belief_factory.grab_belief("close_to_enemy").Name,
@@ -102,7 +102,6 @@ public class basic_character : MonoBehaviour
                 var itm = local_worldstate.states.Keys.ElementAt(i);
                 local_worldstate.change_state((itm, singleton_ref.retrieve_belief(itm)._condition()));
             }
-
 //MOVE MEE
             if (moving)
             {

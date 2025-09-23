@@ -53,7 +53,8 @@ namespace Sensors
         }
         public static bool is_opponent_stunned(basic_character self)
         {
-            return self.stunned;
+            return get_closest_target(self.gameObject).gameObject.GetComponent<basic_character>().stunned;
+            //self.stunned;
         }
         public static bool did_opponent_hit_my_guard(basic_character self)
         {

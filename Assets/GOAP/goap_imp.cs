@@ -151,7 +151,6 @@ public class goap_imp : Factories
         foreach (var item in real_worldstate.states)
         {
        //     if (!sim_state.has_state(item.Key.Name)) return false;
-            
             if (!sim_state.comparison(item.Key, item.Value)) return false;
         }
         return true;

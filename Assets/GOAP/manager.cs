@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using Production;
 using UnityEngine;
 
-public class singleton : MonoBehaviour
+public class manager : MonoBehaviour
 {
     public static goap_imp GoapImp = new goap_imp();
 

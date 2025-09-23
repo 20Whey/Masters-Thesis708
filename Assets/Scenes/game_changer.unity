@@ -128,8 +128,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 917989723}
-  - component: {fileID: 917989725}
   - component: {fileID: 917989726}
+  - component: {fileID: 917989727}
   m_Layer: 0
   m_Name: SIM_MANAGER
   m_TagString: Untagged
@@ -152,20 +152,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &917989725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 917989722}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b233af03143bf846862239a097eb92f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  signal: 0
-  display_beliefsfr: []
 --- !u!114 &917989726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,12 +164,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f2625b4947910c4ca679d19fe4f355c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Node: {fileID: 1071984067652774726, guid: deadedc3c965045468508ba1a5e492a0, type: 3}
+  Node: {fileID: 7182240406817852440, guid: 4e2ae8754ff3a944b85c6ff7dd85a2f9, type: 3}
   max_sim_number: 300
   rt: {fileID: 2932166701966348571}
   create_elites: 0
   deploy: 0
   start: 0
+--- !u!114 &917989727
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917989722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e640b683c69d0184e87c58dd3af00cb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1495302850
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,8 +491,6 @@ MonoBehaviour:
   weights:
   - name: Straight
     value: 0.5
-  - name: Kick
-    value: 0.5
   - name: stop_moving
     value: 0.5
   - name: move_to_enemy
@@ -652,10 +648,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 9026547858349004585}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b233af03143bf846862239a097eb92f, type: 3}
+  m_Script: {fileID: 11500000, guid: 7571e0aecacbb214eb99faed9822c29d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  signal: 1
+  signal: 0
   display_beliefsfr: []
 --- !u!4 &5948381982909153806
 Transform:
