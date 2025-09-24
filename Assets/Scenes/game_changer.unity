@@ -638,7 +638,7 @@ MonoBehaviour:
   finishing_combo: 0
   struck: 0
   timer: 0
-  target: {fileID: 0}
+  target: {fileID: 6019989080931548367}
 --- !u!114 &5433884436463253281
 MonoBehaviour:
   m_ObjectHideFlags: 0

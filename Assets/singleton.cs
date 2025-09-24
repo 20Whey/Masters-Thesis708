@@ -1,6 +1,7 @@
 using UnityEngine;
 
-public class singleton : MonoBehaviour
+public class 
+singleton : MonoBehaviour
 {
     public static singleton Instance { get; set; }
     

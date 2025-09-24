@@ -24,18 +24,25 @@ public class fight : MonoBehaviour
     {
         if (signal)
         {
+            for (var i = 0; i < character.plan.Count; i++)
+            {
+                Debug.Log(character.plan[i].Name);
+            }
+
             StartCoroutine(run_action(character.local_worldstate, character));
             signal = false;
         }
     }
 
-    public IEnumerator run_action(world_states the_world, basic_character our_unit )
+    public IEnumerator run_action(world_states the_world, basic_character our_unit)
     {
-        foreach (Action action in our_unit.plan)
+     
+
+    foreach (Action action in our_unit.plan)
         {
             while (!validation(action, the_world))
             {
-                Debug.Log("doing" +" "+  action.Name + " "+our_unit.plan.IndexOf(action) + "        " + action.Cost);
+           //     Debug.Log("doing" +" "+  action.Name + " "+our_unit.plan.IndexOf(action) + "        " + action.Cost);
                 //RUN THE ACTION 
                 //THIS WILL WORK FOR MOVES
             //    Debug.Log(action.Name);
@@ -51,7 +58,7 @@ public class fight : MonoBehaviour
                
                 yield return new WaitForSeconds(0.1f);
             }
-            Debug.Log("passed " + " "+ action.Name + " " + our_unit.plan.IndexOf(action));
+        //    Debug.Log("passed " + " "+ action.Name + " " + our_unit.plan.IndexOf(action));
         }
         //plan finished. tell parent
         our_unit.plan_finished = true;

@@ -88,7 +88,7 @@ public class goap_imp : Factories
         //where our worldstate reaches our target; 
         List<Node> plan = grab_from_state(tree, state);
         
-        plan.ForEach(item => Debug.Log(item.held_obj.Name + "" + item.held_obj.Cost));
+//        plan.ForEach(item => Debug.Log(item.held_obj.Name + "" + item.held_obj.Cost));
         
         return plan;
     }
@@ -178,7 +178,6 @@ public class goap_imp : Factories
             Node current = queue.Dequeue();
             List<IActionAdjacent> potentialOptions = find_all_suitable_actions(current.c_state, allowed);
             //Debug.Log(potentialOptions.Count);
-               
             nm++;
             for (var i = 0; i < potentialOptions.Count; i++)
             {
@@ -218,13 +217,13 @@ public class goap_imp : Factories
 
                         queue.Enqueue(c_child);
                         visited.Add(c_child);
-                      //  if (worldstate_validation(c_child.c_state, sim_state)) return visited;
+                        if (worldstate_validation(c_child.c_state, sim_state)) return visited;
                     }
             }
 /*  }*/
 
   // consider breaking when queue gets too long and if there are no options left
-        } while (queue.Count > 0 && nm < 700);
+        } while (nm < 1000);
 return visited;
 }
 //change input

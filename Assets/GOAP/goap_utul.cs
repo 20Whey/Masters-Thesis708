@@ -39,10 +39,10 @@ namespace Goap
     
     public class Node
     {
-        public Node(IActionAdjacent heldObj, int id)
+        public Node(IActionAdjacent heldObj, int layer)
         {
             held_obj = heldObj;
-            Id = id;
+            Layer = layer;
             Children = new List<Node>();
             Parent = null;
             c_state = new world_states();
@@ -64,7 +64,7 @@ namespace Goap
             Children.Remove(child);
         }
 
-        public int Id
+        public int Layer
         {
             get;
             set;
@@ -172,12 +172,15 @@ namespace Goap
     
         public bool check_is_valid(string input, bool value)
         {
-          return states[input] == value ?  true : false;
+            if(states[input] == value) return true;
+
+            return false;
         }
        
           
         public bool comparison(string key, bool value)
         {
+            if(has_state(key))
                 if (states[key] == value) return true;
             
             return false;
