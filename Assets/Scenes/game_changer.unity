@@ -368,6 +368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76ba5add78c163149acdb204358fed02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timer: 0
   started: 0
   signal: 0
   character: {fileID: 5407658026974728596}
@@ -502,7 +503,7 @@ MonoBehaviour:
   - name: Shove
     value: 0.5
   - name: Round_House
-    value: 0.6
+    value: 0.5
   - name: follow_up_strike
     value: 0.5
 --- !u!212 &4260342618987343387
@@ -638,7 +639,7 @@ MonoBehaviour:
   finishing_combo: 0
   struck: 0
   timer: 0
-  target: {fileID: 6019989080931548367}
+  target: {fileID: 0}
 --- !u!114 &5433884436463253281
 MonoBehaviour:
   m_ObjectHideFlags: 0

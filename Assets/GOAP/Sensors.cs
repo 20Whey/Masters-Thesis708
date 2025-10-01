@@ -15,7 +15,7 @@ namespace Sensors
         //can see closest car
         public static Transform get_closest_target(GameObject current_car)
         {
-            GameObject containrer = GameObject.Find("Agents");
+            Transform containrer = current_car.transform.parent;
             int count = containrer.transform.childCount;
             List<Transform> collection = new List<Transform>();
             for (var i = 0; i < count; i++)

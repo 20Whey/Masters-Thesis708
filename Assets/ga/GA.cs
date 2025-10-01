@@ -43,7 +43,6 @@ namespace GA_namespce
             exposed_Immutable_costs = new List<(string, float)>();
             fitness = 0f;
             this.id = id;
-            
         }
        
 

@@ -10,6 +10,7 @@ using Unity.Collections;
 using Action = Production.Action;
 public class fight : MonoBehaviour
 {
+    public double timer = 0f;
     public bool started;
     public bool signal = false;
     private Dictionary<string, basic_move> moves;
@@ -30,14 +31,15 @@ public class fight : MonoBehaviour
             }
 
             StartCoroutine(run_action(character.local_worldstate, character));
+            timer += 0.01f;
             signal = false;
         }
+
+        if (timer != 0f &&  !character.plan_finished) timer += Time.deltaTime;
     }
 
     public IEnumerator run_action(world_states the_world, basic_character our_unit)
     {
-     
-
     foreach (Action action in our_unit.plan)
         {
             while (!validation(action, the_world))
@@ -49,6 +51,7 @@ public class fight : MonoBehaviour
                 if (moves.ContainsKey(action.Name))
                 {
                     moves[action.Name].do_move(our_unit);
+                    yield return new WaitForSeconds(moves[action.Name].cooldown);
                     break;
                 }
                 //we contain everything we need

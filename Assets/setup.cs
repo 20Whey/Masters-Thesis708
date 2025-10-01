@@ -1,6 +1,7 @@
     using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using GA_namespce;
 using Production;
 using UnityEditor.Embree;
 using UnityEngine;
@@ -16,6 +17,8 @@ public class setup : MonoBehaviour
     [FormerlySerializedAs("be_silly")] public bool run_plan;
     public basic_character basic_character;
     public bool is_sim_setup;
+    
+    public GA_Agent GA_reference;
     public bool is_simulation_finished;
     [Serializable]
     public struct weight_obj
@@ -28,7 +31,6 @@ public class setup : MonoBehaviour
 
     void Awake()
     {
-        
        /* if (simulation == null)
         {
             simulation = Resources.Load(transform.parent.GetComponent<setup>().name) as GameObject;
@@ -36,14 +38,15 @@ public class setup : MonoBehaviour
       //  if (transform.parent != null) create_and_ready_sim(new Vector3(transform.parent.transform.position.x+10, 0,0), id);
         create_and_ready_sim(); //setup root
         basic_character = gameObject.GetComponentInChildren<basic_character>();
+        
         //grab sim
     }
     
     public void create_and_ready_sim()
     { 
         //transform.position = 
-    //GameObject placed_sim = Instantiate(simulation, new Vector3(0, 0,0), Quaternion.identity);
-      //TAKE FIRST WEIGHTS AND APPLY THEM FOR GA VERYY IMPORTANTT
+        //GameObject placed_sim = Instantiate(simulation, new Vector3(0, 0,0), Quaternion.identity);
+        //TAKE FIRST WEIGHTS AND APPLY THEM FOR GA VERYY IMPORTANTT
   
     is_sim_setup = false;
     is_simulation_finished = false;
@@ -56,7 +59,7 @@ public class setup : MonoBehaviour
         foreach (var item in weights)
         {                                      
             basic_character.actions.grab_Action(item.name).Cost = item.value;
-          //  print(basic_character.actions.grab_Action(item.name).Name + " " + basic_character.actions.grab_Action(item.name).Cost );
+            //  print(basic_character.actions.grab_Action(item.name).Name + " " + basic_character.actions.grab_Action(item.name).Cost );
         }
         
         basic_character.create_plan(basic_character.actions);
@@ -80,8 +83,8 @@ public class setup : MonoBehaviour
 
         if (basic_character.plan_finished)
         {
+           // GA_reference.character.plan = plan;
             is_simulation_finished = true;
-            
         }
     }
 

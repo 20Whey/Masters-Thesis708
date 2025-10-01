@@ -54,15 +54,15 @@ public class goap_imp : Factories
     List<Node> compare_plans(List<Node> possible_start_points)
     {
         List<(List<Node>, float)> plans = new List<(List<Node>, float)>();
-        List<List<Node>> ordered_plans = new List<List<Node>>(); 
+        List<List<Node>> ordered_plans = new List<List<Node>>();
         
         possible_start_points.ForEach(possible_start_point => plans.Add(create_weighted_plan(possible_start_point)));
         
-        plans.OrderByDescending(item => item.Item2);
+        plans = plans.OrderBy(item => item.Item2).ToList();
         plans.ForEach(item => ordered_plans.Add(item.Item1));
         
         //This is supposed to be the lowest cost plan.
-            return ordered_plans[0]; 
+            return ordered_plans[0];
     }
     (List<Node>, float) create_weighted_plan(Node start)
     {
@@ -203,6 +203,7 @@ public class goap_imp : Factories
                         }
                         else
                         {
+                            
                             current.remove_child(c_child);
                         }
                     }
@@ -214,7 +215,6 @@ public class goap_imp : Factories
 
                         c_child.c_state.init(b);
                         c_child.c_state.poor_copy(mutate_state(c_child.Parent.grab_state(), c_child.held_obj as Action));
-
                         queue.Enqueue(c_child);
                         visited.Add(c_child);
                         if (worldstate_validation(c_child.c_state, sim_state)) return visited;

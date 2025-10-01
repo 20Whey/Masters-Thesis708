@@ -6,13 +6,10 @@ using base_move_classes;
 using Goap;
 using Production;
 using Sensors;
-using Unity.Mathematics;
-
 
 
 namespace init
 {
-
     public class basic_init
     {
         public static Dictionary<string, basic_move> create(Dictionary<string, basic_move> moves)
@@ -23,7 +20,7 @@ namespace init
 
             moves.Add("Shove", new stun_move() { }.setup("Shove", 0, 0.5f));
             moves.Add("bamboozle", new stun_move { }.setup("bamboozle", 0, 2f));
-            moves.Add("follow_up_strike", new basic_move { }.setup("follow_up_strike", 3, 0.4f));
+            moves.Add("follow_up_strike", new basic_move { }.setup("follow_up_strike", 3, 1f));
 
             moves.Add("Round_House", new basic_move { }.setup("Round_House", 2, 0.4f));
             moves.Add("guard_up", new block_move() { }.setup("guard_up", 0, 1.2f));
@@ -69,6 +66,7 @@ namespace init
             Transform? opponent = belief_factory.Agent.this_ob.GetComponent<basic_character>().target;
             basic_character? opponentdat = opponent != null ? opponent.GetComponent<basic_character>() : null;
             
+            
             af.add_action_to_list("find_enemy", 
             () => simple_game.set_closest_target(us.self.this_ob), 
             0.5f,new [] {
@@ -90,6 +88,7 @@ namespace init
             ("close_to_enemy", true)
             });
 
+            
             af.add_action_to_list("stop_moving", () => simple_game.set_moving(false, us)
             ,0.5f,
             new []
@@ -101,14 +100,15 @@ namespace init
             });
 
             
-            af.add_action_to_list("Straight", () => null,0.5f, new []
-            {
-             ("close_to_enemy", true),
-             ("moving", false)
+            af.add_action_to_list("Straight", () => null, 
+            0.5f,new []{
+            ( "close_to_enemy", true),
+            ("moving", false),
+            ("starting_combo", false)
             // {belief_factory.grab_belief("starting_combo"), false}
             }, new []
             {
-            ( "starting_combo", true),
+            ("starting_combo", true),
             });
 
            
@@ -117,7 +117,6 @@ namespace init
             ( "close_to_enemy", true),
             ("moving", false),
             ("starting_combo", false)
-
             // {belief_factory.grab_belief("starting_combo"), false}
             }, new []
             {
@@ -138,7 +137,7 @@ namespace init
             
             af.add_action_to_list("Round_House", () => null, 
             0.5f,new []{
-            ("is_opponent_stunned", true)
+            ("starting_combo", true)
             } , new []
             {
             ("enemy_exists", false)
@@ -152,7 +151,6 @@ namespace init
                 },new [] {
                 ("is_opponent_stunned", true),
                 ("starting_combo", false),
-
                 });
 
             af.add_action_to_list("follow_up_strike", (() => null),0.5f, new[]{

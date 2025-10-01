@@ -57,10 +57,9 @@ public class GA_imp : MonoBehaviour
         {
             List<GA_Agent> population = new List<GA_Agent>();
             root = new GA_Agent(0, null, rt);
-            
             for (int i = 0; i < starting_population_size; i++)
             {
-                GA_Agent agent = new GA_Agent(i, root,Node);
+                GA_Agent agent = new(i, root,Node);
                 agent.prepare_for_operations();
                 agent.mixup();
                 agent.rebind_costs(agent.exposed_costs);
@@ -89,7 +88,7 @@ public class GA_imp : MonoBehaviour
         {
             
         }
-*/        public List<GA_Agent> grab_all_plans_and_return_uniques_as_elites(List<GA_Agent> population)
+*/      public List<GA_Agent> grab_all_plans_and_return_uniques_as_elites(List<GA_Agent> pop)
         {
             void is_unique(List<GA_Agent> unique_sequence, GA_Agent input)
             {
@@ -104,15 +103,15 @@ public class GA_imp : MonoBehaviour
                     {
                         return;
                     }
-                }
-                unique_sequence.Add(input);
+                } 
+                unique_sequence.Add(input); 
             }
-            
             List<GA_Agent> unique_entries = new List<GA_Agent>();
             List<GA_Agent> all_plans = new List<GA_Agent>();
-            
-            foreach (var item in population)
+            foreach (var item in pop)
             {
+                var c = item.id;
+                
                 for (int a = 0; a < item.character.plan.Count; a++)
                 {
                     item.plan.Add(item.character.plan[a].Name);
@@ -130,38 +129,60 @@ public class GA_imp : MonoBehaviour
             return unique_entries;
         }
 
+        public List<GA_Agent> return_elite_agents_via_time_fitness(List<GA_Agent> pop)
+        {
+            List<GA_Agent> elites = pop.OrderBy(item => item.character.timer).Take(max_sim_number/10).ToList();
+                
+            return elites;
+        }
 
-    
+        public void simulate(List<GA_Agent> pop)
+        {
+            int index = 0;
+            do
+            {
+                GA_Agent item = pop[index];
+                var gm = Instantiate(Node, new Vector3(item.id*5,0f,0f), Quaternion.identity);
+                var comp = gm.GetComponent<setup>();
+                item.character = comp.basic_character;
+                comp.id = item.id;
+                comp.GA_reference = item;
+                for (var i = 0; i < item.wrapped_costs.Length; i++)
+                { 
+                    comp.weights[i].name = item.wrapped_costs[i].Item1;
+                    comp.weights[i].value = item.wrapped_costs[i].Item2;
+                }
+                comp.run_plan = true;
+                index += 1;
+            } while (index < pop.Count);
+            Debug.Log(pop.Count);
+        }
         void Update()
         {
             if (start) 
             {
                 population = create_initial_population(100);
                 start = false;
-            }
+            }   
 
             if (deploy)
             {
-                foreach (var item in population)
-                {
-                    var gm = Instantiate(Node, new Vector3(item.id*5,0f,0f), Quaternion.identity);
-                    var comp = gm.GetComponent<setup>();
-                    comp.id = item.id;
-                    
-                    for (var i = 0; i < item.wrapped_costs.Length; i++)
-                    {
-                        //Debug.Log(itm.Item1 +" "+ itm.Item2);  itm.Item2
-                        comp.weights[i].name = item.wrapped_costs[i].Item1;
-                        comp.weights[i].value = item.wrapped_costs[i].Item2;
-                    }
-                }
                 
-            deploy = false;
+                //GA LOOP
+                simulate(population);
+                
+                
+                
+                
+                
+                
+                
+                
+                deploy = false;
             }
-
             if (create_elites)
             {
-                grab_all_plans_and_return_uniques_as_elites(population);
+                return_elite_agents_via_time_fitness(population);
                 create_elites = false;
             }
         }

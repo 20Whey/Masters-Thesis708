@@ -112,7 +112,7 @@ MonoBehaviour:
   finishing_combo: 0
   struck: 0
   timer: 0
-  target: {fileID: 5133556300811050449}
+  target: {fileID: 0}
 --- !u!50 &6021026122451817344
 Rigidbody2D:
   serializedVersion: 5
