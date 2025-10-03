@@ -101,12 +101,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8791113f7e0392b419650fd646d8eb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  f_script: {fileID: 676528632867857590}
+  prefab_parent: {fileID: 7182240406817852440}
   singleton_ref: {fileID: 3392009218903424814}
   isdummy: 1
   blocking: 0
   stunned: 0
   moving: 0
   health: 0
+  destroy_self: 0
   plan_finished: 0
   started_combo: 0
   finishing_combo: 0
@@ -218,6 +221,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76ba5add78c163149acdb204358fed02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timer: 0
   started: 0
   signal: 0
   character: {fileID: 8621581630294436064}
@@ -337,12 +341,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8791113f7e0392b419650fd646d8eb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  f_script: {fileID: 676528632867857590}
+  prefab_parent: {fileID: 7182240406817852440}
   singleton_ref: {fileID: 3392009218903424814}
   isdummy: 0
   blocking: 0
   stunned: 0
   moving: 0
   health: 5
+  destroy_self: 0
   plan_finished: 0
   started_combo: 0
   finishing_combo: 0

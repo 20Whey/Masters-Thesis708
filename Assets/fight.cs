@@ -27,7 +27,7 @@ public class fight : MonoBehaviour
         {
             for (var i = 0; i < character.plan.Count; i++)
             {
-                Debug.Log(character.plan[i].Name);
+          //      Debug.Log(character.plan[i].Name);
             }
 
             StartCoroutine(run_action(character.local_worldstate, character));
@@ -51,7 +51,7 @@ public class fight : MonoBehaviour
                 if (moves.ContainsKey(action.Name))
                 {
                     moves[action.Name].do_move(our_unit);
-                    yield return new WaitForSeconds(moves[action.Name].cooldown);
+                    timer += moves[action.Name].cooldown;
                     break;
                 }
                 //we contain everything we need

@@ -160,6 +160,8 @@ public class goap_imp : Factories
     [CanBeNull]
     public List<Node> discover_tree(world_states sim_state, Goal start, List<Action> allowed)
     {       
+
+        
         //create root 
         int nm = 0;
         List<Node> visited = new List<Node>();
@@ -172,6 +174,9 @@ public class goap_imp : Factories
         //add root to BFS queue and visited
         queue.Enqueue(root);
         visited.Add(root);
+        
+        
+        
         //create a population structure
         do
         {
@@ -182,7 +187,6 @@ public class goap_imp : Factories
             for (var i = 0; i < potentialOptions.Count; i++)
             {
                     var c_child = new Node(potentialOptions[i], nm);
-
                     current.add_child(c_child);
                     if (current.Parent != null )
                     {
@@ -191,19 +195,13 @@ public class goap_imp : Factories
                             Action itm = c_child.held_obj as Action;
                             //c_child is valid
                             var a = c_child.Parent.c_state;
-
                             c_child.c_state.init(a); 
-                            
                             c_child.c_state.poor_copy(mutate_state(c_child.Parent.grab_state(), c_child.held_obj as Action));
-
                             queue.Enqueue(c_child);
                             visited.Add(c_child);
-                            //if (worldstate_validation(c_child.c_state, sim_state)) return visited;
-
                         }
                         else
                         {
-                            
                             current.remove_child(c_child);
                         }
                     }

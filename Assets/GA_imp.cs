@@ -28,35 +28,7 @@ public class GA_imp : MonoBehaviour
     }
 
     //wait it's a linked list/pool bruhh
-    public List<GA_Agent> construct_tree(int pop_size)
-    {
-        Queue<GA_Agent> queue = new Queue<GA_Agent>();
-        List<GA_Agent> visited = new List<GA_Agent>();
-
-        int count = 0;
-        root = new GA_Agent(-1, null, rt);
-        root.prepare_for_operations();
-        queue.Enqueue(root);
-        do
-        {
-            count++;
-            var parent = queue.Dequeue();
-            visited.Add(parent);
-
-
-            //LOOP CONTENTS
-            //  GA_Agent new_agent = new GA_Agent(Node, count).copy_allowed_actions();
-            //this already rebinds costs;
-            //    new_agent.prepare_for_operations();
-            //     create_deviants(new_agent, parent);
-            //     queue.Enqueue(new_agent);
-
-
-        } while (max_sim_number > pop_size);
-
-        Debug.Log(count);
-        return visited;
-    }
+   
 
 
 
@@ -98,60 +70,23 @@ public class GA_imp : MonoBehaviour
 
        }
 */
-    public List<GA_Agent> grab_all_plans_and_return_uniques_as_elites(List<GA_Agent> pop)
-    {
-        void is_unique(List<GA_Agent> unique_sequence, GA_Agent input)
-        {
-            if (unique_sequence.Count == 0)
-            {
-                unique_sequence.Add(input);
-                return;
-            }
-            for (var c = 0; c < unique_sequence.Count; c++)
-            {
-                if (input.plan.SequenceEqual(unique_sequence[c].plan))
-                {
-                    return;
-                }
-            }
-            unique_sequence.Add(input);
-        }
 
-        List<GA_Agent> unique_entries = new List<GA_Agent>();
-        List<GA_Agent> all_plans = new List<GA_Agent>();
-        foreach (var item in pop)
-        {
-            var c = item.id;
-
-            for (int a = 0; a < item.character.plan.Count; a++)
-            {
-                item.plan.Add(item.character.plan[a].Name);
-            }
-            all_plans.Add(item);
-        }
-        //build unique list
-        var i = 0;
-        while (i < all_plans.Count)
-        {
-            is_unique(unique_entries, all_plans[i]);
-            i++;
-        }
-        Debug.Log(unique_entries.Count);
-        return unique_entries;
-    }
 
     public List<GA_Agent> return_elite_agents_via_time_fitness(List<GA_Agent> pop)
     {
-        return pop.OrderBy(item => item.character.timer).Take(max_sim_number / 10).ToList();
-        ;
+      List<GA_Agent> elites = pop.OrderBy(item => item.character.timer).Take(max_sim_number / 10).ToList();
+      for (int i = 0; i < elites.Count; i++)
+      {
+          elites[i].character.plan.ForEach(item => elites[i].plan.Add(item.Name));
+      }
+      return elites;
     }
 
-
-    public float evaluate_fitness(List<GA_Agent> elites)
+    public double evaluate_fitness(List<GA_Agent> elites)
     {
-        float global_fitness = 0f;
-        elites.ForEach(item => global_fitness += item.fitness);
-        return global_fitness;
+        double global_fitness = 0f;
+        elites.ForEach(item => global_fitness += item.character.timer);
+        return global_fitness/elites.Count;
 
     }
 
@@ -162,7 +97,7 @@ public class GA_imp : MonoBehaviour
         do
         {
             GA_Agent item = pop[index];
-            var gm = Instantiate(Node, new Vector3(item.id * 5, 0f, 0f), Quaternion.identity);
+            var gm = Instantiate(Node, new Vector3(item.id * 8,  1f, 0f), Quaternion.identity);
             var comp = gm.GetComponent<setup>();
             item.character = comp.basic_character;
             comp.id = item.id;
@@ -192,102 +127,109 @@ public class GA_imp : MonoBehaviour
 
     private List<GA_Agent> re_populate(List<GA_Agent> current_elites, List<GA_Agent> cpop)
     {
+        
+        int c_id = 0;
         do
         {
             //imp id tracking
-            GA_Agent curr = new GA_Agent(0, root, Node);
+            GA_Agent curr = new GA_Agent(c_id, root, Node);
             curr.copy_allowed_actions(current_elites.First());
-            GA_Agent curr2 = new GA_Agent(0, root, Node);
+            GA_Agent curr2 = new GA_Agent(c_id+1, root, Node);
             curr2.copy_allowed_actions(current_elites.First());
             var itm = create_deviants(current_elites[Random.Range(0, current_elites.Count - 1)],
             current_elites[Random.Range(0, current_elites.Count - 1)]);
             curr.prepare_for_operations();
             curr2.prepare_for_operations();
-            curr.wrapped_costs = itm.Item1;
-            curr2.wrapped_costs = itm.Item2;
+            curr.drag_drop_wrapped_costs(itm.Item1);
+            curr2.drag_drop_wrapped_costs(itm.Item2);
             cpop.Add(curr);
             cpop.Add(curr2);
+            c_id += 2;
         } while (cpop.Count < max_sim_number);
         return cpop;
     }
 
-
+    public void clean_pop(List<GA_Agent> population, List<GA_Agent> elites)
+    {
+        for (var i = 0; i < population.Count; i++)
+        {
+            if (!elites.Contains(population[i])) population[i].character.destroy_self = true;
+        }
+    }
     void Update()
     {
+        
         if (start)
         {
-
             start = false;
             population = create_initial_population(max_sim_number);
             simulate(population);
-
         }
 
         if (deploy)
         {
-            deploy = false;
             //GA LOOP
-
+            deploy = false;
             StartCoroutine(GALOOP());
-
         }
-
-
-        GA_loop_data_object should_continue(double fitness, double old_fitness, int failure_count)
+    }
+//IF WE STOP SEEING IMPROVEMENT AFTER FIVE CYCLES, (fitness value stops lowering) we stop.
+        IEnumerator GALOOP(float delay = 10f)
         {
-            GA_loop_data_object return_val = new GA_loop_data_object();
-
-            if (failure_count > 5)
+            GA_loop_data_object should_continue(GA_loop_data_object obj)
             {
-                return_val.fitness = old_fitness;
-                return_val.should_continue = false;
-            }
-            else
-            {
-                if (fitness > old_fitness)
+                if (obj.failure_count > 5)
                 {
-                    return_val.failure_count += 1;
-                    return_val.fitness = old_fitness;
-                    return_val.should_continue = true;
+                    obj.fitness = obj.old_fitness;
+                    obj.should_continue = false;
                 }
                 else
                 {
-                    return_val.failure_count = 0;
-                    return_val.old_fitness = fitness;
-                    return_val.should_continue = true;
+                    if (obj.fitness > obj.old_fitness)
+                    {
+                        obj.failure_count  +=1;
+                        obj.fitness = obj.old_fitness;
+                        obj.should_continue = true;
+                    }
+                    else
+                    {
+                        obj.failure_count = 0;
+                        obj.old_fitness = obj.fitness;
+                        obj.should_continue = true;
+                    }
                 }
+                return obj;
             }
-            return return_val;
-        }
-
-//IF WE STOP SEEING IMPROVEMENT AFTER FIVE CYCLES, (fitness value stops lowering) we stop.
-        IEnumerator GALOOP()
-        {
-            //BADBADBADBAD
+            GA_loop_data_object current_container = new GA_loop_data_object();
             //struct if it works
             population = create_initial_population(max_sim_number);
             simulate(population);
+            //give time for it to simulate.
+            yield return new WaitForSeconds(delay);
             List<GA_Agent> elites = return_elite_agents_via_time_fitness(population);
-            int failure_count = 0;
-            double old_fitness = Math.Round(evaluate_fitness(elites), 4);
+            clean_pop(population, elites);
+            current_container.failure_count = 0;
+            current_container.old_fitness = Math.Round(evaluate_fitness(elites), 1);
             //starting fitness
-            double fitness = old_fitness;
+            Debug.Log(current_container.old_fitness + " "+  string.Join(",",elites.First().plan.ToArray()));
+            current_container.fitness = current_container.old_fitness;
+            do
             {
-                //rank individuals, I ought to weight it.
-
+                //rank individuals, I ought to weight it?.
                 //this repopulates and mutates
                 population = re_populate(elites, new List<GA_Agent>());
                 simulate(population);
+                yield return new WaitForSeconds(delay);
                 elites = return_elite_agents_via_time_fitness(population);
-                yield return new WaitForSeconds(10f);
-                fitness = Math.Round(evaluate_fitness(elites), 4);
-            }
-            while (should_continue(fitness, old_fitness, failure_count).should_continue) ;
-
+                clean_pop(population, elites);
+                current_container.fitness = Math.Round(evaluate_fitness(elites), 1);
+                current_container = should_continue(current_container);
+               Debug.Log(current_container.fitness + " " + current_container.failure_count + " "+  string.Join(",",elites.First().plan.ToArray()));
+            } while (current_container.should_continue);
             yield return null;
-
-
         }
 
     }
-}
+
+      
+

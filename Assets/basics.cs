@@ -32,6 +32,7 @@ namespace base_move_classes
            name = nm;
            damage = dam;
            cooldown = cd;
+         //  Debug.Log(cooldown);
            self = this;
            return self;
        }
@@ -52,6 +53,7 @@ namespace base_move_classes
         {
             move_type =  move_types.stun;
             stuns_dur = cd / 2;
+            cooldown = cd;
             return base.setup(nm, dam, cd);
         }
 

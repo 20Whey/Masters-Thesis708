@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Node: {fileID: 7182240406817852440, guid: 4e2ae8754ff3a944b85c6ff7dd85a2f9, type: 3}
-  max_sim_number: 50
+  max_sim_number: 30
   rt: {fileID: 2932166701966348571}
   create_elites: 0
   deploy: 0
@@ -628,12 +628,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8791113f7e0392b419650fd646d8eb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  f_script: {fileID: 1341606746414195414}
+  prefab_parent: {fileID: 2585756348183753641}
   singleton_ref: {fileID: 5433884436463253281}
   isdummy: 0
   blocking: 0
   stunned: 0
   moving: 0
   health: 5
+  destroy_self: 0
   plan_finished: 0
   started_combo: 0
   finishing_combo: 0
@@ -769,12 +772,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8791113f7e0392b419650fd646d8eb6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  f_script: {fileID: 1341606746414195414}
+  prefab_parent: {fileID: 917989722}
   singleton_ref: {fileID: 5433884436463253281}
   isdummy: 1
   blocking: 0
   stunned: 0
   moving: 0
   health: 0
+  destroy_self: 0
   plan_finished: 0
   started_combo: 0
   finishing_combo: 0

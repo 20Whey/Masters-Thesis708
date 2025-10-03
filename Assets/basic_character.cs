@@ -15,7 +15,11 @@ using Action = Production.Action;
 using Vector2 = UnityEngine.Vector2;
 public class basic_character : MonoBehaviour
 {
-
+    public fight f_script;
+    
+    
+    public GameObject prefab_parent;
+    
     public manager singleton_ref;
     public bool isdummy;
     public bool blocking;
@@ -23,26 +27,27 @@ public class basic_character : MonoBehaviour
     public bool moving;
     public float health;
 
+    public bool destroy_self = false;
     public bool plan_finished;
 
     public bool started_combo;
     public bool finishing_combo;
     public bool struck;
-    public float timer;
+    public double timer;
 
     public Transform target;
     public character self;
     public List<Action> allowed_actions = new List<Action>();
 
-
      public List<Action> plan;
-    public world_states local_worldstate;
-    public goap_imp goap;
+     public world_states local_worldstate;
+     public goap_imp goap;
 
     public BeliefFactory belief_factory;
     public GoalFactory goals;
     public basic_init  bsic_init;
     public ActionFactory actions;
+    
     void Start()
     {
         
@@ -67,13 +72,14 @@ public class basic_character : MonoBehaviour
             local_worldstate = new world_states();
             local_worldstate.init(null);
 
+            
+            //implicitly done
             local_worldstate.add_state(belief_factory.grab_belief("moving").Name,
             belief_factory.grab_belief("moving")._condition());
             local_worldstate.add_state(belief_factory.grab_belief("close_to_enemy").Name,
             belief_factory.grab_belief("close_to_enemy")._condition());
             local_worldstate.add_state(belief_factory.grab_belief("is_target_set").Name,
             belief_factory.grab_belief("is_target_set")._condition());
-
 
 
             local_worldstate.add_state(belief_factory.grab_belief("starting_combo").Name,
@@ -105,6 +111,8 @@ public class basic_character : MonoBehaviour
                 gameObject.transform.position =
                 Vector2.MoveTowards(gameObject.transform.position, (Vector2)target.position, 0.1f);
             }
+            timer = f_script.timer;
+            if (destroy_self) Destroy(prefab_parent) ;
         }
     }
 }

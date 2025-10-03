@@ -71,7 +71,7 @@ public class setup : MonoBehaviour
     {
        // if (basic_character.plan == null && !is_sim_setup)
         if(run_plan){
-            Debug.Log("setup plan");
+//            Debug.Log("setup plan");
             plug_in_action_weights();
         }
         if (basic_character.plan != null && is_sim_setup)

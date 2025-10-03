@@ -15,16 +15,17 @@ namespace init
         public static Dictionary<string, basic_move> create(Dictionary<string, basic_move> moves)
         {
             moves = new Dictionary<string, basic_move>();
-            moves.Add("Straight", new basic_move { }.setup("Straight", 1, 0.5f));
-            moves.Add("Kick", new basic_move { }.setup("Kick", 2, 0.8f));
+            moves.Add("Straight", new basic_move { }.setup("Straight", 1, 0.45f));
+            moves.Add("Kick", new basic_move { }.setup("Kick", 2, 0.94f));
 
-            moves.Add("Shove", new stun_move() { }.setup("Shove", 0, 0.5f));
-            moves.Add("bamboozle", new stun_move { }.setup("bamboozle", 0, 2f));
+            moves.Add("Shove", new stun_move() { }.setup("Shove", 0, 0.49f));
+            moves.Add("bamboozle", new stun_move { }.setup("bamboozle", 0, 1.9f));
             moves.Add("follow_up_strike", new basic_move { }.setup("follow_up_strike", 3, 1f));
 
-            moves.Add("Round_House", new basic_move { }.setup("Round_House", 2, 0.4f));
+            moves.Add("Round_House", new basic_move { }.setup("Round_House", 2, 2.4f));
             moves.Add("guard_up", new block_move() { }.setup("guard_up", 0, 1.2f));
             moves.Add("counter", new stun_move() { }.setup("counter", 3, 0.7f));
+            
             return moves;
         }
         public static Factories.BeliefFactory init_belief_factory(character slf, manager singleton)
@@ -44,6 +45,8 @@ namespace init
             bf.add_belief("is_opponent_stunned", (() => simple_game.is_opponent_stunned(us)));
             
             bf.add_belief("is_target_set", (() => simple_game.evaluate(us.target)));
+            
+            
             foreach (var itm in bf.Beliefs)
             {
                 if (!singleton.global_beliefs.ContainsKey(itm.Key))
@@ -170,11 +173,13 @@ namespace init
     public static Factories.GoalFactory  init_goal_factory(Factories.BeliefFactory  belief_factory, manager singleton_ref)
       {
           var go =  new Factories.GoalFactory();
-          /*  go.add_goal("kill_enemy", new KeyValuePair<string, bool>("is_enemy_alive", false), .5f, 
-          singleton_ref,"is_enemy_alive");*/
+
           
-          go.add_goal("kill_all_enemies", new KeyValuePair<string, bool>("enemy_exists", false), .5f,
-          singleton_ref,"enemy_exists");
+          go.add_goal("kill_all_enemies", 
+          new KeyValuePair<string, bool>("enemy_exists", false), 
+          .5f,
+          singleton_ref,
+          "enemy_exists");
           
           
           

@@ -78,7 +78,7 @@ namespace GA_namespce
                 if (exposed_costs[i] != null)
                 {
                     var val = exposed_costs[i].Value.Item2;
-                    exposed_costs[i] = (exposed_costs[i].Value.Item1, val +=  Random.Range(-0.5f, 0.5f));
+                    exposed_costs[i] = (exposed_costs[i].Value.Item1, val +=  Random.Range(-0.3f, 0.3f));
                 }
             }
         }
@@ -116,6 +116,49 @@ namespace GA_namespce
     public class GA
     {
         
+        public List<GA_Agent> grab_all_plans_and_return_uniques_as_elites(List<GA_Agent> pop)
+        {
+            void is_unique(List<GA_Agent> unique_sequence, GA_Agent input)
+            {
+                if (unique_sequence.Count == 0)
+                {
+                    unique_sequence.Add(input);
+                    return;
+                }
+                for (var c = 0; c < unique_sequence.Count; c++)
+                {
+                    if (input.plan.SequenceEqual(unique_sequence[c].plan))
+                    {
+                        return;
+                    }
+                }
+                unique_sequence.Add(input);
+            }
+
+            List<GA_Agent> unique_entries = new List<GA_Agent>();
+            List<GA_Agent> all_plans = new List<GA_Agent>();
+            foreach (var item in pop)
+            {
+                var c = item.id;
+
+                for (int a = 0; a < item.character.plan.Count; a++)
+                {
+                    item.plan.Add(item.character.plan[a].Name);
+                }
+                all_plans.Add(item);
+            }
+            //build unique list
+            var i = 0;
+            while (i < all_plans.Count)
+            {
+                is_unique(unique_entries, all_plans[i]);
+                i++;
+            }
+            Debug.Log(unique_entries.Count);
+            return unique_entries;
+        }
+        
+        
         
        public static ((string, float)[], (string, float)[]) create_deviants(GA_Agent first_agent, GA_Agent other_agent)
        {
@@ -128,12 +171,11 @@ namespace GA_namespce
                        if (combined[i] != null)
                            if (Random.Range(0, 10) > 8)
                                combined[i] = Random.Range(0, 1) == 0
-                               ? (combined[i].Value.Item1, combined[i].Value.Item2 + 0.125f)
-                               : (combined[i].Value.Item1, combined[i].Value.Item2 - 0.125f);
+                               ? (combined[i].Value.Item1, combined[i].Value.Item2 + 0.025f)
+                               : (combined[i].Value.Item1, combined[i].Value.Item2 - 0.025f);
                    }
                    return agent.rebind_costs(combined);
                }
-           
                //FIX ME
                var rnd = Random.Range(0, first_agent.exposed_costs.Length);
                var cost_one = first_agent.exposed_costs.Take(rnd).ToArray(); 
@@ -147,7 +189,7 @@ namespace GA_namespce
            //lobotomise it rq
             
           // GA_Agent new_child = new GA_Agent().copy_allowed_actions(first_agent);
-
+            //DUE TO VISUAL BUG, WORKAROUND:  
            return random_simple_crossover(first_agent, other_agent);
        }
 
