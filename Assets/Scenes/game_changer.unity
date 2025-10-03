@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Node: {fileID: 7182240406817852440, guid: 4e2ae8754ff3a944b85c6ff7dd85a2f9, type: 3}
-  max_sim_number: 300
+  max_sim_number: 50
   rt: {fileID: 2932166701966348571}
   create_elites: 0
   deploy: 0

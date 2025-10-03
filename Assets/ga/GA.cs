@@ -52,6 +52,7 @@ namespace GA_namespce
             exposed_costs = new (string, float)?[allowed_actions.Count];
         }
        //get actions
+       
         public void prepare_for_operations()
         {
             for (var i = 0; i < allowed_actions.Count; i++)
@@ -81,11 +82,14 @@ namespace GA_namespce
                 }
             }
         }
-        public GA_Agent create_from(GA_Agent other)
+        public void copy_allowed_actions(GA_Agent other)
         {
             this.allowed_actions = other.allowed_actions;
-            this.prepare_for_operations();
-            return this;
+        }
+
+        public void drag_drop_wrapped_costs((string, float)[] costs)
+        {
+            this.wrapped_costs = costs;
         }
         
         //for after mutation
@@ -113,29 +117,38 @@ namespace GA_namespce
     {
         
         
-       public static(string, float)[] create_deviants(GA_Agent first_agent, GA_Agent other_agent)
+       public static ((string, float)[], (string, float)[]) create_deviants(GA_Agent first_agent, GA_Agent other_agent)
        {
-           (string, float)[] random_simple_crossover(GA_Agent first_agent, GA_Agent other_agent)
+           ((string, float)[], (string, float)[]) random_simple_crossover(GA_Agent first_agent, GA_Agent other_agent)
            {
+               (string, float)[] mutation_and_combination(GA_Agent agent, (string, float)?[] combined)
+               {
+                   for (var i = 0; i < combined.Length; i++)
+                   {
+                       if (combined[i] != null)
+                           if (Random.Range(0, 10) > 8)
+                               combined[i] = Random.Range(0, 1) == 0
+                               ? (combined[i].Value.Item1, combined[i].Value.Item2 + 0.125f)
+                               : (combined[i].Value.Item1, combined[i].Value.Item2 - 0.125f);
+                   }
+                   return agent.rebind_costs(combined);
+               }
+           
                //FIX ME
                var rnd = Random.Range(0, first_agent.exposed_costs.Length);
                var cost_one = first_agent.exposed_costs.Take(rnd).ToArray(); 
                var cost_two = other_agent.exposed_costs.Skip(rnd).ToArray();
                
                var combined =  cost_one.Concat(cost_two).ToArray();
+               var combined2 = cost_two.Concat(cost_one).ToArray();
               //Silly Mutation
-               for (var i = 0; i < combined.Length; i++)
-               {
-                  if (combined[i] != null)
-                    if (Random.Range(0, 10) > 8) 
-                      combined[i] = Random.Range(0, 1) == 0 ? (combined[i].Value.Item1, combined[i].Value.Item2 + 0.125f) : (combined[i].Value.Item1, combined[i].Value.Item2 -0.125f);
-               }
-               return first_agent.rebind_costs(combined);
+              return (mutation_and_combination(first_agent,combined), mutation_and_combination(other_agent,combined2));
            }
            //lobotomise it rq
             
-          // GA_Agent new_child = new GA_Agent().create_from(first_agent);
-           return Random.Range(0, 1) == 0 ? random_simple_crossover(first_agent, other_agent) : random_simple_crossover(other_agent,first_agent);
+          // GA_Agent new_child = new GA_Agent().copy_allowed_actions(first_agent);
+
+           return random_simple_crossover(first_agent, other_agent);
        }
 
        
