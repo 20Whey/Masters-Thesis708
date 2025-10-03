@@ -655,7 +655,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7571e0aecacbb214eb99faed9822c29d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  signal: 0
+  signal: 1
   display_beliefsfr: []
 --- !u!4 &5948381982909153806
 Transform:

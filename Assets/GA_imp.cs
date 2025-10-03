@@ -50,28 +50,6 @@ public class GA_imp : MonoBehaviour
     }
 
 
-    /*   public List<GA_Agent> grab_elites(int starting_elites_size, List<GA_Agent> population)
-       {
-           //Some sort of linq devilry, find every unique plan combination in the list
-
-
-       }*/
-
-
-    //CREATE AGENT FROM ELITES 
-    //  GA_Agent new_agent = new GA_Agent(Node, count).copy_allowed_actions();
-    //this already rebinds costs;
-    //    new_agent.prepare_for_operations();
-    //     create_deviants(new_agent, parent);
-    //     queue.Enqueue(new_agent);
-
-    /*   public List<GA_Agent> discover_variants()
-       {
-
-       }
-*/
-
-
     public List<GA_Agent> return_elite_agents_via_time_fitness(List<GA_Agent> pop)
     {
       List<GA_Agent> elites = pop.OrderBy(item => item.character.timer).Take(max_sim_number / 10).ToList();
@@ -87,10 +65,8 @@ public class GA_imp : MonoBehaviour
         double global_fitness = 0f;
         elites.ForEach(item => global_fitness += item.character.timer);
         return global_fitness/elites.Count;
-
     }
-
-
+    
     public void simulate(List<GA_Agent> pop)
     {
         int index = 0;
@@ -112,22 +88,9 @@ public class GA_imp : MonoBehaviour
         } while (index < pop.Count);
         Debug.Log(pop.Count);
     }
-
-    private void prepare_agent(params GA_Agent[] agents)
-    {
-        for (var i = 0; i < agents.Length; i++)
-        {
-            agents[i].prepare_for_operations();
-
-
-
-        }
-
-    }
-
+    
     private List<GA_Agent> re_populate(List<GA_Agent> current_elites, List<GA_Agent> cpop)
     {
-        
         int c_id = 0;
         do
         {
@@ -215,16 +178,21 @@ public class GA_imp : MonoBehaviour
             current_container.fitness = current_container.old_fitness;
             do
             {
-                //rank individuals, I ought to weight it?.
                 //this repopulates and mutates
                 population = re_populate(elites, new List<GA_Agent>());
+                //run
                 simulate(population);
+                //wait for imp
                 yield return new WaitForSeconds(delay);
+                //rank individuals
                 elites = return_elite_agents_via_time_fitness(population);
+                //clean up 
                 clean_pop(population, elites);
-                current_container.fitness = Math.Round(evaluate_fitness(elites), 1);
+                current_container.fitness = Math.Round(evaluate_fitness(elites), 2);
+                //assign fitness to population
                 current_container = should_continue(current_container);
                Debug.Log(current_container.fitness + " " + current_container.failure_count + " "+  string.Join(",",elites.First().plan.ToArray()));
+               
             } while (current_container.should_continue);
             yield return null;
         }

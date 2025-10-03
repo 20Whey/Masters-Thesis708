@@ -61,7 +61,7 @@ public class fight : MonoBehaviour
                
                 yield return new WaitForSeconds(0.1f);
             }
-        //    Debug.Log("passed " + " "+ action.Name + " " + our_unit.plan.IndexOf(action));
+           // Debug.Log("passed " + " "+ action.Name + " " + our_unit.plan.IndexOf(action));
         }
         //plan finished. tell parent
         our_unit.plan_finished = true;

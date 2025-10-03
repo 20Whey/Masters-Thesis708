@@ -16,10 +16,10 @@ namespace init
         {
             moves = new Dictionary<string, basic_move>();
             moves.Add("Straight", new basic_move { }.setup("Straight", 1, 0.45f));
-            moves.Add("Kick", new basic_move { }.setup("Kick", 2, 0.94f));
+            moves.Add("Kick", new basic_move { }.setup("Kick", 2, 0.5f));
 
-            moves.Add("Shove", new stun_move() { }.setup("Shove", 0, 0.49f));
-            moves.Add("bamboozle", new stun_move { }.setup("bamboozle", 0, 1.9f));
+            moves.Add("Shove", new stun_move() { }.setup("Shove", 0, 0.43f));
+            moves.Add("bamboozle", new stun_move { }.setup("bamboozle", 0, 1f));
             moves.Add("follow_up_strike", new basic_move { }.setup("follow_up_strike", 3, 1f));
 
             moves.Add("Round_House", new basic_move { }.setup("Round_House", 2, 2.4f));
@@ -33,6 +33,7 @@ namespace init
             var bf = new Factories.BeliefFactory(slf);
             var us = bf.Agent.this_ob.GetComponent<basic_character>();
 
+            
             bf.add_location_belief("close_to_enemy", simple_game.get_closest_target(bf.Agent.this_ob).transform.position,
             0.01f);
 
@@ -128,7 +129,8 @@ namespace init
             });
 
             
-            af.add_action_to_list("Kick", () => null,0.5f, new []
+            af.add_action_to_list("Kick", () => null,0.5f, 
+            new []
             {
             ("close_to_enemy", true),
             ("moving", false),
@@ -173,22 +175,14 @@ namespace init
     public static Factories.GoalFactory  init_goal_factory(Factories.BeliefFactory  belief_factory, manager singleton_ref)
       {
           var go =  new Factories.GoalFactory();
-
           
           go.add_goal("kill_all_enemies", 
           new KeyValuePair<string, bool>("enemy_exists", false), 
           .5f,
           singleton_ref,
           "enemy_exists");
-          
-          
-          
           return go;
-          
-          
-          
-          
-          
+
       }
   }
 

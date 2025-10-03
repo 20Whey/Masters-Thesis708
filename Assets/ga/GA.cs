@@ -169,10 +169,10 @@ namespace GA_namespce
                    for (var i = 0; i < combined.Length; i++)
                    {
                        if (combined[i] != null)
-                           if (Random.Range(0, 10) > 8)
+                           if (Random.Range(0, 10) > 6)
                                combined[i] = Random.Range(0, 1) == 0
-                               ? (combined[i].Value.Item1, combined[i].Value.Item2 + 0.025f)
-                               : (combined[i].Value.Item1, combined[i].Value.Item2 - 0.025f);
+                               ? (combined[i].Value.Item1, combined[i].Value.Item2 + 0.25f)
+                               : (combined[i].Value.Item1, combined[i].Value.Item2 - 0.25f);
                    }
                    return agent.rebind_costs(combined);
                }

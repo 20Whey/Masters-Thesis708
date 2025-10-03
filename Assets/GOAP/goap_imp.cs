@@ -160,8 +160,6 @@ public class goap_imp : Factories
     [CanBeNull]
     public List<Node> discover_tree(world_states sim_state, Goal start, List<Action> allowed)
     {       
-
-        
         //create root 
         int nm = 0;
         List<Node> visited = new List<Node>();
@@ -174,9 +172,6 @@ public class goap_imp : Factories
         //add root to BFS queue and visited
         queue.Enqueue(root);
         visited.Add(root);
-        
-        
-        
         //create a population structure
         do
         {

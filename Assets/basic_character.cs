@@ -71,7 +71,6 @@ public class basic_character : MonoBehaviour
             
             local_worldstate = new world_states();
             local_worldstate.init(null);
-
             
             //implicitly done
             local_worldstate.add_state(belief_factory.grab_belief("moving").Name,
